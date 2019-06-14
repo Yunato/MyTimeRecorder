@@ -1,14 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".ui.fragment.MainFragment">
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
-  <!-- TODO: Update blank fragment layout -->
-  <TextView
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:text="@string/hello_blank_fragment"/>
+    <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.fragment.MainFragment">
 
-</FrameLayout>
+        <include
+                layout="@layout/card_main"
+                android:id="@+id/card_easy_mode_fixed"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="15dp"
+                bind:title="@{@string/card_main_easy_fixed}"
+                app:layout_constraintBottom_toTopOf="@+id/card_easy_mode_floated"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        <include
+                layout="@layout/card_main"
+                android:id="@+id/card_easy_mode_floated"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="15dp"
+                bind:title="@{@string/card_main_easy_floated}"
+                app:layout_constraintBottom_toTopOf="@+id/card_normal_mode"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_easy_mode_fixed"/>
+
+        <include
+                layout="@layout/card_main"
+                android:id="@+id/card_normal_mode"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="15dp"
+                bind:title="@{@string/card_main_normal}"
+                app:layout_constraintBottom_toTopOf="@+id/card_hard_mode"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_easy_mode_floated"/>
+
+        <include
+                layout="@layout/card_main"
+                android:id="@+id/card_hard_mode"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="15dp"
+                bind:title="@{@string/card_main_hard}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_normal_mode"/>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>
