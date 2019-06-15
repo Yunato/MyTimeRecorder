@@ -7,6 +7,7 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import io.github.yunato.myrecordtimer.ui.activity.SettingsActivity
 import io.github.yunato.myrecordtimer.ui.fragment.MainFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -39,7 +40,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        supportFragmentManager.beginTransaction().replace(R.id.content, MainFragment.newInstance()).commit()
+
+        if(item.itemId == R.id.nav_setting){
+            SettingsActivity.intent(this).let { startActivity(it) }
+        }else{
+            supportFragmentManager.beginTransaction().replace(R.id.content, MainFragment.newInstance()).commit()
 //        when (item.itemId) {
 //            R.id.nav_measurement -> {
 //
@@ -51,6 +56,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //
 //            }
 //        }
+        }
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
