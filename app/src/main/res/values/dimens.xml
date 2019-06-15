@@ -5,4 +5,9 @@
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="card_mode_title_text_size">30sp</dimen>
+    <dimen name="card_mode_margin">15sp</dimen>
+    <dimen name="fragment_time_text_size">48sp</dimen>
+    <dimen name="fragment_button_text_size">14sp</dimen>
+    <dimen name="fragment_button_margin">15sp</dimen>
 </resources>
