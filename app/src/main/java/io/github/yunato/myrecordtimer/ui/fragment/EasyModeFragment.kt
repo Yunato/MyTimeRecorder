@@ -7,16 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import io.github.yunato.myrecordtimer.R
 
-class EasyModeFixedFragment : Fragment() {
+class EasyModeFragment : Fragment() {
 
     override fun onCreateView( inflater: LayoutInflater,
                                container: ViewGroup?,
                                savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_easy_mode_fixed, container, false)
+        return inflater.inflate(R.layout.fragment_easy_mode, container, false)
     }
 
     companion object {
         @JvmStatic
-        fun newInstance() = EasyModeFixedFragment()
+        fun newInstance() = EasyModeFragment()
     }
 }
