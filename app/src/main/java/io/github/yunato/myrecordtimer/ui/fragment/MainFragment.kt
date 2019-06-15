@@ -21,7 +21,7 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        card_easy_mode_fixed.setOnClickListener{ view ->
+        card_easy_mode_fixed.setOnClickListener{
             TimerActivity.intent(activity as Context).let{
                 startActivity( it )
             }
