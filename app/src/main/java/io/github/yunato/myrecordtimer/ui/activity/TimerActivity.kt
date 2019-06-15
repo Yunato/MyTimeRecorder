@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import io.github.yunato.myrecordtimer.R
+import io.github.yunato.myrecordtimer.ui.fragment.EasyModeFragment
 
 class TimerActivity : AppCompatActivity() {
 
@@ -15,6 +16,8 @@ class TimerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timer)
+        supportFragmentManager.beginTransaction().
+            replace(R.id.content, EasyModeFragment.newInstance()).commit()
     }
 
     override fun onResume() {
