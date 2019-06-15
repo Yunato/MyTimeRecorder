@@ -11,7 +11,7 @@
             android:theme="@style/AppTheme"
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
-            android:name=".ui.activity.EasyModeFixedActivity"
+            android:name=".ui.activity.TimerActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
 
         </activity>

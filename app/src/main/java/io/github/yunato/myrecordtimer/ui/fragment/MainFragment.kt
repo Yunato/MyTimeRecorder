@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.github.yunato.myrecordtimer.databinding.FragmentMainBinding
-import io.github.yunato.myrecordtimer.ui.activity.EasyModeFixedActivity
+import io.github.yunato.myrecordtimer.ui.activity.TimerActivity
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : Fragment() {
@@ -22,7 +22,7 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         card_easy_mode_fixed.setOnClickListener{ view ->
-            EasyModeFixedActivity.intent(activity as Context).let{
+            TimerActivity.intent(activity as Context).let{
                 startActivity( it )
             }
         }
