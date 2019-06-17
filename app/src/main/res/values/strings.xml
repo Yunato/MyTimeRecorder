@@ -12,7 +12,7 @@
     <string name="card_main_normal">NormalMode</string>
     <string name="card_main_hard">HardMode</string>
 
-    <string name="textview_time">00:00.00</string>
+    <string name="textview_time">00:00:00</string>
     <string name="button_start">Start</string>
     <string name="button_end">End</string>
     <string name="button_finish">Finish</string>

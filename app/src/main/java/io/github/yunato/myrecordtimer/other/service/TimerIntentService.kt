@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.support.v4.app.NotificationCompat
 import io.github.yunato.myrecordtimer.R
+import java.util.*
 
 private const val ACTION_COUNT_UP = "io.github.yunato.myrecordtimer.other.service.action.COUNT_UP"
 private const val ACTION_COUNT_DOWN = "io.github.yunato.myrecordtimer.other.service.action.COUNT_DOWN"
@@ -35,11 +36,21 @@ class TimerIntentService : IntentService("TimerIntentService") {
     }
 
     private fun handleActionCountUp(param1: String, param2: String) {
-        Thread.sleep(5000)
+        val start = Date().time
+        while(true){
+            createNotification(convertTimeFormat(Date().time - start))
+            Thread.sleep(250)
+        }
     }
 
     private fun handleActionCountDown(param1: String, param2: String) {
-        Thread.sleep(5000)
+        val time = 300 * 60 * 60 * 1000L
+        val now = Date().time
+        val goal = now + time
+        while(Date().time < goal){
+            createNotification(convertTimeFormat(goal - Date().time))
+            Thread.sleep(250)
+        }
     }
 
     private fun createNotification(text: String){
@@ -53,6 +64,13 @@ class TimerIntentService : IntentService("TimerIntentService") {
         val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         manager.notify(NOTIFICATION_ID, notification)
         startForeground(NOTIFICATION_ID, notification)
+    }
+
+    private fun convertTimeFormat(time: Long): String {
+        val sec = (time / 1000) % 60
+        val min = (time / 1000 / 60) % 60
+        val hr = time / 1000 / 60 / 60
+        return String.format("%02d:%02d:%02d", hr, min, sec)
     }
 
     companion object {
