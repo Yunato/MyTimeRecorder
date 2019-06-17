@@ -1,14 +1,21 @@
 package io.github.yunato.myrecordtimer.other.service
 
 import android.app.IntentService
+import android.app.Notification
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.support.v4.app.NotificationCompat
+import io.github.yunato.myrecordtimer.R
 
 private const val ACTION_COUNT_UP = "io.github.yunato.myrecordtimer.other.service.action.COUNT_UP"
 private const val ACTION_COUNT_DOWN = "io.github.yunato.myrecordtimer.other.service.action.COUNT_DOWN"
 
 private const val EXTRA_PARAM1 = "io.github.yunato.myrecordtimer.other.service.extra.PARAM1"
 private const val EXTRA_PARAM2 = "io.github.yunato.myrecordtimer.other.service.extra.PARAM2"
+
+private const val CHANNEL_ID = "io.github.yunato.myrecordtimer.other.service.extra.CHANNEL"
+private const val NOTIFICATION_ID = 1
 
 class TimerIntentService : IntentService("TimerIntentService") {
 
@@ -28,11 +35,24 @@ class TimerIntentService : IntentService("TimerIntentService") {
     }
 
     private fun handleActionCountUp(param1: String, param2: String) {
-        TODO("Handle action count up")
+        Thread.sleep(5000)
     }
 
     private fun handleActionCountDown(param1: String, param2: String) {
         Thread.sleep(5000)
+    }
+
+    private fun createNotification(text: String){
+        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setContentTitle(resources.getText(R.string.notification_title))
+            .setContentText(text)
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .build()
+        notification.flags = Notification.FLAG_ONGOING_EVENT
+
+        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        manager.notify(NOTIFICATION_ID, notification)
+        startForeground(NOTIFICATION_ID, notification)
     }
 
     companion object {
