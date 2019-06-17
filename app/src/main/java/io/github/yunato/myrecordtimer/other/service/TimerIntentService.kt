@@ -45,16 +45,18 @@ class TimerIntentService : IntentService("TimerIntentService") {
     }
 
     private fun handleActionCountDown(param1: String, param2: String) {
-        val time = 3 * 60 * 1000L
+        val sec = 10L
+        val time = (sec + 1L) * 1000L - 1L
         val now = Date().time
         val goal = now + time
-        while(Date().time < goal){
-            val diff = goal - Date().time
+        while((goal - Date().time) / 1000L > 0){
+            val diff = (goal - Date().time) / 1000L
             val countText = convertTimeFormat(diff)
             createNotification(countText)
             sendBroadCast(diff)
             Thread.sleep(250)
         }
+        sendBroadCast(0L)
     }
 
     private fun createNotification(text: String){
@@ -71,15 +73,15 @@ class TimerIntentService : IntentService("TimerIntentService") {
     }
 
     private fun convertTimeFormat(time: Long): String {
-        val sec = (time / 1000) % 60
-        val min = (time / 1000 / 60) % 60
-        val hr = time / 1000 / 60 / 60
+        val sec = time % 60
+        val min = (time / 60) % 60
+        val hr = time / 60 / 60
         return String.format("%02d:%02d:%02d", hr, min, sec)
     }
 
     private fun sendBroadCast(time: Long){
         val intent = Intent()
-        intent.putExtra(TimerReceiver.KEY_TIME, time)
+        intent.putExtra(TimerReceiver.KEY_TIME_SEC, time)
         intent.action = TimerReceiver.ACTION_UPDATE
         baseContext.sendBroadcast(intent)
     }

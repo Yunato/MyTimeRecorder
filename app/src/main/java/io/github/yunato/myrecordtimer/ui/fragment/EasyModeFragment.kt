@@ -18,11 +18,10 @@ import kotlinx.android.synthetic.main.fragment_easy_mode.*
 
 class EasyModeFragment : Fragment() {
 
-    private var intent: Intent? = null
-
     override fun onCreateView( inflater: LayoutInflater,
                                container: ViewGroup?,
                                savedInstanceState: Bundle?): View? {
+        if(intent != null) setReceiver()
         return inflater.inflate(R.layout.fragment_easy_mode, container, false)
     }
 
@@ -30,19 +29,24 @@ class EasyModeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         button_start_end.setOnClickListener{
-            intent = TimerIntentService.startActionCountDown(activity as Context, "hoge", "fuga")
-            intent.let{ activity?.startService(it) }
-            setReceiver()
+            if(intent == null) startService()
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         intent?.let{ activity?.stopService(it) }
+        activity?.unregisterReceiver(timerReceiver)
+    }
+
+    private fun startService(){
+        intent = TimerIntentService.startActionCountDown(activity as Context, "hoge", "fuga")
+        intent.let { activity?.startService(it) }
+        setReceiver()
     }
 
     private fun setReceiver(){
-        val timerReceiver = TimerReceiver()
+        timerReceiver = TimerReceiver()
         val intentFilter = IntentFilter()
         intentFilter.addAction(TimerReceiver.ACTION_UPDATE)
         activity?.registerReceiver(timerReceiver, intentFilter)
@@ -54,14 +58,17 @@ class EasyModeFragment : Fragment() {
         override fun handleMessage(msg: Message?) {
             if(msg == null) return
             val bundle = msg.data
-            val time = bundle.getLong(TimerReceiver.KEY_TIME)
+            val time = bundle.getLong(TimerReceiver.KEY_TIME_SEC)
+
+            val sec = time % 60
+            val min = (time / 60) % 60
+            val hr = time / 60 / 60
+            setCountText(hr, min, sec)
+
             if(time == 0L) {
                 intent?.let { activity?.stopService(it) }
-            }else{
-                val sec = (time / 1000) % 60
-                val min = (time / 1000 / 60) % 60
-                val hr = time / 1000 / 60 / 60
-                setCountText(hr, min, sec)
+                intent = null
+                activity?.unregisterReceiver(timerReceiver)
             }
         }
     }
@@ -71,6 +78,9 @@ class EasyModeFragment : Fragment() {
     }
 
     companion object {
+        @JvmStatic private var intent: Intent? = null
+        @JvmStatic private var timerReceiver: TimerReceiver = TimerReceiver()
+
         @JvmStatic
         fun newInstance() = EasyModeFragment()
     }

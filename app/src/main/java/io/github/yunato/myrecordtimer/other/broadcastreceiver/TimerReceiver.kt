@@ -13,12 +13,12 @@ class TimerReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         val bundle = intent.extras
-        val time = bundle.getLong(KEY_TIME)
+        val time = bundle.getLong(KEY_TIME_SEC)
 
         if(isSet){
             val msg = Message()
             val sendBundle = Bundle()
-            sendBundle.putLong(KEY_TIME, time)
+            sendBundle.putLong(KEY_TIME_SEC, time)
             msg.data = sendBundle
             handler.sendMessage(msg)
         }
@@ -30,7 +30,7 @@ class TimerReceiver : BroadcastReceiver() {
     }
 
     companion object {
-        const val KEY_TIME = "io.github.yunato.myrecordtimer.other.broadcastreceiver.KEY_TIME_TEXT"
+        const val KEY_TIME_SEC = "io.github.yunato.myrecordtimer.other.broadcastreceiver.KEY_TIME_TEXT"
         const val ACTION_UPDATE = "io.github.yunato.myrecordtimer.other.broadcastreceiver.UPDATE"
     }
 }
