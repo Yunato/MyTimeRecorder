@@ -32,7 +32,7 @@ class TimerIntentService : IntentService("TimerIntentService") {
     }
 
     private fun handleActionCountDown(param1: String, param2: String) {
-        TODO("Handle action count down")
+        Thread.sleep(5000)
     }
 
     companion object {
