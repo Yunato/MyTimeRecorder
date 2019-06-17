@@ -4,83 +4,52 @@ import android.app.IntentService
 import android.content.Context
 import android.content.Intent
 
-// TODO: Rename actions, choose action names that describe tasks that this
-// IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
-private const val ACTION_FOO = "io.github.yunato.myrecordtimer.other.service.action.FOO"
-private const val ACTION_BAZ = "io.github.yunato.myrecordtimer.other.service.action.BAZ"
+private const val ACTION_COUNT_UP = "io.github.yunato.myrecordtimer.other.service.action.COUNT_UP"
+private const val ACTION_COUNT_DOWN = "io.github.yunato.myrecordtimer.other.service.action.COUNT_DOWN"
 
-// TODO: Rename parameters
 private const val EXTRA_PARAM1 = "io.github.yunato.myrecordtimer.other.service.extra.PARAM1"
 private const val EXTRA_PARAM2 = "io.github.yunato.myrecordtimer.other.service.extra.PARAM2"
 
-/**
- * An [IntentService] subclass for handling asynchronous task requests in
- * a service on a separate handler thread.
- * TODO: Customize class - update intent actions, extra parameters and static
- * helper methods.
- */
 class TimerIntentService : IntentService("TimerIntentService") {
 
     override fun onHandleIntent(intent: Intent?) {
         when (intent?.action) {
-            ACTION_FOO -> {
+            ACTION_COUNT_UP -> {
                 val param1 = intent.getStringExtra(EXTRA_PARAM1)
                 val param2 = intent.getStringExtra(EXTRA_PARAM2)
-                handleActionFoo(param1, param2)
+                handleActionCountUp(param1, param2)
             }
-            ACTION_BAZ -> {
+            ACTION_COUNT_DOWN -> {
                 val param1 = intent.getStringExtra(EXTRA_PARAM1)
                 val param2 = intent.getStringExtra(EXTRA_PARAM2)
-                handleActionBaz(param1, param2)
+                handleActionCountDown(param1, param2)
             }
         }
     }
 
-    /**
-     * Handle action Foo in the provided background thread with the provided
-     * parameters.
-     */
-    private fun handleActionFoo(param1: String, param2: String) {
-        TODO("Handle action Foo")
+    private fun handleActionCountUp(param1: String, param2: String) {
+        TODO("Handle action count up")
     }
 
-    /**
-     * Handle action Baz in the provided background thread with the provided
-     * parameters.
-     */
-    private fun handleActionBaz(param1: String, param2: String) {
-        TODO("Handle action Baz")
+    private fun handleActionCountDown(param1: String, param2: String) {
+        TODO("Handle action count down")
     }
 
     companion object {
-        /**
-         * Starts this service to perform action Foo with the given parameters. If
-         * the service is already performing a task this action will be queued.
-         *
-         * @see IntentService
-         */
-        // TODO: Customize helper method
         @JvmStatic
-        fun startActionFoo(context: Context, param1: String, param2: String) {
+        fun startActionCountUp(context: Context, param1: String, param2: String) {
             val intent = Intent(context, TimerIntentService::class.java).apply {
-                action = ACTION_FOO
+                action = ACTION_COUNT_UP
                 putExtra(EXTRA_PARAM1, param1)
                 putExtra(EXTRA_PARAM2, param2)
             }
             context.startService(intent)
         }
 
-        /**
-         * Starts this service to perform action Baz with the given parameters. If
-         * the service is already performing a task this action will be queued.
-         *
-         * @see IntentService
-         */
-        // TODO: Customize helper method
         @JvmStatic
-        fun startActionBaz(context: Context, param1: String, param2: String) {
+        fun startActionCountDown(context: Context, param1: String, param2: String) {
             val intent = Intent(context, TimerIntentService::class.java).apply {
-                action = ACTION_BAZ
+                action = ACTION_COUNT_DOWN
                 putExtra(EXTRA_PARAM1, param1)
                 putExtra(EXTRA_PARAM2, param2)
             }
