@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.support.v4.app.NotificationCompat
 import io.github.yunato.myrecordtimer.R
+import io.github.yunato.myrecordtimer.other.broadcastreceiver.TimerReceiver
 import java.util.*
 
 private const val ACTION_COUNT_UP = "io.github.yunato.myrecordtimer.other.service.action.COUNT_UP"
@@ -44,11 +45,14 @@ class TimerIntentService : IntentService("TimerIntentService") {
     }
 
     private fun handleActionCountDown(param1: String, param2: String) {
-        val time = 300 * 60 * 60 * 1000L
+        val time = 3 * 60 * 1000L
         val now = Date().time
         val goal = now + time
         while(Date().time < goal){
-            createNotification(convertTimeFormat(goal - Date().time))
+            val diff = goal - Date().time
+            val countText = convertTimeFormat(diff)
+            createNotification(countText)
+            sendBroadCast(diff)
             Thread.sleep(250)
         }
     }
@@ -73,25 +77,30 @@ class TimerIntentService : IntentService("TimerIntentService") {
         return String.format("%02d:%02d:%02d", hr, min, sec)
     }
 
+    private fun sendBroadCast(time: Long){
+        val intent = Intent()
+        intent.putExtra(TimerReceiver.KEY_TIME, time)
+        intent.action = TimerReceiver.ACTION_UPDATE
+        baseContext.sendBroadcast(intent)
+    }
+
     companion object {
         @JvmStatic
-        fun startActionCountUp(context: Context, param1: String, param2: String) {
-            val intent = Intent(context, TimerIntentService::class.java).apply {
+        fun startActionCountUp(context: Context, param1: String, param2: String): Intent {
+            return Intent(context, TimerIntentService::class.java).apply {
                 action = ACTION_COUNT_UP
                 putExtra(EXTRA_PARAM1, param1)
                 putExtra(EXTRA_PARAM2, param2)
             }
-            context.startService(intent)
         }
 
         @JvmStatic
-        fun startActionCountDown(context: Context, param1: String, param2: String) {
-            val intent = Intent(context, TimerIntentService::class.java).apply {
+        fun startActionCountDown(context: Context, param1: String, param2: String): Intent {
+            return Intent(context, TimerIntentService::class.java).apply {
                 action = ACTION_COUNT_DOWN
                 putExtra(EXTRA_PARAM1, param1)
                 putExtra(EXTRA_PARAM2, param2)
             }
-            context.startService(intent)
         }
     }
 }
