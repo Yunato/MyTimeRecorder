@@ -17,6 +17,6 @@ class NormalModeFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() = EasyModeFragment()
+        fun newInstance() = NormalModeFragment()
     }
 }

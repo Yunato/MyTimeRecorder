@@ -30,8 +30,8 @@ class TimerReceiver : BroadcastReceiver() {
     }
 
     companion object {
-        const val KEY_TIME_SEC = "io.github.yunato.myrecordtimer.other.broadcastreceiver.KEY_TIME_TEXT"
-        const val ACTION_UPDATE = "io.github.yunato.myrecordtimer.other.broadcastreceiver.UPDATE"
+        @JvmStatic val KEY_TIME_SEC = "io.github.yunato.myrecordtimer.other.broadcastreceiver.KEY_TIME_TEXT"
+        @JvmStatic val ACTION_UPDATE = "io.github.yunato.myrecordtimer.other.broadcastreceiver.UPDATE"
     }
 }
 
