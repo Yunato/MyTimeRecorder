@@ -21,7 +21,7 @@ class EasyModeFragment : Fragment() {
     override fun onCreateView( inflater: LayoutInflater,
                                container: ViewGroup?,
                                savedInstanceState: Bundle?): View? {
-        if(intent != null) setReceiver()
+        setReceiver()
         return inflater.inflate(R.layout.fragment_easy_mode, container, false)
     }
 
@@ -35,14 +35,12 @@ class EasyModeFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        intent?.let{ activity?.stopService(it) }
         activity?.unregisterReceiver(timerReceiver)
     }
 
     private fun startService(){
         intent = TimerIntentService.startActionCountDown(activity as Context, "hoge", "fuga")
         intent.let { activity?.startService(it) }
-        setReceiver()
     }
 
     private fun setReceiver(){
@@ -68,7 +66,6 @@ class EasyModeFragment : Fragment() {
             if(time == 0L) {
                 intent?.let { activity?.stopService(it) }
                 intent = null
-                activity?.unregisterReceiver(timerReceiver)
             }
         }
     }

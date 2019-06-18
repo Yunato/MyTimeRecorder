@@ -45,7 +45,7 @@ class TimerIntentService : IntentService("TimerIntentService") {
     }
 
     private fun handleActionCountDown(param1: String, param2: String) {
-        val sec = 10L
+        val sec = 3 * 60L
         val time = (sec + 1L) * 1000L - 1L
         val now = Date().time
         val goal = now + time
