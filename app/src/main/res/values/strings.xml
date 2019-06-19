@@ -17,6 +17,9 @@
     <string name="button_end">End</string>
     <string name="button_finish">Finish</string>
 
+    <string name="time_picekr_title">Setup start time</string>
+    <string name="time_picker_separator">:</string>
+
     <string name="notification_title">Timer</string>
 
     <string name="title_activity_settings">Settings</string>
