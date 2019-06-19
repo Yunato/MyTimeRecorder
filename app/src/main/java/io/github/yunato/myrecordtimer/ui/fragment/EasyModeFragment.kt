@@ -56,7 +56,11 @@ class EasyModeFragment : Fragment(), TimePickerFragment.OnSetTimeListener {
             picker.show(fragmentManager, "time_picker")
         }else{
             // TODO: get param from preference
-
+            val hr: Int = 0
+            val min: Int = 5
+            val sec: Int = 0
+            setCountText(hr, min, sec)
+            startSec = hr * 60L * 60L + min * 60L + sec
         }
     }
 
@@ -66,8 +70,7 @@ class EasyModeFragment : Fragment(), TimePickerFragment.OnSetTimeListener {
     }
 
     private fun startService(){
-        intent = if(mode == MODE_FIXED) TimerIntentService.startActionCountDown(activity as Context, startSec)
-                    else TimerIntentService.startActionCountUp(activity as Context)
+        intent = TimerIntentService.startActionCountDown(activity as Context, startSec)
         intent.let { activity?.startService(it) }
     }
 
@@ -89,7 +92,7 @@ class EasyModeFragment : Fragment(), TimePickerFragment.OnSetTimeListener {
             val sec = time % 60
             val min = (time / 60) % 60
             val hr = time / 60 / 60
-            setCountText(hr, min, sec)
+            setCountText(hr.toInt(), min.toInt(), sec.toInt())
 
             if(time == 0L) {
                 intent?.let { activity?.stopService(it) }
@@ -98,12 +101,12 @@ class EasyModeFragment : Fragment(), TimePickerFragment.OnSetTimeListener {
         }
     }
 
-    private fun setCountText(hr: Long, min: Long, sec: Long){
+    private fun setCountText(hr: Int, min: Int, sec: Int){
         textView_time.text = String.format("%02d:%02d:%02d", hr, min, sec)
     }
 
     override fun onSetTime(hr: Int, min: Int, sec: Int) {
-        setCountText(hr.toLong(), min.toLong(), sec.toLong())
+        setCountText(hr, min, sec)
         startSec = hr * 60L * 60L + min * 60L + sec
     }
 
