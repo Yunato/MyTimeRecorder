@@ -78,9 +78,9 @@ class TimePickerFragment: DialogFragment() {
 
     private fun setValueToBundle(hr: Int, min: Int, sec: Int){
         val args = arguments ?: Bundle().apply{
-            putInt("hour", hr)
-            putInt("minute", min)
-            putInt("second", sec)
+            putInt(KEY_HOUR, hr)
+            putInt(KEY_MINUTE, min)
+            putInt(KEY_SECOND, sec)
         }
         arguments = args
     }

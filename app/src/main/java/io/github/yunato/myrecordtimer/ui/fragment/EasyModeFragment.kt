@@ -22,6 +22,7 @@ class EasyModeFragment : Fragment(), TimePickerFragment.OnSetTimeListener {
 
     private var mode: Int = -1
     private var startSec: Long = 0
+    private var isFirstTime : Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +42,11 @@ class EasyModeFragment : Fragment(), TimePickerFragment.OnSetTimeListener {
         super.onViewCreated(view, savedInstanceState)
 
         button_start_end.setOnClickListener{
-            if(intent == null) startService()
+            if(intent == null && isFirstTime){
+                startService()
+                isFirstTime = false
+                button_start_end.setText(R.string.button_finish)
+            }
         }
 
         if(mode == MODE_FIXED){
