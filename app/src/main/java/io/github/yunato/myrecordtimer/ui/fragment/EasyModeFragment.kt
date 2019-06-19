@@ -44,11 +44,14 @@ class EasyModeFragment : Fragment(), TimePickerFragment.OnSetTimeListener {
             if(intent == null) startService()
         }
 
-        if(mode == MODE_FLOATED){
+        if(mode == MODE_FIXED){
             val picker = TimePickerFragment.newInstance(this)
             picker.setParams(0, 0, 30)
             picker.setStyle(DialogFragment.STYLE_NO_TITLE, 0)
             picker.show(fragmentManager, "time_picker")
+        }else{
+            // TODO: get param from preference
+
         }
     }
 
@@ -58,7 +61,8 @@ class EasyModeFragment : Fragment(), TimePickerFragment.OnSetTimeListener {
     }
 
     private fun startService(){
-        intent = TimerIntentService.startActionCountDown(activity as Context, startSec)
+        intent = if(mode == MODE_FIXED) TimerIntentService.startActionCountDown(activity as Context, startSec)
+                    else TimerIntentService.startActionCountUp(activity as Context)
         intent.let { activity?.startService(it) }
     }
 
@@ -103,7 +107,7 @@ class EasyModeFragment : Fragment(), TimePickerFragment.OnSetTimeListener {
         @JvmStatic private var timerReceiver: TimerReceiver = TimerReceiver()
         @JvmStatic private val ARG_MODE = "io.github.yunato.myrecordtimer.ui.fragment.ARG_MODE"
         @JvmStatic val MODE_FIXED: Int = 0
-        @JvmStatic val MODE_FLOATED: Int = 0
+        @JvmStatic val MODE_FLOATED: Int = 1
 
         @JvmStatic
         fun newInstance(mode: Int): EasyModeFragment {

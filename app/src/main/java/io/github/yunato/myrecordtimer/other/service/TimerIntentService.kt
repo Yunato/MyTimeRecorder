@@ -35,7 +35,9 @@ class TimerIntentService : IntentService("TimerIntentService") {
     private fun handleActionCountUp() {
         val start = Date().time
         while(true){
-            createNotification(convertTimeFormat(Date().time - start))
+            val diffSec = (Date().time - start) / 1000L
+            createNotification(convertTimeFormat(diffSec))
+            sendBroadCast(diffSec)
             Thread.sleep(250)
         }
     }
@@ -46,8 +48,7 @@ class TimerIntentService : IntentService("TimerIntentService") {
         val goal = now + timeMilli
         while((goal - Date().time) / 1000L > 0){
             val diffSec = (goal - Date().time) / 1000L
-            val countText = convertTimeFormat(diffSec)
-            createNotification(countText)
+            createNotification(convertTimeFormat(diffSec))
             sendBroadCast(diffSec)
             Thread.sleep(250)
         }

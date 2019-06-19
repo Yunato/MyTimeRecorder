@@ -26,6 +26,11 @@ class MainFragment : Fragment() {
                 startActivity( it )
             }
         }
+        card_easy_mode_floated.setOnClickListener{
+            TimerActivity.intent(activity as Context, TimerActivity.EXTRA_MODE_EASY_FLOATED).let{
+                startActivity( it )
+            }
+        }
         card_normal_mode.setOnClickListener{
             TimerActivity.intent(activity as Context, TimerActivity.EXTRA_MODE_NORMAL).let{
                 startActivity( it )

@@ -17,7 +17,8 @@ class TimerActivity : AppCompatActivity() {
         val mode = intent.getIntExtra(EXTRA_MODE, 0)
         if(mode == 0) finish()
         val fragment: Fragment = when(mode){
-            EXTRA_MODE_EASY_FIXED -> EasyModeFragment.newInstance()
+            EXTRA_MODE_EASY_FIXED -> EasyModeFragment.newInstance(EasyModeFragment.MODE_FIXED)
+            EXTRA_MODE_EASY_FLOATED -> EasyModeFragment.newInstance(EasyModeFragment.MODE_FLOATED)
             EXTRA_MODE_NORMAL -> NormalModeFragment.newInstance()
             else -> throw IllegalStateException("Mode is not correct")
         }
@@ -30,17 +31,18 @@ class TimerActivity : AppCompatActivity() {
         val decor: android.view.View = window.decorView
         decor.systemUiVisibility =
             android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                    android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-                    android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                    android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
-                    android.view.View.SYSTEM_UI_FLAG_FULLSCREEN or
-                    android.view.View.SYSTEM_UI_FLAG_LOW_PROFILE or
-                    android.view.View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+            android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+            android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+            android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+            android.view.View.SYSTEM_UI_FLAG_FULLSCREEN or
+            android.view.View.SYSTEM_UI_FLAG_LOW_PROFILE or
+            android.view.View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
     }
 
     companion object {
         @JvmStatic val EXTRA_MODE = "io.github.yunato.myrecordtimer.ui.activity.EXTRA_TYPE"
         @JvmStatic val EXTRA_MODE_EASY_FIXED = 1
+        @JvmStatic val EXTRA_MODE_EASY_FLOATED = 2
         @JvmStatic val EXTRA_MODE_NORMAL = 3
 
         fun intent(context: Context, mode: Int): Intent {
