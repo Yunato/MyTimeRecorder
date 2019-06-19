@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -46,6 +47,7 @@ class EasyModeFragment : Fragment(), TimePickerFragment.OnSetTimeListener {
         if(mode == MODE_FLOATED){
             val picker = TimePickerFragment.newInstance(this)
             picker.setParams(0, 0, 30)
+            picker.setStyle(DialogFragment.STYLE_NO_TITLE, 0)
             picker.show(fragmentManager, "time_picker")
         }
     }
