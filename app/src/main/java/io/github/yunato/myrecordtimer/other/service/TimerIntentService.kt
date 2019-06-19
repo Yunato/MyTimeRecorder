@@ -13,8 +13,7 @@ import java.util.*
 private const val ACTION_COUNT_UP = "io.github.yunato.myrecordtimer.other.service.action.COUNT_UP"
 private const val ACTION_COUNT_DOWN = "io.github.yunato.myrecordtimer.other.service.action.COUNT_DOWN"
 
-private const val EXTRA_PARAM1 = "io.github.yunato.myrecordtimer.other.service.extra.PARAM1"
-private const val EXTRA_PARAM2 = "io.github.yunato.myrecordtimer.other.service.extra.PARAM2"
+private const val EXTRA_START_TIME = "io.github.yunato.myrecordtimer.other.service.extra.START_TIME"
 
 private const val CHANNEL_ID = "io.github.yunato.myrecordtimer.other.service.extra.CHANNEL"
 private const val NOTIFICATION_ID = 1
@@ -24,19 +23,16 @@ class TimerIntentService : IntentService("TimerIntentService") {
     override fun onHandleIntent(intent: Intent?) {
         when (intent?.action) {
             ACTION_COUNT_UP -> {
-                val param1 = intent.getStringExtra(EXTRA_PARAM1)
-                val param2 = intent.getStringExtra(EXTRA_PARAM2)
-                handleActionCountUp(param1, param2)
+                handleActionCountUp()
             }
             ACTION_COUNT_DOWN -> {
-                val param1 = intent.getStringExtra(EXTRA_PARAM1)
-                val param2 = intent.getStringExtra(EXTRA_PARAM2)
-                handleActionCountDown(param1, param2)
+                val timeSec = intent.getLongExtra(EXTRA_START_TIME, 0)
+                handleActionCountDown(timeSec)
             }
         }
     }
 
-    private fun handleActionCountUp(param1: String, param2: String) {
+    private fun handleActionCountUp() {
         val start = Date().time
         while(true){
             createNotification(convertTimeFormat(Date().time - start))
@@ -44,16 +40,15 @@ class TimerIntentService : IntentService("TimerIntentService") {
         }
     }
 
-    private fun handleActionCountDown(param1: String, param2: String) {
-        val sec = 3 * 60L
-        val time = (sec + 1L) * 1000L - 1L
+    private fun handleActionCountDown(timeSec: Long) {
+        val timeMilli = (timeSec + 1L) * 1000L - 1L
         val now = Date().time
-        val goal = now + time
+        val goal = now + timeMilli
         while((goal - Date().time) / 1000L > 0){
-            val diff = (goal - Date().time) / 1000L
-            val countText = convertTimeFormat(diff)
+            val diffSec = (goal - Date().time) / 1000L
+            val countText = convertTimeFormat(diffSec)
             createNotification(countText)
-            sendBroadCast(diff)
+            sendBroadCast(diffSec)
             Thread.sleep(250)
         }
         sendBroadCast(0L)
@@ -72,10 +67,10 @@ class TimerIntentService : IntentService("TimerIntentService") {
         startForeground(NOTIFICATION_ID, notification)
     }
 
-    private fun convertTimeFormat(time: Long): String {
-        val sec = time % 60
-        val min = (time / 60) % 60
-        val hr = time / 60 / 60
+    private fun convertTimeFormat(timeSec: Long): String {
+        val sec = timeSec % 60
+        val min = (timeSec / 60) % 60
+        val hr = timeSec / 60 / 60
         return String.format("%02d:%02d:%02d", hr, min, sec)
     }
 
@@ -88,20 +83,17 @@ class TimerIntentService : IntentService("TimerIntentService") {
 
     companion object {
         @JvmStatic
-        fun startActionCountUp(context: Context, param1: String, param2: String): Intent {
+        fun startActionCountUp(context: Context): Intent {
             return Intent(context, TimerIntentService::class.java).apply {
                 action = ACTION_COUNT_UP
-                putExtra(EXTRA_PARAM1, param1)
-                putExtra(EXTRA_PARAM2, param2)
             }
         }
 
         @JvmStatic
-        fun startActionCountDown(context: Context, param1: String, param2: String): Intent {
+        fun startActionCountDown(context: Context, timeSec: Long): Intent {
             return Intent(context, TimerIntentService::class.java).apply {
                 action = ACTION_COUNT_DOWN
-                putExtra(EXTRA_PARAM1, param1)
-                putExtra(EXTRA_PARAM2, param2)
+                putExtra(EXTRA_START_TIME, timeSec)
             }
         }
     }
