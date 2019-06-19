@@ -14,13 +14,24 @@ import android.view.ViewGroup
 import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.other.broadcastreceiver.TimerReceiver
 import io.github.yunato.myrecordtimer.other.service.TimerIntentService
+import io.github.yunato.myrecordtimer.ui.dialog.TimePickerFragment
 import kotlinx.android.synthetic.main.fragment_easy_mode.*
 
-class EasyModeFragment : Fragment() {
+class EasyModeFragment : Fragment(), TimePickerFragment.OnSetTimeListener {
 
-    override fun onCreateView( inflater: LayoutInflater,
-                               container: ViewGroup?,
-                               savedInstanceState: Bundle?): View? {
+    private var mode: Int = -1
+    private var startSec: Long = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let{
+            mode = it.getInt(ARG_MODE)
+        }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater,
+                              container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
         setReceiver()
         return inflater.inflate(R.layout.fragment_easy_mode, container, false)
     }
@@ -31,6 +42,12 @@ class EasyModeFragment : Fragment() {
         button_start_end.setOnClickListener{
             if(intent == null) startService()
         }
+
+        if(mode == MODE_FLOATED){
+            val picker = TimePickerFragment.newInstance(this)
+            picker.setParams(0, 0, 30)
+            picker.show(fragmentManager, "time_picker")
+        }
     }
 
     override fun onDestroy() {
@@ -39,7 +56,7 @@ class EasyModeFragment : Fragment() {
     }
 
     private fun startService(){
-        intent = TimerIntentService.startActionCountDown(activity as Context, "hoge", "fuga")
+        intent = TimerIntentService.startActionCountDown(activity as Context, startSec)
         intent.let { activity?.startService(it) }
     }
 
@@ -74,11 +91,25 @@ class EasyModeFragment : Fragment() {
         textView_time.text = String.format("%02d:%02d:%02d", hr, min, sec)
     }
 
+    override fun onSetTime(hr: Int, min: Int, sec: Int) {
+        setCountText(hr.toLong(), min.toLong(), sec.toLong())
+        startSec = hr * 60L * 60L + min * 60L + sec
+    }
+
     companion object {
         @JvmStatic private var intent: Intent? = null
         @JvmStatic private var timerReceiver: TimerReceiver = TimerReceiver()
+        @JvmStatic private val ARG_MODE = "io.github.yunato.myrecordtimer.ui.fragment.ARG_MODE"
+        @JvmStatic val MODE_FIXED: Int = 0
+        @JvmStatic val MODE_FLOATED: Int = 0
 
         @JvmStatic
-        fun newInstance() = EasyModeFragment()
+        fun newInstance(mode: Int): EasyModeFragment {
+            return EasyModeFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(ARG_MODE, mode)
+                }
+            }
+        }
     }
 }
