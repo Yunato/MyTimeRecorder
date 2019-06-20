@@ -21,6 +21,7 @@ private const val NOTIFICATION_ID = 1
 class TimerIntentService : IntentService("TimerIntentService") {
 
     override fun onHandleIntent(intent: Intent?) {
+        isContinue = true
         when (intent?.action) {
             ACTION_COUNT_UP -> {
                 handleActionCountUp()
@@ -39,6 +40,10 @@ class TimerIntentService : IntentService("TimerIntentService") {
             createNotification(convertTimeFormat(diffSec))
             sendBroadCast(diffSec)
             Thread.sleep(250)
+            if(!isContinue){
+                stopSelf()
+                return
+            }
         }
     }
 
@@ -51,6 +56,10 @@ class TimerIntentService : IntentService("TimerIntentService") {
             createNotification(convertTimeFormat(diffSec))
             sendBroadCast(diffSec)
             Thread.sleep(250)
+            if(!isContinue){
+                stopSelf()
+                return
+            }
         }
         sendBroadCast(0L)
     }
@@ -83,6 +92,8 @@ class TimerIntentService : IntentService("TimerIntentService") {
     }
 
     companion object {
+        @JvmStatic var isContinue: Boolean = true
+
         @JvmStatic
         fun startActionCountUp(context: Context): Intent {
             return Intent(context, TimerIntentService::class.java).apply {

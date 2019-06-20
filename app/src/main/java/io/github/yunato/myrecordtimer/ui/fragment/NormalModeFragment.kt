@@ -35,12 +35,17 @@ class NormalModeFragment : Fragment() {
                 startService()
                 isFirstTime = false
                 button_start_end.setText(R.string.button_finish)
+            }else{
+                // TODO: Record
+                TimerIntentService.isContinue = false
+                activity?.finish()
             }
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        intent = null
         activity?.unregisterReceiver(timerReceiver)
     }
 
@@ -68,11 +73,6 @@ class NormalModeFragment : Fragment() {
             val min = (time / 60) % 60
             val hr = time / 60 / 60
             setCountText(hr.toInt(), min.toInt(), sec.toInt())
-
-            if(time == 0L) {
-                intent?.let { activity?.stopService(it) }
-                intent = null
-            }
         }
     }
 
