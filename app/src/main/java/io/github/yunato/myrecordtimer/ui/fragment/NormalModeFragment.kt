@@ -24,7 +24,7 @@ class NormalModeFragment : Fragment() {
                                container: ViewGroup?,
                                savedInstanceState: Bundle?): View? {
         setReceiver()
-        return inflater.inflate(R.layout.fragment_easy_mode, container, false)
+        return inflater.inflate(R.layout.fragment_normal_mode, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,7 +59,7 @@ class NormalModeFragment : Fragment() {
         val intentFilter = IntentFilter()
         intentFilter.addAction(TimerReceiver.ACTION_UPDATE)
         activity?.registerReceiver(timerReceiver, intentFilter)
-        NormalModeFragment.timerReceiver.registerHandler(updateHandler)
+        timerReceiver.registerHandler(updateHandler)
     }
 
     private val updateHandler = @SuppressLint("HandlerLeak")
