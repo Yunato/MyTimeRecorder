@@ -19,7 +19,10 @@ import android.view.ViewGroup
 import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.other.broadcastreceiver.TimerReceiver
 import io.github.yunato.myrecordtimer.other.service.TimerIntentService
+import io.github.yunato.myrecordtimer.other.timer.MyCountDownTimer
 import kotlinx.android.synthetic.main.fragment_hard_mode.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class HardModeFragment : Fragment(), SensorEventListener {
 
@@ -37,6 +40,7 @@ class HardModeFragment : Fragment(), SensorEventListener {
     private var isClearGravCond: Boolean = false
     private var isClearProxCond: Boolean = false
     private var isRunning: Boolean = false
+    private var timer: MyCountDownTimer? = null
 
     override fun onCreateView( inflater: LayoutInflater,
                                container: ViewGroup?,
@@ -82,12 +86,31 @@ class HardModeFragment : Fragment(), SensorEventListener {
                     startService()
                     wakeLock.acquire()
                     isRunning = true
+                    timer?.cancel()
                 }
             }else{
                 if(!isClearGravCond) {
                     TimerIntentService.isContinue = false
                     wakeLock.release()
                     isRunning = false
+
+                    val millisInFuture = 5 * 1000L
+                    val interval = 200L
+                    timer?.cancel()
+                    timer = MyCountDownTimer(millisInFuture, interval)
+                    timer?.setOnProgressListener(object: MyCountDownTimer.OnProgressListener{
+                        override fun onProgress(time: Long) {
+                            time_view_status.text = String.format("%s%s",
+                                SimpleDateFormat("s", Locale.JAPAN).format(time + 999L),
+                                resources.getString(R.string.text_view_hard_mode_stop))
+                            if(time == 0L){
+                                intent = null
+                                TimerIntentService.isContinue = false
+                                activity?.finish()
+                            }
+                        }
+                    })
+                    timer?.start()
                 }
             }
         }

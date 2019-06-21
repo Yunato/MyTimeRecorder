@@ -48,6 +48,7 @@ class EasyModeFragment : Fragment(), TimePickerFragment.OnSetTimeListener {
                 button_start_end.setText(R.string.button_finish)
             }else{
                 // TODO: Record
+                intent = null
                 TimerIntentService.isContinue = false
                 activity?.finish()
             }
@@ -60,9 +61,9 @@ class EasyModeFragment : Fragment(), TimePickerFragment.OnSetTimeListener {
             picker.show(fragmentManager, "time_picker")
         }else{
             // TODO: get param from preference
-            val hr: Int = 0
-            val min: Int = 5
-            val sec: Int = 0
+            val hr = 0
+            val min = 5
+            val sec = 0
             setCountText(hr, min, sec)
             startSec = hr * 60L * 60L + min * 60L + sec
         }
@@ -99,7 +100,11 @@ class EasyModeFragment : Fragment(), TimePickerFragment.OnSetTimeListener {
             val hr = time / 60 / 60
             setCountText(hr.toInt(), min.toInt(), sec.toInt())
 
-            if(time == 0L) intent = null
+            if(time == 0L){
+                intent = null
+                TimerIntentService.isContinue = false
+                activity?.finish()
+            }
         }
     }
 

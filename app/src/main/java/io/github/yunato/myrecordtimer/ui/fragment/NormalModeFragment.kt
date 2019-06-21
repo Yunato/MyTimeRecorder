@@ -37,6 +37,7 @@ class NormalModeFragment : Fragment() {
                 button_start_end.setText(R.string.button_finish)
             }else{
                 // TODO: Record
+                intent = null
                 TimerIntentService.isContinue = false
                 activity?.finish()
             }
