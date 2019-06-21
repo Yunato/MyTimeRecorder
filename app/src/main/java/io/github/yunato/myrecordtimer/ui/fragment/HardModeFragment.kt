@@ -4,10 +4,15 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,8 +21,11 @@ import io.github.yunato.myrecordtimer.other.broadcastreceiver.TimerReceiver
 import io.github.yunato.myrecordtimer.other.service.TimerIntentService
 import kotlinx.android.synthetic.main.fragment_hard_mode.*
 
-class HardModeFragment : Fragment() {
+class HardModeFragment : Fragment(), SensorEventListener {
 
+    private val manager: SensorManager by lazy{
+        activity?.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+    }
     private var isFirstTime : Boolean = true
 
     override fun onCreateView( inflater: LayoutInflater,
@@ -31,10 +39,31 @@ class HardModeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        val sensors = manager.getSensorList(Sensor.TYPE_GRAVITY)
+        if(sensors.size > 0){
+            val sensor = sensors[0]
+            manager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         intent = null
         activity?.unregisterReceiver(timerReceiver)
+        manager.unregisterListener(this)
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        event?.let{
+            if(it.sensor?.type == Sensor.TYPE_GRAVITY && it.values[2] < -9.75){
+                Log.d("TEST", "${it.values[0]} ${it.values[1]} ${it.values[2]}")
+            }
+        }
     }
 
     private fun startService(){
