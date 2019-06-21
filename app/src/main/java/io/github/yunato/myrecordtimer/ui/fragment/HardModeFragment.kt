@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +25,10 @@ class HardModeFragment : Fragment(), SensorEventListener {
     private val manager: SensorManager by lazy{
         activity?.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     }
-    private var isFirstTime : Boolean = true
+    private var isRegisteredSensor: Boolean = false
+    private var isClearGravCond: Boolean = false
+    private var isClearProxCond: Boolean = false
+    private var isFirstTime: Boolean = true
 
     override fun onCreateView( inflater: LayoutInflater,
                                container: ViewGroup?,
@@ -42,10 +44,13 @@ class HardModeFragment : Fragment(), SensorEventListener {
     override fun onResume() {
         super.onResume()
 
-        val sensors = manager.getSensorList(Sensor.TYPE_GRAVITY)
-        if(sensors.size > 0){
-            val sensor = sensors[0]
-            manager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
+        isRegisteredSensor = false
+        val sensorLists = mutableListOf(manager.getSensorList(Sensor.TYPE_GRAVITY), manager.getSensorList(Sensor.TYPE_PROXIMITY))
+        for(sensorList in sensorLists){
+            if(sensorList.size > 0){
+                val sensor = sensorList[0]
+                isRegisteredSensor = manager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
+            }
         }
     }
 
@@ -53,15 +58,26 @@ class HardModeFragment : Fragment(), SensorEventListener {
         super.onDestroy()
         intent = null
         activity?.unregisterReceiver(timerReceiver)
-        manager.unregisterListener(this)
+        if(isRegisteredSensor){
+            manager.unregisterListener(this)
+            isRegisteredSensor = false
+        }
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
 
     override fun onSensorChanged(event: SensorEvent?) {
         event?.let{
-            if(it.sensor?.type == Sensor.TYPE_GRAVITY && it.values[2] < -9.75){
-                Log.d("TEST", "${it.values[0]} ${it.values[1]} ${it.values[2]}")
+            if(it.sensor?.type == Sensor.TYPE_GRAVITY){
+                isClearGravCond = it.values[2] < -9.75
+            }else if(it.sensor?.type == Sensor.TYPE_PROXIMITY){
+                isClearProxCond = it.values[0] < 1.0
+            }
+            if(isClearGravCond && isClearProxCond && isFirstTime) {
+                startService()
+                isFirstTime = false
+            }else if(!isClearGravCond && !isFirstTime){
+                TimerIntentService.isContinue = false
             }
         }
     }
