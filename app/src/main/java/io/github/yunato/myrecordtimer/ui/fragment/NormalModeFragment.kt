@@ -50,7 +50,7 @@ class NormalModeFragment : Fragment() {
     }
 
     private fun startService(){
-        intent = TimerIntentService.startActionCountUp(activity as Context)
+        intent = TimerIntentService.startActionCountUp(activity as Context, 0L)
         intent.let { activity?.startService(it) }
     }
 
@@ -67,7 +67,7 @@ class NormalModeFragment : Fragment() {
         override fun handleMessage(msg: Message?) {
             if(msg == null) return
             val bundle = msg.data
-            val time = bundle.getLong(TimerReceiver.KEY_TIME_SEC)
+            val time = bundle.getLong(TimerReceiver.KEY_TIME_SEC) / 1000L
 
             val sec = time % 60
             val min = (time / 60) % 60

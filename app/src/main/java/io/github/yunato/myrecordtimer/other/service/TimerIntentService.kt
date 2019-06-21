@@ -22,22 +22,24 @@ class TimerIntentService : IntentService("TimerIntentService") {
 
     override fun onHandleIntent(intent: Intent?) {
         isContinue = true
-        when (intent?.action) {
-            ACTION_COUNT_UP -> {
-                handleActionCountUp()
-            }
-            ACTION_COUNT_DOWN -> {
-                val timeSec = intent.getLongExtra(EXTRA_START_TIME, 0)
-                handleActionCountDown(timeSec)
+        intent?.let{
+            val timeSec = it.getLongExtra(EXTRA_START_TIME, 0)
+            when (it.action) {
+                ACTION_COUNT_UP -> {
+                    handleActionCountUp(timeSec)
+                }
+                ACTION_COUNT_DOWN -> {
+                    handleActionCountDown(timeSec)
+                }
             }
         }
     }
 
-    private fun handleActionCountUp() {
-        val start = Date().time
+    private fun handleActionCountUp(timeSec: Long) {
+        val start = Date().time - timeSec
         while(true){
-            val diffSec = (Date().time - start) / 1000L
-            createNotification(convertTimeFormat(diffSec))
+            val diffSec = (Date().time - start)
+            createNotification(convertTimeFormat(diffSec / 1000L))
             sendBroadCast(diffSec)
             Thread.sleep(250)
             if(!isContinue){
@@ -95,9 +97,10 @@ class TimerIntentService : IntentService("TimerIntentService") {
         @JvmStatic var isContinue: Boolean = true
 
         @JvmStatic
-        fun startActionCountUp(context: Context): Intent {
+        fun startActionCountUp(context: Context, timeSec: Long): Intent {
             return Intent(context, TimerIntentService::class.java).apply {
                 action = ACTION_COUNT_UP
+                putExtra(EXTRA_START_TIME, timeSec)
             }
         }
 

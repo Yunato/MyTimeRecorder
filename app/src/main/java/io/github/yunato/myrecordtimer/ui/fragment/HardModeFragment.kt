@@ -25,6 +25,7 @@ class HardModeFragment : Fragment(), SensorEventListener {
     private val manager: SensorManager by lazy{
         activity?.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     }
+    private var startSec: Long = 0L
     private var isRegisteredSensor: Boolean = false
     private var isClearGravCond: Boolean = false
     private var isClearProxCond: Boolean = false
@@ -73,7 +74,7 @@ class HardModeFragment : Fragment(), SensorEventListener {
             }else if(it.sensor?.type == Sensor.TYPE_PROXIMITY){
                 isClearProxCond = it.values[0] < 1.0
             }
-            if(isClearGravCond && isClearProxCond && isFirstTime) {
+            if((isFirstTime && isClearGravCond && isClearProxCond) || (!isFirstTime && isClearGravCond)) {
                 startService()
                 isFirstTime = false
             }else if(!isClearGravCond && !isFirstTime){
@@ -83,7 +84,7 @@ class HardModeFragment : Fragment(), SensorEventListener {
     }
 
     private fun startService(){
-        intent = TimerIntentService.startActionCountUp(activity as Context)
+        intent = TimerIntentService.startActionCountUp(activity as Context, startSec)
         intent.let { activity?.startService(it) }
     }
 
@@ -100,7 +101,8 @@ class HardModeFragment : Fragment(), SensorEventListener {
         override fun handleMessage(msg: Message?) {
             if(msg == null) return
             val bundle = msg.data
-            val time = bundle.getLong(TimerReceiver.KEY_TIME_SEC)
+            startSec = bundle.getLong(TimerReceiver.KEY_TIME_SEC)
+            val time = startSec / 1000L
 
             val sec = time % 60
             val min = (time / 60) % 60
