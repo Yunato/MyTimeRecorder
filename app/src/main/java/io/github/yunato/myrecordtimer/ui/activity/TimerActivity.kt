@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.ui.fragment.EasyModeFragment
+import io.github.yunato.myrecordtimer.ui.fragment.HardModeFragment
 import io.github.yunato.myrecordtimer.ui.fragment.NormalModeFragment
 
 class TimerActivity : AppCompatActivity() {
@@ -20,6 +21,7 @@ class TimerActivity : AppCompatActivity() {
             EXTRA_MODE_EASY_FIXED -> EasyModeFragment.newInstance(EasyModeFragment.MODE_FIXED)
             EXTRA_MODE_EASY_FLOATED -> EasyModeFragment.newInstance(EasyModeFragment.MODE_FLOATED)
             EXTRA_MODE_NORMAL -> NormalModeFragment.newInstance()
+            EXTRA_MODE_HARD -> HardModeFragment.newInstance()
             else -> throw IllegalStateException("Mode is not correct")
         }
         supportFragmentManager.beginTransaction().replace(R.id.content, fragment).commit()
@@ -44,6 +46,7 @@ class TimerActivity : AppCompatActivity() {
         @JvmStatic val EXTRA_MODE_EASY_FIXED = 1
         @JvmStatic val EXTRA_MODE_EASY_FLOATED = 2
         @JvmStatic val EXTRA_MODE_NORMAL = 3
+        @JvmStatic val EXTRA_MODE_HARD = 4
 
         fun intent(context: Context, mode: Int): Intent {
             return Intent(context, TimerActivity::class.java).apply{
