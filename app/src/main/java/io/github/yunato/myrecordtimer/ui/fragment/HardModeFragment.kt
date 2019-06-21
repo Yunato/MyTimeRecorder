@@ -1,30 +1,19 @@
 package io.github.yunato.myrecordtimer.ui.fragment
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.os.Bundle
-import android.os.Handler
-import android.os.Message
 import android.os.PowerManager
-import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import io.github.yunato.myrecordtimer.R
-import io.github.yunato.myrecordtimer.other.broadcastreceiver.TimerReceiver
 import io.github.yunato.myrecordtimer.other.service.TimerIntentService
 import io.github.yunato.myrecordtimer.other.timer.MyCountDownTimer
 import kotlinx.android.synthetic.main.fragment_hard_mode.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class HardModeFragment : Fragment(), SensorEventListener {
+class HardModeFragment : ModeFragment(), SensorEventListener {
 
     private val manager: SensorManager by lazy{
         activity?.getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -35,19 +24,12 @@ class HardModeFragment : Fragment(), SensorEventListener {
     private val wakeLock: PowerManager.WakeLock by lazy{
         powerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "myrecordtimer:mytag")
     }
-    private var startSec: Long = 0L
     private var isRegisteredSensor: Boolean = false
     private var isClearGravCond: Boolean = false
     private var isClearProxCond: Boolean = false
     private var isRunning: Boolean = false
     private var timer: MyCountDownTimer? = null
-
-    override fun onCreateView( inflater: LayoutInflater,
-                               container: ViewGroup?,
-                               savedInstanceState: Bundle?): View? {
-        setReceiver()
-        return inflater.inflate(R.layout.fragment_hard_mode, container, false)
-    }
+    override val resource: Int = R.layout.fragment_hard_mode
 
     override fun onResume() {
         super.onResume()
@@ -64,8 +46,6 @@ class HardModeFragment : Fragment(), SensorEventListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        intent = null
-        activity?.unregisterReceiver(timerReceiver)
         if(isRegisteredSensor){
             manager.unregisterListener(this)
             isRegisteredSensor = false
@@ -83,7 +63,7 @@ class HardModeFragment : Fragment(), SensorEventListener {
             }
             if(!isRunning){
                 if(isClearGravCond && isClearProxCond) {
-                    startService()
+                    startService(TimerIntentService.startActionCountUp(activity as Context, startSec))
                     wakeLock.acquire()
                     isRunning = true
                     timer?.cancel()
@@ -104,9 +84,7 @@ class HardModeFragment : Fragment(), SensorEventListener {
                                 SimpleDateFormat("s", Locale.JAPAN).format(time + 999L),
                                 resources.getString(R.string.text_view_hard_mode_stop))
                             if(time == 0L){
-                                intent = null
-                                TimerIntentService.isContinue = false
-                                activity?.finish()
+                                stopService()
                             }
                         }
                     })
@@ -116,42 +94,15 @@ class HardModeFragment : Fragment(), SensorEventListener {
         }
     }
 
-    private fun startService(){
-        intent = TimerIntentService.startActionCountUp(activity as Context, startSec)
-        intent.let { activity?.startService(it) }
-    }
-
-    private fun setReceiver(){
-        timerReceiver = TimerReceiver()
-        val intentFilter = IntentFilter()
-        intentFilter.addAction(TimerReceiver.ACTION_UPDATE)
-        activity?.registerReceiver(timerReceiver, intentFilter)
-        timerReceiver.registerHandler(updateHandler)
-    }
-
-    private val updateHandler = @SuppressLint("HandlerLeak")
-    object : Handler() {
-        override fun handleMessage(msg: Message?) {
-            if(msg == null) return
-            val bundle = msg.data
-            startSec = bundle.getLong(TimerReceiver.KEY_TIME_SEC)
-            val time = startSec / 1000L
-
-            val sec = time % 60
-            val min = (time / 60) % 60
-            val hr = time / 60 / 60
-            setCountText(hr.toInt(), min.toInt(), sec.toInt())
-        }
-    }
-
-    private fun setCountText(hr: Int, min: Int, sec: Int){
-        textView_time.text = String.format("%02d:%02d:%02d", hr, min, sec)
+    override fun handleTimeParams(time: Long) {
+        val timeSec = startSec / 1000L
+        val sec = timeSec % 60
+        val min = (timeSec / 60) % 60
+        val hr = timeSec / 60 / 60
+        setCountText(hr.toInt(), min.toInt(), sec.toInt())
     }
 
     companion object {
-        @JvmStatic private var intent: Intent? = null
-        @JvmStatic private var timerReceiver: TimerReceiver = TimerReceiver()
-
         @JvmStatic
         fun newInstance() = HardModeFragment()
     }
