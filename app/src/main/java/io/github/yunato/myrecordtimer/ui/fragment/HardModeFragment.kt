@@ -11,6 +11,7 @@ import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.os.PowerManager
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -25,21 +26,23 @@ class HardModeFragment : Fragment(), SensorEventListener {
     private val manager: SensorManager by lazy{
         activity?.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     }
+    private val powerManager: PowerManager by lazy{
+        activity?.getSystemService(Context.POWER_SERVICE) as PowerManager
+    }
+    private val wakeLock: PowerManager.WakeLock by lazy{
+        powerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "myrecordtimer:mytag")
+    }
     private var startSec: Long = 0L
     private var isRegisteredSensor: Boolean = false
     private var isClearGravCond: Boolean = false
     private var isClearProxCond: Boolean = false
-    private var isFirstTime: Boolean = true
+    private var isRunning: Boolean = false
 
     override fun onCreateView( inflater: LayoutInflater,
                                container: ViewGroup?,
                                savedInstanceState: Bundle?): View? {
         setReceiver()
         return inflater.inflate(R.layout.fragment_hard_mode, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onResume() {
@@ -74,11 +77,18 @@ class HardModeFragment : Fragment(), SensorEventListener {
             }else if(it.sensor?.type == Sensor.TYPE_PROXIMITY){
                 isClearProxCond = it.values[0] < 1.0
             }
-            if((isFirstTime && isClearGravCond && isClearProxCond) || (!isFirstTime && isClearGravCond)) {
-                startService()
-                isFirstTime = false
-            }else if(!isClearGravCond && !isFirstTime){
-                TimerIntentService.isContinue = false
+            if(!isRunning){
+                if(isClearGravCond && isClearProxCond) {
+                    startService()
+                    wakeLock.acquire()
+                    isRunning = true
+                }
+            }else{
+                if(!isClearGravCond) {
+                    TimerIntentService.isContinue = false
+                    wakeLock.release()
+                    isRunning = false
+                }
             }
         }
     }
