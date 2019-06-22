@@ -1,10 +1,13 @@
 package io.github.yunato.myrecordtimer.ui.activity
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
 import android.view.MenuItem
-import android.widget.Toolbar
 import io.github.yunato.myrecordtimer.R
+import io.github.yunato.myrecordtimer.model.entity.Record
 import kotlinx.android.synthetic.main.activity_edit_record.*
 
 class EditRecordActivity : AppCompatActivity() {
@@ -13,7 +16,7 @@ class EditRecordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_record)
 
-        setActionBar(toolbar as Toolbar)
+        setSupportActionBar(toolbar as Toolbar)
         if(supportActionBar != null){
             supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close_black_24dp)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -24,5 +27,15 @@ class EditRecordActivity : AppCompatActivity() {
         val id = item?.itemId
         if(id == android.R.id.home) finish()
         return super.onOptionsItemSelected(item)
+    }
+
+    companion object {
+        @JvmStatic val EXTRA_RECORD: String = "io.github.yunato.myrecordtimer.ui.activity.EXTRA_RECORD"
+
+        fun intent(context: Context, record: Record): Intent {
+            return Intent(context, EditRecordActivity::class.java).apply{
+                putExtra(EXTRA_RECORD, record)
+            }
+        }
     }
 }
