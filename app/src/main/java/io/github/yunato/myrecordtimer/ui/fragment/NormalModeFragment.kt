@@ -28,7 +28,7 @@ class NormalModeFragment : ModeFragment() {
     }
 
     override fun handleTimeParams(time: Long) {
-        val timeSec = startSec / 1000L
+        val timeSec = time / 1000L
         val sec = timeSec % 60
         val min = (timeSec / 60) % 60
         val hr = timeSec / 60 / 60

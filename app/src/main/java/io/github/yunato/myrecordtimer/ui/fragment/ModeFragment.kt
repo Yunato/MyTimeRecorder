@@ -53,8 +53,7 @@ abstract class ModeFragment : Fragment() {
         override fun handleMessage(msg: Message?) {
             if(msg == null) return
             val bundle = msg.data
-            startSec = bundle.getLong(TimerReceiver.KEY_TIME_SEC)
-            handleTimeParams(startSec)
+            handleTimeParams(bundle.getLong(TimerReceiver.KEY_TIME_SEC))
         }
     }
 

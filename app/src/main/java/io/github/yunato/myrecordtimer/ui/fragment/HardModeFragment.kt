@@ -73,29 +73,32 @@ class HardModeFragment : ModeFragment(), SensorEventListener {
                     TimerIntentService.isContinue = false
                     wakeLock.release()
                     isRunning = false
-
-                    val millisInFuture = 5 * 1000L
-                    val interval = 200L
-                    timer?.cancel()
-                    timer = MyCountDownTimer(millisInFuture, interval)
-                    timer?.setOnProgressListener(object: MyCountDownTimer.OnProgressListener{
-                        override fun onProgress(time: Long) {
-                            time_view_status.text = String.format("%s%s",
-                                SimpleDateFormat("s", Locale.JAPAN).format(time + 999L),
-                                resources.getString(R.string.text_view_hard_mode_stop))
-                            if(time == 0L){
-                                stopService()
-                            }
-                        }
-                    })
-                    timer?.start()
+                    startInterruptionTimer()
                 }
             }
         }
     }
 
+    private fun startInterruptionTimer(){
+        val millisInFuture = 5 * 1000L
+        val interval = 200L
+        timer?.cancel()
+        timer = MyCountDownTimer(millisInFuture, interval)
+        timer?.setOnProgressListener(object: MyCountDownTimer.OnProgressListener{
+            override fun onProgress(time: Long) {
+                time_view_status.text = String.format("%s%s",
+                    SimpleDateFormat("s", Locale.JAPAN).format(time + 999L),
+                    resources.getString(R.string.text_view_hard_mode_stop))
+                if(time == 0L){
+                    stopService()
+                }
+            }
+        })
+        timer?.start()
+    }
+
     override fun handleTimeParams(time: Long) {
-        val timeSec = startSec / 1000L
+        val timeSec = time / 1000L
         val sec = timeSec % 60
         val min = (timeSec / 60) % 60
         val hr = timeSec / 60 / 60
