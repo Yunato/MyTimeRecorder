@@ -24,9 +24,10 @@ class EditRecordActivity : AppCompatActivity() {
         }
 
         val record = intent.getParcelableExtra<Record>(EXTRA_RECORD)
-        val fragment = EditRecordFragment.newInstance(record)
+        val fragment: EditRecordFragment = EditRecordFragment.newInstance(record)
         supportFragmentManager.beginTransaction().replace(R.id.content, fragment).commit()
 
+        save_button.setOnClickListener(fragment.getSaveOnClickListener())
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

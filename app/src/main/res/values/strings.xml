@@ -26,6 +26,8 @@
     <string name='edit_text_memo'>Input the memo</string>
     <string name='image_time'>Time</string>
     <string name='image_memo'>Memo</string>
+    <string name='edit_text_title_no'>(タイトルなし)</string>
+    <string name='edit_text_memo_no'></string>
 
     <string name="title_activity_settings">Settings</string>
 
