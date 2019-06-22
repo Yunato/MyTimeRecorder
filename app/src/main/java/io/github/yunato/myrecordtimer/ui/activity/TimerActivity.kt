@@ -1,11 +1,13 @@
 package io.github.yunato.myrecordtimer.ui.activity
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import io.github.yunato.myrecordtimer.R
+import io.github.yunato.myrecordtimer.other.service.TimerIntentService
 import io.github.yunato.myrecordtimer.ui.fragment.EasyModeFragment
 import io.github.yunato.myrecordtimer.ui.fragment.HardModeFragment
 import io.github.yunato.myrecordtimer.ui.fragment.NormalModeFragment
@@ -39,6 +41,13 @@ class TimerActivity : AppCompatActivity() {
             android.view.View.SYSTEM_UI_FLAG_FULLSCREEN or
             android.view.View.SYSTEM_UI_FLAG_LOW_PROFILE or
             android.view.View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        TimerIntentService.isContinue = false
+        setResult(Activity.RESULT_CANCELED)
+        finish()
     }
 
     companion object {
