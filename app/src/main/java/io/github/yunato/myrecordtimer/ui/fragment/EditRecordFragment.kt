@@ -6,16 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.github.yunato.myrecordtimer.R
+import io.github.yunato.myrecordtimer.model.entity.Record
 
-private const val ARG_PARAM1 = "param1"
+private const val ARG_RECORD = "param1"
 
 class EditRecordFragment : Fragment() {
-    private var param1: String? = null
+    private var record: Record? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
+            record = it.getParcelable(ARG_RECORD)
         }
     }
 
@@ -27,10 +28,10 @@ class EditRecordFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(param1: String) =
+        fun newInstance(record: Record) =
             EditRecordFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
+                    putParcelable(ARG_RECORD, record)
                 }
             }
     }

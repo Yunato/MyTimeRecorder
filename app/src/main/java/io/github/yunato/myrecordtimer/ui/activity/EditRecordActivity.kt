@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.model.entity.Record
+import io.github.yunato.myrecordtimer.ui.fragment.EditRecordFragment
 import kotlinx.android.synthetic.main.activity_edit_record.*
 
 class EditRecordActivity : AppCompatActivity() {
@@ -21,6 +22,11 @@ class EditRecordActivity : AppCompatActivity() {
             supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close_black_24dp)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
+
+        val record = intent.getParcelableExtra<Record>(EXTRA_RECORD)
+        val fragment = EditRecordFragment.newInstance(record)
+        supportFragmentManager.beginTransaction().replace(R.id.content, fragment).commit()
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
