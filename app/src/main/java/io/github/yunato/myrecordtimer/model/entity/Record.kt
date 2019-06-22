@@ -3,10 +3,10 @@ package io.github.yunato.myrecordtimer.model.entity
 import android.os.Parcel
 import android.os.Parcelable
 
-data class Record(val id: String,
+data class Record(val id: String?,
                   val start: Long,
                   val end: Long,
-                  val title: String,
+                  val title: String?,
                   val memo: String?,
                   val eval: Int) : Parcelable {
 

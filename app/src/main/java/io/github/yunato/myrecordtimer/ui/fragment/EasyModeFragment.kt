@@ -31,7 +31,6 @@ class EasyModeFragment : ModeFragment(), TimePickerFragment.OnSetTimeListener {
                 isFirstTime = false
                 button_start_end.setText(R.string.button_finish)
             }else{
-                // TODO: Record
                 stopService()
             }
         }
@@ -44,8 +43,8 @@ class EasyModeFragment : ModeFragment(), TimePickerFragment.OnSetTimeListener {
         }else{
             // TODO: get param from preference
             val hr = 0
-            val min = 5
-            val sec = 0
+            val min = 0
+            val sec = 5
             setCountText(hr, min, sec)
             startSec = hr * 60L * 60L + min * 60L + sec
         }

@@ -21,7 +21,6 @@ class NormalModeFragment : ModeFragment() {
                 isFirstTime = false
                 button_start_end.setText(R.string.button_finish)
             }else{
-                // TODO: Record
                 stopService()
             }
         }
