@@ -43,4 +43,5 @@ dependencies {
     implementation('com.google.apis:google-api-services-calendar:v3-rev214-1.22.0') {
         exclude group: 'org.apache.httpcomponents'
     }
+    implementation 'com.stephentuso:welcome:1.4.1'
 }

@@ -20,6 +20,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+        TutorialActivity.showIfNeeded(this, savedInstanceState)
+
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
         )
@@ -31,6 +33,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         onNavigationItemSelected(nav_view.menu.getItem(0))
 
         DaoFactory.getLocalDao(this).createCalendar()
+        //DaoFactory.getRemoteDao(this).createCalendar()
     }
 
     override fun onBackPressed() {
