@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.github.yunato.myrecordtimer.R
+import io.github.yunato.myrecordtimer.model.dao.DaoFactory
 import io.github.yunato.myrecordtimer.model.entity.Record
 import kotlinx.android.synthetic.main.fragment_edit_record.*
 
@@ -46,7 +47,7 @@ class EditRecordFragment : Fragment() {
         val memo = if(edit_text_memo.text.isBlank()) activity?.getString(R.string.edit_text_memo_no)
                         else edit_text_memo.text.toString()
         val addRecord = Record(record.id, record.start, record.end, title ?: "(タイトルなし)", memo ?: "", record.eval)
-        // TODO: Save to Local Calendar
+        DaoFactory.getLocalDao(activity).insertEventItem(mutableListOf(addRecord))
         activity?.setResult(Activity.RESULT_OK)
         activity?.finish()
     }
