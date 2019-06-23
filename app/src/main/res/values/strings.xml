@@ -29,6 +29,8 @@
     <string name='edit_text_title_no'>(タイトルなし)</string>
     <string name='edit_text_memo_no'></string>
 
+    <string name='account_name_local'>local_calendar</string>
+
     <string name="title_activity_settings">Settings</string>
 
     <string name="pref_header_ui">UI</string>
@@ -45,7 +47,6 @@
     <string name="pref_header_time">Time</string>
     <string name="pref_title_time">Time for EasyMode(Fixed)</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="calendar_name">io.github.yunato.myrecordtimer</string>
 
 </resources>
