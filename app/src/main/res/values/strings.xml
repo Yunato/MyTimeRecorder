@@ -30,6 +30,7 @@
     <string name='edit_text_memo_no'></string>
 
     <string name='account_name_local'>local_calendar</string>
+    <string name='time_zone'>Asia/Tokyo</string>
 
     <string name="title_activity_settings">Settings</string>
 
