@@ -15,6 +15,7 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.stephentuso.welcome.WelcomeHelper
 import io.github.yunato.myrecordtimer.model.dao.calendars.DaoFactory
+import io.github.yunato.myrecordtimer.model.dao.sqlite.RecordDBAdapter
 import io.github.yunato.myrecordtimer.model.usecase.AccessRemoteUseCase
 import io.github.yunato.myrecordtimer.other.task.MakeRequestTask
 import io.github.yunato.myrecordtimer.ui.fragment.MainFragment
@@ -99,7 +100,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     acquireGooglePlayServices()
                 } else {
                     mTask = MakeRequestTask(
+                        DaoFactory.getLocalDao(this),
                         DaoFactory.getRemoteDao(this),
+                        RecordDBAdapter(this),
                         object : MakeRequestTask.OnShowErrorDialog{
                             override fun onShowErrorDialog(statusCode: Int) {
                                 showGooglePlayServicesAvailabilityErrorDialog(statusCode)

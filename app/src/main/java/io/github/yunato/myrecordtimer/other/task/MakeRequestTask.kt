@@ -5,22 +5,35 @@ import android.os.AsyncTask
 import android.util.Log
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException
+import io.github.yunato.myrecordtimer.model.dao.calendars.LocalDao
 import io.github.yunato.myrecordtimer.model.dao.calendars.RemoteDao
+import io.github.yunato.myrecordtimer.model.dao.sqlite.RecordDBAdapter
+import io.github.yunato.myrecordtimer.model.entity.OperationRecord
 
-class MakeRequestTask(val dao: RemoteDao, private val errorListener: OnShowErrorDialog,
+class MakeRequestTask(private val localDao: LocalDao,
+                      private val remoteDao: RemoteDao,
+                      private val dbAdapter: RecordDBAdapter,
+                      private val errorListener: OnShowErrorDialog,
                       private val authListener: OnShowAuthDialog) : AsyncTask<Unit, Unit, Unit>() {
-    var mLastError: Exception? = null
+    private var mLastError: Exception? = null
 
     override fun doInBackground(vararg params: Unit?) {
-        dao.setAccountName(null)
+        remoteDao.setAccountName(null)
         while (true) {
             try {
-                dao.createCalendar()
+                remoteDao.createCalendar()
             } catch (e: java.lang.Exception) {
                 mLastError = e
                 cancel(true)
             }
             Log.d("TEST", "OK")
+            dbAdapter.getOperations().apply {
+                for(operationRecord: OperationRecord in this){
+                    val record = localDao.getEventFromId(operationRecord.calendarId)
+                    remoteDao.insertEventItem(listOf(record))
+                    dbAdapter.deleteOperationRecord(operationRecord.id)
+                }
+            }
             Thread.sleep(500)
         }
     }
