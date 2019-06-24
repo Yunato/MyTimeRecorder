@@ -4,23 +4,19 @@ import android.Manifest.permission.GET_ACCOUNTS
 import android.accounts.AccountManager
 import android.app.Activity
 import android.content.Intent
-import android.os.AsyncTask
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.FragmentManager
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.MenuItem
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
-import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException
-import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException
 import com.stephentuso.welcome.WelcomeHelper
 import io.github.yunato.myrecordtimer.model.dao.calendars.DaoFactory
-import io.github.yunato.myrecordtimer.model.dao.calendars.RemoteDao
 import io.github.yunato.myrecordtimer.model.usecase.AccessRemoteUseCase
+import io.github.yunato.myrecordtimer.other.task.MakeRequestTask
 import io.github.yunato.myrecordtimer.ui.fragment.MainFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -189,43 +185,4 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>?) {}
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>?) {}
-
-    class MakeRequestTask(val dao: RemoteDao, val errorListener: OnShowErrorDialog,
-                          val authListener: OnShowAuthDialog) : AsyncTask<Unit, Unit, Unit>() {
-        var mLastError: Exception? = null
-
-        override fun doInBackground(vararg params: Unit?) {
-            dao.setAccountName(null)
-            while (true) {
-                try {
-                    dao.createCalendar()
-                } catch (e: java.lang.Exception) {
-                    mLastError = e
-                    cancel(true)
-                }
-                Log.d("TEST", "OK")
-                Thread.sleep(500)
-            }
-        }
-
-        override fun onCancelled() {
-            if (mLastError == null) return
-
-            if (mLastError is GooglePlayServicesAvailabilityIOException) {
-                val exception = mLastError as GooglePlayServicesAvailabilityIOException?
-                errorListener.onShowErrorDialog(exception?.connectionStatusCode ?: throw IllegalStateException("exception is null"))
-            } else if (mLastError is UserRecoverableAuthIOException) {
-                val exception = mLastError as UserRecoverableAuthIOException?
-                authListener.onShowAuthDialog(exception?.intent ?: throw IllegalStateException("exception is null"))
-            }
-        }
-
-        interface OnShowErrorDialog{
-            fun onShowErrorDialog(statusCode: Int)
-        }
-
-        interface OnShowAuthDialog{
-            fun onShowAuthDialog(intent: Intent)
-        }
-    }
 }
