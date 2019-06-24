@@ -44,7 +44,7 @@ class LocalCalendarDao(context: Context) : CalendarDao(context) {
     fun createCalendar() {
         deleteCalendar()
 
-        val accountName = context.resources.getString(account_name_local)
+        val accountName = context.resources.getString(app_name)
         val cr = context.contentResolver
         var calUri = Calendars.CONTENT_URI
         calUri = calUri.buildUpon()
@@ -80,7 +80,7 @@ class LocalCalendarDao(context: Context) : CalendarDao(context) {
         val cr = context.contentResolver
         val uri = Calendars.CONTENT_URI
         val where = Calendars.NAME + "=?"
-        val accountName = context.resources.getString(account_name_local)
+        val accountName = context.resources.getString(app_name)
         val selectionArgs = arrayOf(context.resources.getString(calendar_name) + "." + accountName)
         try {
             cr.delete(uri, where, selectionArgs)

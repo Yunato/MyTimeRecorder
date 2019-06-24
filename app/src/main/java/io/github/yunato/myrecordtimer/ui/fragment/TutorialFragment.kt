@@ -3,7 +3,6 @@ package io.github.yunato.myrecordtimer.ui.fragment
 import android.Manifest.permission.*
 import android.accounts.AccountManager
 import android.app.Activity.RESULT_OK
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -15,7 +14,6 @@ import android.view.ViewGroup
 import com.stephentuso.welcome.WelcomeFinisher
 import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.model.dao.DaoFactory
-import io.github.yunato.myrecordtimer.model.dao.DaoPreference.Companion.PREF_ACCOUNT_NAME
 import io.github.yunato.myrecordtimer.model.usecase.AccessRemoteUseCase
 import kotlinx.android.synthetic.main.fragment_tutorial.*
 import pub.devrel.easypermissions.AfterPermissionGranted
@@ -74,8 +72,7 @@ class TutorialFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     @AfterPermissionGranted(AccessRemoteUseCase.REQUEST_PERMISSION_GET_ACCOUNTS)
     private fun chooseAccount(){
         if(EasyPermissions.hasPermissions(activity, GET_ACCOUNTS)){
-            val accountName = activity?.getPreferences(Context.MODE_PRIVATE)?.getString(PREF_ACCOUNT_NAME, null)
-            if(accountName != null){
+            if(DaoFactory.getRemoteDao(activity).setAccountName(null)){
                 WelcomeFinisher(this).finish()
             }else{
                 startActivityForResult(DaoFactory.getRemoteDao(activity).getChooseAccountIntent(),
@@ -99,13 +96,8 @@ class TutorialFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         if(requestCode == AccessRemoteUseCase.REQUEST_ACCOUNT_PICKER){
             if(resultCode == RESULT_OK && data != null && data.extras != null){
                 val accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME)
-                accountName.run{
-                    val setting = activity?.getPreferences(Context.MODE_PRIVATE)
-                    val editor = setting?.edit()
-                    editor?.putString(PREF_ACCOUNT_NAME, accountName)
-                    editor?.apply()
-                }
-                WelcomeFinisher(this).finish()
+                DaoFactory.getRemoteDao(activity).setAccountName(accountName)
+                checkGooglePermissions()
             }
         }
     }

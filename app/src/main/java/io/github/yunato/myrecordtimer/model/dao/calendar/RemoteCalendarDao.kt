@@ -94,7 +94,6 @@ class RemoteCalendarDao(context: Context, credential: GoogleAccountCredential) :
                     val description = entry.description
                     Log.d(className + methodName, "$id $name")
                     Log.d(className + methodName, "$role $description")
-                    // TODO: Delete
                 }
                 pageToken = calendarList.nextPageToken
             }
