@@ -2,6 +2,7 @@ package io.github.yunato.myrecordtimer.model.dao
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
+import android.content.Intent
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.google.api.client.util.ExponentialBackOff
 import com.google.api.services.calendar.CalendarScopes
@@ -22,6 +23,8 @@ class RemoteDao private constructor(context: Context) {
     private val eventDao: RemoteEventDao by lazy {
         RemoteEventDao(context, mCredential)
     }
+
+    fun getChooseAccountIntent(): Intent = mCredential.newChooseAccountIntent()
 
     fun createCalendar(){
         if(!calendarDao.checkExistCalendar()) calendarDao.createCalendar()

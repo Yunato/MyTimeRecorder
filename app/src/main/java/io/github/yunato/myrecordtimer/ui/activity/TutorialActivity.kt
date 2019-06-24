@@ -21,7 +21,7 @@ class TutorialActivity : WelcomeActivity() {
             })
             .swipeToDismiss(false)
             .canSkip(false)
-            //.useCustomDoneButton(true)
+            .useCustomDoneButton(true)
             .build()
     }
 

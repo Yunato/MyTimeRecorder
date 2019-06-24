@@ -7,6 +7,9 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
+    <string name="button_done_tutorial">OK</string>
+    <string name="permission_get_account">This app needs to access your Google account (via Contacts).</string>
+
     <string name="card_main_easy_fixed">EasyMode (Fixed)</string>
     <string name="card_main_easy_floated">EasyMode (Floated)</string>
     <string name="card_main_normal">NormalMode</string>
