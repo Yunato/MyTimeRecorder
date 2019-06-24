@@ -18,8 +18,8 @@ import com.google.android.gms.common.GoogleApiAvailability
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException
 import com.stephentuso.welcome.WelcomeHelper
-import io.github.yunato.myrecordtimer.model.dao.DaoFactory
-import io.github.yunato.myrecordtimer.model.dao.RemoteDao
+import io.github.yunato.myrecordtimer.model.dao.calendars.DaoFactory
+import io.github.yunato.myrecordtimer.model.dao.calendars.RemoteDao
 import io.github.yunato.myrecordtimer.model.usecase.AccessRemoteUseCase
 import io.github.yunato.myrecordtimer.ui.fragment.MainFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -102,7 +102,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 if (isGooglePlayServicesUnavailable()) {
                     acquireGooglePlayServices()
                 } else {
-                    mTask = MakeRequestTask(DaoFactory.getRemoteDao(this),
+                    mTask = MakeRequestTask(
+                        DaoFactory.getRemoteDao(this),
                         object : MakeRequestTask.OnShowErrorDialog{
                             override fun onShowErrorDialog(statusCode: Int) {
                                 showGooglePlayServicesAvailabilityErrorDialog(statusCode)

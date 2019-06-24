@@ -1,4 +1,4 @@
-package io.github.yunato.myrecordtimer.model.dao
+package io.github.yunato.myrecordtimer.model.dao.calendars
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
@@ -6,15 +6,17 @@ import android.content.Intent
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.google.api.client.util.ExponentialBackOff
 import com.google.api.services.calendar.CalendarScopes
-import io.github.yunato.myrecordtimer.model.dao.calendar.RemoteCalendarDao
-import io.github.yunato.myrecordtimer.model.dao.event.RemoteEventDao
+import io.github.yunato.myrecordtimer.model.dao.calendars.calendar.RemoteCalendarDao
+import io.github.yunato.myrecordtimer.model.dao.calendars.event.RemoteEventDao
 import io.github.yunato.myrecordtimer.model.entity.Record
 
 class RemoteDao private constructor(val context: Context) {
 
     private val mCredential: GoogleAccountCredential by lazy{
         val pref = context.getSharedPreferences(DaoPreference.IDENTIFIER_PREF, MODE_PRIVATE)
-        GoogleAccountCredential.usingOAuth2(context.applicationContext, SCOPES)
+        GoogleAccountCredential.usingOAuth2(context.applicationContext,
+            SCOPES
+        )
             .setBackOff(ExponentialBackOff()).setSelectedAccountName(pref.getString(DaoPreference.PREF_ACCOUNT_NAME, null))
     }
     private val calendarDao: RemoteCalendarDao by lazy{
@@ -41,7 +43,8 @@ class RemoteDao private constructor(val context: Context) {
     }
 
     fun getAccountName(): String?{
-        return context.getSharedPreferences(DaoPreference.IDENTIFIER_PREF, MODE_PRIVATE)?.getString(DaoPreference.PREF_ACCOUNT_NAME, null)
+        return context.getSharedPreferences(DaoPreference.IDENTIFIER_PREF, MODE_PRIVATE)?.getString(
+            DaoPreference.PREF_ACCOUNT_NAME, null)
     }
 
     fun createCalendar(){
@@ -69,6 +72,9 @@ class RemoteDao private constructor(val context: Context) {
     companion object {
         private val SCOPES = mutableListOf(CalendarScopes.CALENDAR)
 
-        fun getInstance(context: Context?): RemoteDao = RemoteDao(context ?: throw IllegalArgumentException("context is null"))
+        fun getInstance(context: Context?): RemoteDao =
+            RemoteDao(
+                context ?: throw IllegalArgumentException("context is null")
+            )
     }
 }

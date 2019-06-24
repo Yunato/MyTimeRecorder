@@ -1,8 +1,8 @@
-package io.github.yunato.myrecordtimer.model.dao
+package io.github.yunato.myrecordtimer.model.dao.calendars
 
 import android.content.Context
-import io.github.yunato.myrecordtimer.model.dao.calendar.LocalCalendarDao
-import io.github.yunato.myrecordtimer.model.dao.event.LocalEventDao
+import io.github.yunato.myrecordtimer.model.dao.calendars.calendar.LocalCalendarDao
+import io.github.yunato.myrecordtimer.model.dao.calendars.event.LocalEventDao
 import io.github.yunato.myrecordtimer.model.entity.Record
 
 class LocalDao private constructor(context: Context){
@@ -44,8 +44,12 @@ class LocalDao private constructor(context: Context){
     companion object {
         private var instance: LocalDao? = null
 
-        fun getInstance(context: Context?): LocalDao = instance ?: synchronized(this) {
-            instance ?: LocalDao(context ?: throw IllegalArgumentException("context is null"))
+        fun getInstance(context: Context?): LocalDao = instance
+            ?: synchronized(this) {
+            instance
+                ?: LocalDao(
+                    context ?: throw IllegalArgumentException("context is null")
+                )
         }.also { instance = it }
     }
 }

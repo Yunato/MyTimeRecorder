@@ -1,4 +1,4 @@
-package io.github.yunato.myrecordtimer.model.dao.calendar
+package io.github.yunato.myrecordtimer.model.dao.calendars.calendar
 
 import android.content.Context
 import android.util.Log
@@ -9,7 +9,7 @@ import com.google.api.services.calendar.Calendar
 import com.google.api.services.calendar.model.CalendarList
 import io.github.yunato.myrecordtimer.R.string.app_name
 import io.github.yunato.myrecordtimer.R.string.time_zone
-import io.github.yunato.myrecordtimer.model.dao.DaoPreference.Companion.IDENTIFIER_REMOTE_ID
+import io.github.yunato.myrecordtimer.model.dao.calendars.DaoPreference.Companion.IDENTIFIER_REMOTE_ID
 import java.io.IOException
 
 class RemoteCalendarDao(context: Context, credential: GoogleAccountCredential) : CalendarDao(context) {

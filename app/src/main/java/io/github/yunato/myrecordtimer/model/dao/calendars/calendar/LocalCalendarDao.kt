@@ -1,4 +1,4 @@
-package io.github.yunato.myrecordtimer.model.dao.calendar
+package io.github.yunato.myrecordtimer.model.dao.calendars.calendar
 
 import android.content.ContentValues
 import android.content.Context
@@ -7,7 +7,7 @@ import android.provider.CalendarContract
 import android.provider.CalendarContract.Calendars
 import android.util.Log
 import io.github.yunato.myrecordtimer.R.string.*
-import io.github.yunato.myrecordtimer.model.dao.DaoPreference.Companion.IDENTIFIER_LOCAL_ID
+import io.github.yunato.myrecordtimer.model.dao.calendars.DaoPreference.Companion.IDENTIFIER_LOCAL_ID
 
 class LocalCalendarDao(context: Context) : CalendarDao(context) {
 

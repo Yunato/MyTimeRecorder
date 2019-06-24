@@ -13,7 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.stephentuso.welcome.WelcomeFinisher
 import io.github.yunato.myrecordtimer.R
-import io.github.yunato.myrecordtimer.model.dao.DaoFactory
+import io.github.yunato.myrecordtimer.model.dao.calendars.DaoFactory
 import io.github.yunato.myrecordtimer.model.usecase.AccessRemoteUseCase
 import kotlinx.android.synthetic.main.fragment_tutorial.*
 import pub.devrel.easypermissions.AfterPermissionGranted
@@ -75,7 +75,8 @@ class TutorialFragment : Fragment(), EasyPermissions.PermissionCallbacks {
             if(DaoFactory.getRemoteDao(activity).setAccountName(null)){
                 WelcomeFinisher(this).finish()
             }else{
-                startActivityForResult(DaoFactory.getRemoteDao(activity).getChooseAccountIntent(),
+                startActivityForResult(
+                    DaoFactory.getRemoteDao(activity).getChooseAccountIntent(),
                     AccessRemoteUseCase.REQUEST_ACCOUNT_PICKER)
             }
         }else{

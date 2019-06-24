@@ -1,4 +1,4 @@
-package io.github.yunato.myrecordtimer.model.dao.event
+package io.github.yunato.myrecordtimer.model.dao.calendars.event
 
 import android.content.ContentUris
 import android.content.ContentValues
@@ -6,7 +6,7 @@ import android.content.Context
 import android.database.Cursor
 import android.provider.CalendarContract.Events
 import android.util.Log
-import io.github.yunato.myrecordtimer.model.dao.DaoPreference.Companion.IDENTIFIER_LOCAL_ID
+import io.github.yunato.myrecordtimer.model.dao.calendars.DaoPreference.Companion.IDENTIFIER_LOCAL_ID
 import io.github.yunato.myrecordtimer.model.entity.Record
 import java.util.*
 
@@ -21,7 +21,8 @@ class LocalEventDao(context: Context) : EventDao(context) {
                                 sortOrder: String?): Cursor{
         val cr = context.contentResolver
         val uri = Events.CONTENT_URI
-        val projection = EVENTS_PROJECTION
+        val projection =
+            EVENTS_PROJECTION
 
         return try{
             cr.query(uri, projection, selection, selectionArgs, sortOrder)

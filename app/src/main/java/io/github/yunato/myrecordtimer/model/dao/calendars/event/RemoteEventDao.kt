@@ -1,4 +1,4 @@
-package io.github.yunato.myrecordtimer.model.dao.event
+package io.github.yunato.myrecordtimer.model.dao.calendars.event
 
 import android.content.Context
 import android.util.Log
@@ -12,7 +12,7 @@ import com.google.api.services.calendar.model.EventDateTime
 import com.google.api.services.calendar.model.Events
 import io.github.yunato.myrecordtimer.R.string.app_name
 import io.github.yunato.myrecordtimer.R.string.time_zone
-import io.github.yunato.myrecordtimer.model.dao.DaoPreference.Companion.IDENTIFIER_REMOTE_ID
+import io.github.yunato.myrecordtimer.model.dao.calendars.DaoPreference.Companion.IDENTIFIER_REMOTE_ID
 import io.github.yunato.myrecordtimer.model.entity.Record
 import java.io.IOException
 import java.text.SimpleDateFormat

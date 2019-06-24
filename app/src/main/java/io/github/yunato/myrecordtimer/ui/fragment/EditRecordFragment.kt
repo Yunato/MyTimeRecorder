@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.github.yunato.myrecordtimer.R
-import io.github.yunato.myrecordtimer.model.dao.DaoFactory
+import io.github.yunato.myrecordtimer.model.dao.calendars.DaoFactory
 import io.github.yunato.myrecordtimer.model.entity.Record
 import kotlinx.android.synthetic.main.fragment_edit_record.*
 

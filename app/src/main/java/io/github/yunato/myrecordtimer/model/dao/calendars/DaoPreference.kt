@@ -1,4 +1,4 @@
-package io.github.yunato.myrecordtimer.model.dao
+package io.github.yunato.myrecordtimer.model.dao.calendars
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
