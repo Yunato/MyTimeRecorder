@@ -7,6 +7,7 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlaySe
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException
 import io.github.yunato.myrecordtimer.model.dao.calendars.LocalDao
 import io.github.yunato.myrecordtimer.model.dao.calendars.RemoteDao
+import io.github.yunato.myrecordtimer.model.dao.sqlite.DatabaseOpenHelper
 import io.github.yunato.myrecordtimer.model.dao.sqlite.RecordDBAdapter
 import io.github.yunato.myrecordtimer.model.entity.OperationRecord
 
@@ -29,9 +30,16 @@ class MakeRequestTask(private val localDao: LocalDao,
             Log.d("TEST", "OK")
             dbAdapter.getOperations().apply {
                 for(operationRecord: OperationRecord in this){
-                    val record = localDao.getEventFromId(operationRecord.calendarId)
-                    remoteDao.insertEventItem(listOf(record))
-                    dbAdapter.deleteOperationRecord(operationRecord.id)
+                    when(operationRecord.operation){
+                        DatabaseOpenHelper.OPE_ADD -> {
+                            val record = localDao.getEventFromId(operationRecord.calendarId)
+                            remoteDao.insertEventItem(listOf(record))
+                            dbAdapter.deleteOperationRecord(operationRecord.id)
+                        }
+                        DatabaseOpenHelper.OPE_DELETE -> {
+
+                        }
+                    }
                 }
             }
             Thread.sleep(500)
