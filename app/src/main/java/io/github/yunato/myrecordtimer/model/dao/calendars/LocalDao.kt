@@ -1,11 +1,12 @@
 package io.github.yunato.myrecordtimer.model.dao.calendars
 
 import android.content.Context
+import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.model.dao.calendars.calendar.LocalCalendarDao
 import io.github.yunato.myrecordtimer.model.dao.calendars.event.LocalEventDao
 import io.github.yunato.myrecordtimer.model.entity.Record
 
-class LocalDao private constructor(context: Context){
+class LocalDao private constructor(val context: Context){
 
     private val calendarDao: LocalCalendarDao by lazy{
         LocalCalendarDao(context)
@@ -32,6 +33,12 @@ class LocalDao private constructor(context: Context){
         else listOf()
     }
 
+    fun getEventFromId(id: Long): Record{
+        return if(calendarDao.checkExistCalendar()) return eventDao.getEventFromId(id)
+        else Record("", 0, 0, context.resources.getString(R.string.edit_text_title_no),
+            context.resources.getString(R.string.edit_text_memo_no), -1)
+    }
+
     fun insertEventItem(eventItems: List<Record>): List<String>{
         return if(calendarDao.checkExistCalendar()) return eventDao.insertEventItems(eventItems)
         else listOf()
@@ -42,14 +49,6 @@ class LocalDao private constructor(context: Context){
     }
 
     companion object {
-        private var instance: LocalDao? = null
-
-        fun getInstance(context: Context?): LocalDao = instance
-            ?: synchronized(this) {
-            instance
-                ?: LocalDao(
-                    context ?: throw IllegalArgumentException("context is null")
-                )
-        }.also { instance = it }
+        fun getInstance(context: Context?): LocalDao = LocalDao(context ?: throw IllegalArgumentException("context is null"))
     }
 }

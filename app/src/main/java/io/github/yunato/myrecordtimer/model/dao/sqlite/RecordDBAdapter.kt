@@ -28,6 +28,7 @@ class RecordDBAdapter(mContext: Context) {
         db.rawQuery(sql, null).use{
             while (it.moveToNext()) {
                 result.add(OperationRecord(
+                    it.getLong(it.getColumnIndex(DatabaseOpenHelper.FIELD_ID)),
                     it.getInt(it.getColumnIndex(DatabaseOpenHelper.FIELD_OP)),
                     it.getLong(it.getColumnIndex(DatabaseOpenHelper.FIELD_LID))))
             }
@@ -52,6 +53,7 @@ class RecordDBAdapter(mContext: Context) {
         db.rawQuery(sql, null).use{
             while (it.moveToNext()) {
                 result.add(RelationRecord(
+                    it.getLong(it.getColumnIndex(DatabaseOpenHelper.FIELD_ID)),
                     it.getLong(it.getColumnIndex(DatabaseOpenHelper.FIELD_LID)),
                     it.getLong(it.getColumnIndex(DatabaseOpenHelper.FIELD_RID))))
             }

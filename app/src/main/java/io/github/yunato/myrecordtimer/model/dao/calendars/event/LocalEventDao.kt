@@ -6,6 +6,7 @@ import android.content.Context
 import android.database.Cursor
 import android.provider.CalendarContract.Events
 import android.util.Log
+import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.model.dao.calendars.DaoPreference.Companion.IDENTIFIER_LOCAL_ID
 import io.github.yunato.myrecordtimer.model.entity.Record
 import java.util.*
@@ -78,6 +79,31 @@ class LocalEventDao(context: Context) : EventDao(context) {
         }
         cur.close()
         return eventItems
+    }
+
+    fun getEventFromId(id: Long): Record{
+        val selection = "${Events.CALENDAR_ID} = ? AND ${Events._ID} = ?"
+        val selectionArgs = arrayOf(myPreferences.getValue(IDENTIFIER_LOCAL_ID), id.toString())
+
+        val cur: Cursor = getEventCursor(selection, selectionArgs, null)
+        Log.d(className + methodName, "Events List of Local Calendar")
+        val record: Record = if(cur.columnCount != 0){
+            cur.moveToNext()
+            val event_id = cur.getLong(EVENTS_PROJECTION_IDX_ID)
+            val calendar_id = cur.getString(EVENTS_PROJECTION_IDX_CALENDAR_ID)
+            val title = cur.getString(EVENTS_PROJECTION_IDX_TITLE)
+            val description = cur.getString(EVENTS_PROJECTION_IDX_DESCRIPTION)
+            val start_time = cur.getLong(EVENTS_PROJECTION_IDX_DTSTART)
+            val end_time = cur.getLong(EVENTS_PROJECTION_IDX_DTEND)
+            Log.d(className + methodName, "$event_id $calendar_id $title")
+            Log.d(className + methodName, "$description $start_time $end_time")
+            Record(id.toString(), start_time, end_time, title, description, -1)
+        }else{
+            Record("", 0, 0, context.resources.getString(R.string.edit_text_title_no),
+                context.resources.getString(R.string.edit_text_memo_no), -1)
+        }
+        cur.close()
+        return record
     }
 
     /**
