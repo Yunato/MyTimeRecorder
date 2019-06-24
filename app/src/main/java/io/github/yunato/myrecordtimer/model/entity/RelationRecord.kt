@@ -1,4 +1,4 @@
 package io.github.yunato.myrecordtimer.model.entity
 
-class RelationRecord {
-}
+data class RelationRecord (val localCalendarId: Long,
+                           val remoteCalendarId: Long)
