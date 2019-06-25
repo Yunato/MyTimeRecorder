@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.fragment_easy_mode.*
 
 class EasyModeFragment : ModeFragment(), TimePickerFragment.OnSetTimeListener {
 
+    // TODO: dialog表示時にBackキーを押すとダイアログが消える
     private var mode: Int = -1
     private var isFirstTime : Boolean = true
     override val resource: Int = R.layout.fragment_easy_mode

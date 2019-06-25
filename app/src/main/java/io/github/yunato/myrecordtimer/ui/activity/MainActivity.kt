@@ -14,10 +14,12 @@ import android.view.MenuItem
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.stephentuso.welcome.WelcomeHelper
+import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.model.dao.calendars.DaoFactory
 import io.github.yunato.myrecordtimer.model.dao.sqlite.RecordDBAdapter
 import io.github.yunato.myrecordtimer.model.usecase.AccessRemoteUseCase
 import io.github.yunato.myrecordtimer.other.task.MakeRequestTask
+import io.github.yunato.myrecordtimer.ui.fragment.HistoryFragment
 import io.github.yunato.myrecordtimer.ui.fragment.MainFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -30,7 +32,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(io.github.yunato.myrecordtimer.R.layout.activity_main)
+        setContentView(R.layout.activity_main)
 
         if (DaoFactory.getRemoteDao(this).setAccountName(null)) {
             startSyncCalendar()
@@ -43,14 +45,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             this,
             drawer_layout,
             toolbar,
-            io.github.yunato.myrecordtimer.R.string.navigation_drawer_open,
-            io.github.yunato.myrecordtimer.R.string.navigation_drawer_close
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
         )
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
-        nav_view.setCheckedItem(io.github.yunato.myrecordtimer.R.id.nav_measurement)
+        nav_view.setCheckedItem(R.id.nav_measurement)
         onNavigationItemSelected(nav_view.menu.getItem(0))
     }
 
@@ -70,22 +72,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
-        if (item.itemId == io.github.yunato.myrecordtimer.R.id.nav_setting) {
-            startActivity(SettingsActivity.intent(this))
-        } else {
-            supportFragmentManager.beginTransaction()
-                .replace(io.github.yunato.myrecordtimer.R.id.content, MainFragment.newInstance()).commit()
-//        when (item.itemId) {
-//            R.id.nav_measurement -> {
-//
-//            }
-//            R.id.nav_view_record -> {
-//
-//            }
-//            R.id.nav_setting -> {
-//
-//            }
-//        }
+        when (item.itemId) {
+            R.id.nav_measurement -> {
+                supportFragmentManager.beginTransaction().replace(R.id.content, MainFragment.newInstance()).commit()
+            }
+            R.id.nav_view_record -> {
+                supportFragmentManager.beginTransaction().replace(R.id.content, HistoryFragment.newInstance()).commit()
+            }
+            R.id.nav_setting -> {
+                startActivity(SettingsActivity.intent(this))
+            }
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)
@@ -123,7 +119,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         } else {
             EasyPermissions.requestPermissions(
-                this, resources.getString(io.github.yunato.myrecordtimer.R.string.permission_get_account),
+                this, resources.getString(R.string.permission_get_account),
                 AccessRemoteUseCase.REQUEST_PERMISSION_GET_ACCOUNTS, GET_ACCOUNTS
             )
         }

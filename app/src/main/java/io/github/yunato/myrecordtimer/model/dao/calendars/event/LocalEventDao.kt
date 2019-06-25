@@ -34,7 +34,9 @@ class LocalEventDao(context: Context) : EventDao(context) {
 
     override fun getAllEventItems(): List<Record>{
         val eventItems = mutableListOf<Record>()
-        val cur = getEventCursor(null, null, null)
+        val selection = "${Events.CALENDAR_ID} = ?"
+        val selectionArgs = arrayOf(myPreferences.getValue(IDENTIFIER_LOCAL_ID))
+        val cur = getEventCursor(selection, selectionArgs, null)
         Log.d(className + methodName, "Events List of Local Calendar")
         while (cur.moveToNext()){
             val id = cur.getLong(EVENTS_PROJECTION_IDX_ID)
@@ -61,7 +63,7 @@ class LocalEventDao(context: Context) : EventDao(context) {
             timeInMillis
         }
         val selection = "${Events.CALENDAR_ID} = ? AND ${Events.DTSTART} < ? AND ${Events.DTEND} >= ?"
-        val selectionArgs = arrayOf<String?>(myPreferences.getValue(IDENTIFIER_LOCAL_ID), start.toString(), end.toString())
+        val selectionArgs = arrayOf(myPreferences.getValue(IDENTIFIER_LOCAL_ID), start.toString(), end.toString())
 
         val eventItems = mutableListOf<Record>()
         val cur: Cursor = getEventCursor(selection, selectionArgs, null)
