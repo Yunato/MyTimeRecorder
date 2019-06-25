@@ -77,7 +77,7 @@ class LocalEventDao(context: Context) : EventDao(context) {
             val end_time = cur.getLong(EVENTS_PROJECTION_IDX_DTEND)
             Log.d(className + methodName, "$id $calendar_id $title")
             Log.d(className + methodName, "$description $start_time $end_time")
-            eventItems += Record(id.toString(), start, end, title, description, -1)
+            eventItems += Record(id.toString(), start_time, end_time, title, description, -1)
         }
         cur.close()
         return eventItems

@@ -11,14 +11,16 @@ import android.view.ViewGroup
 import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.model.dao.calendars.DaoFactory
 import io.github.yunato.myrecordtimer.model.entity.Record
+import io.github.yunato.myrecordtimer.ui.adapter.RecordRecyclerViewAdapter
+import kotlinx.android.synthetic.main.fragment_record_list.*
 
-class ItemFragment : Fragment() {
+class RecordListFragment : Fragment() {
 
     private val columnCount = 1
-    private var listener: MyItemRecyclerViewAdapter.OnClickItem? = null
+    private var listener: RecordRecyclerViewAdapter.OnClickItem? = null
 
     init{
-        listener = object : MyItemRecyclerViewAdapter.OnClickItem{
+        listener = object : RecordRecyclerViewAdapter.OnClickItem{
             override fun onClickItem(item: Record) {
 
             }
@@ -28,7 +30,7 @@ class ItemFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_item_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_record_list, container, false)
 
         if (view is RecyclerView) {
             with(view) {
@@ -36,14 +38,24 @@ class ItemFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyItemRecyclerViewAdapter(DaoFactory.getLocalDao(activity).getAllEventItems(), listener)
+                adapter = RecordRecyclerViewAdapter(
+                    DaoFactory.getLocalDao(activity).getAllEventItems(),
+                    listener
+                )
             }
         }
         return view
     }
 
+    fun setList(year: Int, month: Int, dayOfMonth: Int){
+        list.adapter = RecordRecyclerViewAdapter(
+            DaoFactory.getLocalDao(activity).getEventItemsOnDay(year, month, dayOfMonth),
+            listener
+        )
+    }
+
     companion object {
         @JvmStatic
-        fun newInstance() = ItemFragment
+        fun newInstance() = RecordListFragment()
     }
 }
