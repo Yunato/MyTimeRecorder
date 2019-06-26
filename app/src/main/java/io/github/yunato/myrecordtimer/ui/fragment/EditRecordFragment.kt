@@ -14,15 +14,18 @@ import io.github.yunato.myrecordtimer.model.dao.sqlite.RecordDBAdapter
 import io.github.yunato.myrecordtimer.model.entity.Record
 import kotlinx.android.synthetic.main.fragment_edit_record.*
 
-private const val ARG_RECORD = "param1"
+private const val ARG_RECORD = "io.github.yunato.myrecordtimer.ui.fragment.ARG_RECORD"
+private const val ARG_RECORDS = "io.github.yunato.myrecordtimer.ui.fragment.ARG_RECORDS"
 
 class EditRecordFragment : Fragment() {
     private var record: Record = Record(null, 0, 0, null, null, -1)
+    private var records: ArrayList<Record> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             record = it.getParcelable(ARG_RECORD)
+            records = it.getParcelableArrayList(ARG_RECORDS)
         }
     }
 
@@ -58,10 +61,11 @@ class EditRecordFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(record: Record) =
+        fun newInstance(record: Record, records: ArrayList<Record>) =
             EditRecordFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(ARG_RECORD, record)
+                    putParcelableArrayList(ARG_RECORDS, records)
                 }
             }
     }

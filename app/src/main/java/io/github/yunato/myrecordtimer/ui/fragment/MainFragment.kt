@@ -43,7 +43,10 @@ class MainFragment : Fragment() {
             REQUEST_TIMER -> {
                 if(resultCode == Activity.RESULT_OK){
                     data?.let{
-                        startActivity(EditRecordActivity.intent(activity as Context, it.getParcelableExtra(EditRecordActivity.EXTRA_RECORD)))
+                        startActivity(EditRecordActivity.intent(
+                            activity as Context,
+                            it.getParcelableExtra(EditRecordActivity.EXTRA_RECORD),
+                            it.getParcelableArrayListExtra(EditRecordActivity.EXTRA_SUB_RECORD)))
                     }
                 }
             }

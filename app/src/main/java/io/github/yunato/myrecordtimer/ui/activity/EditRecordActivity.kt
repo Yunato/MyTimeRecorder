@@ -24,7 +24,8 @@ class EditRecordActivity : AppCompatActivity() {
         }
 
         val record = intent.getParcelableExtra<Record>(EXTRA_RECORD)
-        val fragment: EditRecordFragment = EditRecordFragment.newInstance(record)
+        val records: ArrayList<Record> = intent.getParcelableArrayListExtra(EXTRA_SUB_RECORD)
+        val fragment: EditRecordFragment = EditRecordFragment.newInstance(record, records)
         supportFragmentManager.beginTransaction().replace(R.id.content, fragment).commit()
 
         save_button.setOnClickListener(fragment.getSaveOnClickListener())
@@ -38,10 +39,12 @@ class EditRecordActivity : AppCompatActivity() {
 
     companion object {
         @JvmStatic val EXTRA_RECORD: String = "io.github.yunato.myrecordtimer.ui.activity.EXTRA_RECORD"
+        @JvmStatic val EXTRA_SUB_RECORD: String = "io.github.yunato.myrecordtimer.ui.activity.EXTRA_SUB_RECORD"
 
-        fun intent(context: Context, record: Record): Intent {
+        fun intent(context: Context, record: Record, records: ArrayList<Record>): Intent {
             return Intent(context, EditRecordActivity::class.java).apply{
                 putExtra(EXTRA_RECORD, record)
+                putExtra(EXTRA_SUB_RECORD, records)
             }
         }
     }
