@@ -7,8 +7,6 @@
         android:name="io.github.yunato.myrecordtimer.ui.fragment.SaveListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
-        tools:context=".ui.fragment.SaveListFragment"
-        tools:listitem="@layout/fragment_save"/>
+        tools:context=".ui.fragment.SubEditListFragment"
+        tools:listitem="@layout/fragment_sub_edit_record"/>
