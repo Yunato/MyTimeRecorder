@@ -30,10 +30,15 @@ class EasyModeFragment : ModeFragment(), TimePickerFragment.OnSetTimeListener {
             if(isFirstTime){
                 startService(TimerIntentService.startActionCountDown(activity as Context, startSec))
                 isFirstTime = false
+                button_lap.isEnabled = true
                 button_start_end.setText(R.string.button_finish)
             }else{
                 stopService()
             }
+        }
+
+        button_lap.setOnClickListener{
+            this.createLap()
         }
 
         if(mode == MODE_FIXED){

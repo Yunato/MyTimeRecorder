@@ -28,7 +28,6 @@ class HistoryFragment : Fragment(), DatePickerFragment.OnSetDateListener {
         fab.setOnClickListener{
             val picker = DatePickerFragment.newInstance(this)
             picker.show(fragmentManager, "date_picker")
-
         }
     }
 

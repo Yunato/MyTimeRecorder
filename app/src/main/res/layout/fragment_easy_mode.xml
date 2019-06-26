@@ -13,20 +13,58 @@
             android:layout_height="wrap_content"
             android:text="@string/textview_time"
             android:textSize="@dimen/fragment_time_text_size"
-            app:layout_constraintBottom_toTopOf="@+id/button_start_end"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-    <Button
-            android:id="@+id/button_start_end"
-            android:layout_width="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/parent_layout"/>
+
+    <LinearLayout
+            android:id="@+id/parent_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fragment_button_margin"
-            android:text="@string/button_start"
-            android:textSize="@dimen/fragment_button_text_size"
+            android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@+id/textView_time"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent">
+        <android.support.constraint.ConstraintLayout
+                android:id="@+id/layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <Button
+                    android:id="@+id/button_start_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_start"
+                    android:textSize="@dimen/fragment_button_text_size"
+                    app:layout_constraintStart_toStartOf="@id/layout"
+                    app:layout_constraintTop_toTopOf="@id/layout"
+                    app:layout_constraintBottom_toBottomOf="@id/layout"/>
+
+            <Button
+                    android:id="@+id/button_lap"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_lap"
+                    android:enabled="false"
+                    android:textSize="@dimen/fragment_button_text_size"
+                    app:layout_constraintTop_toTopOf="@id/layout"
+                    app:layout_constraintEnd_toEndOf="@id/layout"
+                    app:layout_constraintBottom_toBottomOf="@id/layout"/>
+
+        </android.support.constraint.ConstraintLayout>
+
+        <include android:id="@+id/content"
+                 layout="@layout/temp_content"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 app:layout_constraintTop_toBottomOf="@+id/layout"
+                 app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

@@ -28,6 +28,7 @@ import pub.devrel.easypermissions.EasyPermissions
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, EasyPermissions.PermissionCallbacks {
 
+    // TODO: Settingを選択した際のNavigation itemの選択を以前の状態に戻す
     private var mTask: MakeRequestTask? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

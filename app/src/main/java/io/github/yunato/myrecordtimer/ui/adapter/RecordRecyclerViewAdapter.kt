@@ -59,11 +59,11 @@ class RecordRecyclerViewAdapter(private val mValues: List<Record>,
         return String.format("%02d:%02d:%02d", hr, min, sec)
     }
 
+    override fun getItemCount(): Int = mValues.size
+
     interface OnClickItem {
         fun onClickItem(item: Record)
     }
-
-    override fun getItemCount(): Int = mValues.size
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val mDateView: TextView = mView.item_date

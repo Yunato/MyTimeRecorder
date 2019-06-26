@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.model.entity.Record
 import io.github.yunato.myrecordtimer.other.broadcastreceiver.TimerReceiver
 import io.github.yunato.myrecordtimer.other.service.TimerIntentService
@@ -21,8 +22,10 @@ import java.util.*
 abstract class ModeFragment : Fragment() {
 
     abstract val resource: Int
+    private var startTime: Long = 0L
     protected var startSec: Long = 0L
-    protected var startTime: Long = 0L
+    protected lateinit var fragment: TempListFragment
+
 
     override fun onCreateView( inflater: LayoutInflater,
                                container: ViewGroup?,
@@ -36,6 +39,13 @@ abstract class ModeFragment : Fragment() {
         activity?.unregisterReceiver(timerReceiver)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        fragment = TempListFragment.newInstance()
+        childFragmentManager.beginTransaction().replace(R.id.content, fragment).commit()
+    }
+
     protected fun startService(intent: Intent){
         activity?.startService(intent)
         startTime = Date().time
@@ -46,6 +56,7 @@ abstract class ModeFragment : Fragment() {
         val endTime = Date().time
         val intent = Intent()
         intent.putExtra(EditRecordActivity.EXTRA_RECORD, Record(null, startTime, endTime, null, null, -1))
+        intent.putExtra(EditRecordActivity.EXTRA_SUB_RECORD, ArrayList(fragment.records))
         activity?.setResult(Activity.RESULT_OK, intent)
         activity?.finish()
     }
@@ -71,6 +82,17 @@ abstract class ModeFragment : Fragment() {
 
     protected fun setCountText(hr: Int, min: Int, sec: Int){
         textView_time.text = String.format("%02d:%02d:%02d", hr, min, sec)
+    }
+
+    protected fun createLap(){
+        if(fragment.records.size == 0){
+            val now = Date().time
+            val record = Record(null, startTime, now, null, null, -1)
+            fragment.addRecord(record)
+        }
+        val now = Date().time
+        val record = Record(null, now, now, null, null, -1)
+        fragment.addRecord(record)
     }
 
     companion object {

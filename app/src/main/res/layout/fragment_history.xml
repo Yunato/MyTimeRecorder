@@ -8,7 +8,7 @@
         tools:context=".ui.activity.MainActivity">
 
     <include android:id="@+id/content"
-             layout="@layout/content"/>
+             layout="@layout/main_content"/>
 
     <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
