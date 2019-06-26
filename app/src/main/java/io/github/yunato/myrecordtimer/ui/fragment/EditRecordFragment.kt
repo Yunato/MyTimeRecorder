@@ -20,6 +20,7 @@ private const val ARG_RECORDS = "io.github.yunato.myrecordtimer.ui.fragment.ARG_
 class EditRecordFragment : Fragment() {
     private var record: Record = Record(null, 0, 0, null, null, -1)
     private var records: ArrayList<Record> = arrayListOf()
+    protected lateinit var fragment: SubEditListFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +38,9 @@ class EditRecordFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        fragment = SubEditListFragment.newInstance(records)
+        childFragmentManager.beginTransaction().replace(R.id.content, fragment).commit()
 
         record.let{
             val length = (it.end - it.start) / 1000L
