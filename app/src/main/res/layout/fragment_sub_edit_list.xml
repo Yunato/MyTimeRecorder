@@ -4,9 +4,9 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/list"
-        android:name="io.github.yunato.myrecordtimer.ui.fragment.SaveListFragment"
+        android:name="io.github.yunato.myrecordtimer.ui.fragment.SubEditListFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layoutManager="LinearLayoutManager"
         tools:context=".ui.fragment.SubEditListFragment"
         tools:listitem="@layout/fragment_sub_edit_record"/>

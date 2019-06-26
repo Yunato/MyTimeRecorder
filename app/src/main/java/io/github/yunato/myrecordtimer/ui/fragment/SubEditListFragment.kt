@@ -38,6 +38,7 @@ class SubEditListFragment : Fragment() {
                 }
                 adapter = SubEditRecyclerViewAdapter(records)
             }
+            view.isNestedScrollingEnabled = false
         }
         return view
     }
