@@ -5,7 +5,12 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.os.Bundle
 import android.os.PowerManager
+import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.other.service.TimerIntentService
 import io.github.yunato.myrecordtimer.other.timer.MyCountDownTimer
@@ -28,8 +33,23 @@ class HardModeFragment : ModeFragment(), SensorEventListener {
     private var isClearGravCond: Boolean = false
     private var isClearProxCond: Boolean = false
     private var isRunning: Boolean = false
+    private var isFirstTime: Boolean = true
     private var timer: MyCountDownTimer? = null
     override val resource: Int = R.layout.fragment_hard_mode
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+        view?.setOnKeyListener{v, keyCode, event ->
+            if(event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_VOLUME_DOWN && isRunning) {
+                this.createLap()
+                false
+            }else {
+                false
+            }
+        }
+        view?.isFocusableInTouchMode = true
+        return view
+    }
 
     override fun onResume() {
         super.onResume()
@@ -63,14 +83,16 @@ class HardModeFragment : ModeFragment(), SensorEventListener {
             }
             if(!isRunning){
                 if(isClearGravCond && isClearProxCond) {
-                    startService(TimerIntentService.startActionCountUp(activity as Context, startSec))
+                    if(isFirstTime){
+                        startService(TimerIntentService.startActionCountUp(activity as Context, startSec))
+                        isFirstTime = false
+                    }
                     wakeLock.acquire()
                     isRunning = true
                     timer?.cancel()
                 }
             }else{
                 if(!isClearGravCond) {
-                    TimerIntentService.isContinue = false
                     wakeLock.release()
                     isRunning = false
                     startInterruptionTimer()

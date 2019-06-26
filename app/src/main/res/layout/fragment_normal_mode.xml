@@ -1,32 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".ui.fragment.NormalModeFragment">
 
     <TextView
             android:id="@+id/textView_time"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="1"
             android:text="@string/textview_time"
-            android:textSize="@dimen/fragment_time_text_size"
-            app:layout_constraintBottom_toTopOf="@+id/button_start_end"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-    <Button
-            android:id="@+id/button_start_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fragment_button_margin"
-            android:text="@string/button_start"
-            android:textSize="@dimen/fragment_button_text_size"
-            app:layout_constraintTop_toBottomOf="@+id/textView_time"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:textSize="@dimen/fragment_time_text_size"/>
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+            android:id="@+id/parent_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+        <android.support.constraint.ConstraintLayout
+                android:id="@+id/layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <Button
+                    android:id="@+id/button_start_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_start"
+                    android:textSize="@dimen/fragment_button_text_size"
+                    app:layout_constraintStart_toStartOf="@id/layout"
+                    app:layout_constraintTop_toTopOf="@id/layout"
+                    app:layout_constraintBottom_toBottomOf="@id/layout"/>
+
+            <Button
+                    android:id="@+id/button_lap"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_lap"
+                    android:enabled="false"
+                    android:textSize="@dimen/fragment_button_text_size"
+                    app:layout_constraintTop_toTopOf="@id/layout"
+                    app:layout_constraintEnd_toEndOf="@id/layout"
+                    app:layout_constraintBottom_toBottomOf="@id/layout"/>
+
+        </android.support.constraint.ConstraintLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <include android:id="@+id/content"
+                     layout="@layout/temp_content"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     app:layout_constraintTop_toBottomOf="@+id/layout"
+                     app:layout_constraintStart_toStartOf="parent"
+                     app:layout_constraintEnd_toEndOf="parent"
+                     app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -19,10 +19,14 @@ class NormalModeFragment : ModeFragment() {
             if(isFirstTime){
                 startService(TimerIntentService.startActionCountUp(activity as Context, startSec))
                 isFirstTime = false
+                button_lap.isEnabled = true
                 button_start_end.setText(R.string.button_finish)
             }else{
                 stopService()
             }
+        }
+        button_lap.setOnClickListener{
+            this.createLap()
         }
     }
 
