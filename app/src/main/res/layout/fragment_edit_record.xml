@@ -31,7 +31,7 @@
                 android:paddingEnd="20dp"/>
     </LinearLayout>
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fadingEdgeLength="0dp"
@@ -121,7 +121,7 @@
                         android:layout_marginBottom="5dp"
                         android:layout_weight="2"
                         android:textSize="16sp"
-                        android:inputType="text"
+                        android:inputType="textMultiLine"
                         android:hint="@string/edit_text_memo"
                         android:background="#00000000"/>
 
@@ -130,8 +130,7 @@
             <include android:id="@+id/content"
                      layout="@layout/temp_content"
                      android:layout_width="match_parent"
-                     android:layout_height="0dp"
-                     android:layout_weight="1"
+                     android:layout_height="wrap_content"
                      app:layout_constraintTop_toBottomOf="@+id/layout"
                      app:layout_constraintStart_toStartOf="parent"
                      app:layout_constraintEnd_toEndOf="parent"
@@ -139,6 +138,6 @@
 
         </LinearLayout>
 
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
 </LinearLayout>

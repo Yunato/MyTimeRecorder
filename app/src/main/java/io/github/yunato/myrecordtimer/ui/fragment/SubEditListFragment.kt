@@ -10,18 +10,25 @@ import android.view.View
 import android.view.ViewGroup
 import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.model.entity.Record
+import io.github.yunato.myrecordtimer.model.entity.SubEditState
 import io.github.yunato.myrecordtimer.ui.adapter.SubEditRecyclerViewAdapter
 
 class SubEditListFragment : Fragment() {
 
     private var columnCount = 1
-    private lateinit var records: ArrayList<Record?>
+    private lateinit var records: ArrayList<Record>
+    private val subEditStates: ArrayList<SubEditState> = arrayListOf()
+    val statuses: ArrayList<SubEditState>
+        get() = subEditStates
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
             records = it.getParcelableArrayList(ARG_LIST)
+        }
+        for(i in 0 until records.size){
+            subEditStates.add(SubEditState(true, ""))
         }
     }
 
@@ -36,7 +43,7 @@ class SubEditListFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = SubEditRecyclerViewAdapter(records)
+                adapter = SubEditRecyclerViewAdapter(records, subEditStates)
             }
             view.isNestedScrollingEnabled = false
         }
