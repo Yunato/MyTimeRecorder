@@ -60,7 +60,12 @@ class RemoteDao private constructor(val context: Context) {
         else listOf()
     }
 
-    fun insertEventItem(eventItems: List<Record>): List<String>{
+    fun insertEventItem(eventItem: Record): String{
+        return if(calendarDao.checkExistCalendar()) return eventDao.insertEventItem(eventItem)
+        else "-1"
+    }
+
+    fun insertEventItems(eventItems: List<Record>): List<String>{
         return if(calendarDao.checkExistCalendar()) return eventDao.insertEventItems(eventItems)
         else listOf()
     }

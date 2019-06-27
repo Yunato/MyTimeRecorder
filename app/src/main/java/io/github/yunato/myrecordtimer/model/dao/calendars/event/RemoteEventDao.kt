@@ -14,7 +14,6 @@ import io.github.yunato.myrecordtimer.R.string.app_name
 import io.github.yunato.myrecordtimer.R.string.time_zone
 import io.github.yunato.myrecordtimer.model.dao.calendars.DaoPreference.Companion.IDENTIFIER_REMOTE_ID
 import io.github.yunato.myrecordtimer.model.entity.Record
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -73,7 +72,7 @@ class RemoteEventDao(context: Context, credential: GoogleAccountCredential) : Ev
         event.end = convertTimeToRFC3339(eventInfo.end)
 
         val calendarId = myPreferences.getValue(IDENTIFIER_REMOTE_ID)
-        event = mService?.events()?.insert(calendarId, event)?.execute() ?: throw IOException("Not insert record")
+        event = mService?.events()?.insert(calendarId, event)?.execute() ?: return (-1).toString()
         return event.id
     }
 

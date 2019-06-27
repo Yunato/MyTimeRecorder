@@ -1,6 +1,5 @@
 package io.github.yunato.myrecordtimer.ui.adapter
 
-import android.annotation.SuppressLint
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.model.entity.Record
-
 import kotlinx.android.synthetic.main.fragment_record.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -34,19 +32,28 @@ class RecordRecyclerViewAdapter(private val mValues: List<Record>,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
-        holder.mDateView.text = getDateString(item.start)
-        holder.mLenView.text = getLenString(item.end - item.start)
-        holder.mTitleView.text = item.title
+        if(item.id != null){
+            holder.mDateView.text = getTimeString(item.start)
+            holder.mLenView.text = getLenString(item.end - item.start)
+            holder.mTitleView.text = item.title
 
-        with(holder.mView) {
-            tag = item
-            setOnClickListener(mOnClickListener)
+            with(holder.mView) {
+                tag = item
+                setOnClickListener(mOnClickListener)
+            }
+        }else{
+            holder.mDateView.text = getDateString(item.start)
         }
     }
 
-    @SuppressLint("SimpleDateFormat")
     private fun getDateString(time: Long): String{
-        return SimpleDateFormat("yyyy/MM/dd HH:mm").format(Date().apply{
+        return SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN).format(Date().apply{
+            this.time = time
+        })
+    }
+
+    private fun getTimeString(time: Long): String{
+        return SimpleDateFormat("HH:mm", Locale.JAPAN).format(Date().apply{
             this.time = time
         })
     }

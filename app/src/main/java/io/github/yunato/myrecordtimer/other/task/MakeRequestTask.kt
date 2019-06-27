@@ -33,8 +33,8 @@ class MakeRequestTask(private val localDao: LocalDao,
                     when(operationRecord.operation){
                         DatabaseOpenHelper.OPE_ADD -> {
                             val record = localDao.getEventFromId(operationRecord.calendarId)
-                            remoteDao.insertEventItem(listOf(record))
-                            dbAdapter.deleteOperationRecord(operationRecord.id)
+                            val result = remoteDao.insertEventItem(record)
+                            if(result != "-1") dbAdapter.deleteOperationRecord(operationRecord.id)
                         }
                         DatabaseOpenHelper.OPE_DELETE -> {
 

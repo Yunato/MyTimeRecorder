@@ -13,6 +13,8 @@ import io.github.yunato.myrecordtimer.model.dao.calendars.DaoFactory
 import io.github.yunato.myrecordtimer.model.entity.Record
 import io.github.yunato.myrecordtimer.ui.adapter.RecordRecyclerViewAdapter
 import kotlinx.android.synthetic.main.fragment_record_list.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class RecordListFragment : Fragment() {
 
@@ -39,7 +41,7 @@ class RecordListFragment : Fragment() {
                     else -> GridLayoutManager(context, columnCount)
                 }
                 adapter = RecordRecyclerViewAdapter(
-                    DaoFactory.getLocalDao(activity).getAllEventItems(),
+                    doPreProcessForListItems(DaoFactory.getLocalDao(activity).getAllEventItems()),
                     listener
                 )
             }
@@ -49,9 +51,44 @@ class RecordListFragment : Fragment() {
 
     fun setList(year: Int, month: Int, dayOfMonth: Int){
         list.adapter = RecordRecyclerViewAdapter(
-            DaoFactory.getLocalDao(activity).getEventItemsOnDay(year, month, dayOfMonth),
+            doPreProcessForListItems(DaoFactory.getLocalDao(activity).getEventItemsOnDay(year, month, dayOfMonth)),
             listener
         )
+    }
+
+    private fun doPreProcessForListItems(records: List<Record>): List<Record> = addCategories(excludeSubRecord(records))
+
+    private fun excludeSubRecord(records: List<Record>): List<Record>{
+        val rtnList = mutableListOf<Record>()
+        var tmp: Record? = null
+        for(i in 0 until records.size - 1){
+            val record = tmp ?: records[i]
+            if(tmp == null) rtnList.add(record)
+            if(record.start <= records[i + 1].start && record.end >= records[i + 1].end)
+                tmp = record
+            else
+                tmp = null
+        }
+        if(tmp == null) rtnList.add(records[records.size - 1])
+        return rtnList
+    }
+
+    private fun addCategories(records: List<Record>): List<Record>{
+        val rtnList = mutableListOf<Record>()
+        var i = 0
+        var dateStr = ""
+        while(i < records.size){
+            val str = SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN).format(Date().apply{
+                this.time = records[i].start
+            })
+            if(str != dateStr){
+                dateStr = str
+                rtnList.add(Record(null, records[i].start, 0L, null, null, -1))
+            }
+            rtnList.add(records[i])
+            i += 1
+        }
+        return rtnList
     }
 
     companion object {
