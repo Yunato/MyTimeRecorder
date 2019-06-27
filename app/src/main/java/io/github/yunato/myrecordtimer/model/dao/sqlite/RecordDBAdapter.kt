@@ -22,6 +22,14 @@ class RecordDBAdapter(mContext: Context) {
         return db.insertOrThrow(DatabaseOpenHelper.DB_OPE_TABLE_NAME, null, values)
     }
 
+    fun addOperations(ope: Int, calendarIds: List<Long>): List<Long> {
+        val rtnList: MutableList<Long> = mutableListOf()
+        for(calendarId in calendarIds){
+            rtnList.add(addOperation(ope, calendarId))
+        }
+        return rtnList
+    }
+
     fun getOperations(): MutableList<OperationRecord> {
         val sql = "SELECT * FROM ${DatabaseOpenHelper.DB_OPE_TABLE_NAME}"
         val result: MutableList<OperationRecord> = mutableListOf()

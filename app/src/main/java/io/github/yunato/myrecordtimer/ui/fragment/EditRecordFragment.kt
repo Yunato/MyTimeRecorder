@@ -20,7 +20,7 @@ private const val ARG_RECORDS = "io.github.yunato.myrecordtimer.ui.fragment.ARG_
 class EditRecordFragment : Fragment() {
     private var record: Record = Record(null, 0, 0, null, null, -1)
     private var records: ArrayList<Record> = arrayListOf()
-    protected lateinit var fragment: SubEditListFragment
+    private lateinit var fragment: SubEditListFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,9 +56,22 @@ class EditRecordFragment : Fragment() {
                         else edit_text_title.text.toString()
         val memo = if(edit_text_memo.text.isBlank()) activity?.getString(R.string.edit_text_memo_no)
                         else edit_text_memo.text.toString()
-        val addRecord = Record(record.id, record.start, record.end, title ?: "(タイトルなし)", memo ?: "", record.eval)
-        val calendarIds = DaoFactory.getLocalDao(activity).insertEventItem(mutableListOf(addRecord))
-        RecordDBAdapter(activity as Context).addOperation(DatabaseOpenHelper.OPE_ADD, calendarIds[0].toLong())
+        val addRecords: MutableList<Record> = mutableListOf(Record(record.id, record.start, record.end, title ?: "(タイトルなし)", memo ?: "", record.eval))
+
+        if(fragment.statuses.size != 0){
+            for(i in 0 until fragment.statuses.size){
+                if(fragment.statuses[i].isChecked){
+                    addRecords.add(Record(records[i].id, records[i].start, records[i].end, fragment.statuses[i].title, "", -1))
+                }
+            }
+        }
+
+        val strCalendarIds = DaoFactory.getLocalDao(activity).insertEventItems(addRecords)
+        val lnCalendarIds: MutableList<Long> = mutableListOf()
+        for(str in strCalendarIds){
+            lnCalendarIds.add(str.toLong())
+        }
+        RecordDBAdapter(activity as Context).addOperations(DatabaseOpenHelper.OPE_ADD, lnCalendarIds)
         activity?.setResult(Activity.RESULT_OK)
         activity?.finish()
     }
