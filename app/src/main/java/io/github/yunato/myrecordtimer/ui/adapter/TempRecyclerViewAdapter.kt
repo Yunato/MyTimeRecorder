@@ -37,14 +37,14 @@ class TempRecyclerViewAdapter(private val mValues: MutableList<Record>,
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = mValues[position]
+        val item = mValues[mValues.size - position - 1]
         holder.mIdText.text = (mValues.size - position).toString() 
         holder.mTimeText.text = getDateString(item.start)
 
         if(position == 0){
             runnable = Runnable {
                 val now = Date().time
-                mValues[0] = Record(null, mValues[0].start, now, null, null, -1)
+                mValues[mValues.size - 1] = Record(null, mValues[mValues.size - 1].start, now, null, null, -1)
                 holder.mDiffText.text = getLenString(now - item.start)
                 handler.postDelayed(runnable, period)
             }

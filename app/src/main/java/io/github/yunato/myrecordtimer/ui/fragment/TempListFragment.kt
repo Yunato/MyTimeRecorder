@@ -53,7 +53,7 @@ class TempListFragment : Fragment() {
     }
 
     fun addRecord(record: Record){
-        records.add(0, record)
+        records.add(record)
         (recyclerView.adapter as TempRecyclerViewAdapter).finishTimer()
         list.adapter = TempRecyclerViewAdapter(records, longClickListener)
     }
