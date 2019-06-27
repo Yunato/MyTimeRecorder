@@ -9,4 +9,5 @@
         android:layout_height="wrap_content"
         app:layoutManager="LinearLayoutManager"
         tools:context=".ui.fragment.SubEditListFragment"
-        tools:listitem="@layout/fragment_sub_edit_record"/>
+        tools:listitem="@layout/fragment_sub_edit_record"
+        android:background="@drawable/border_top"/>

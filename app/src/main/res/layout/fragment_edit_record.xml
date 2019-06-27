@@ -99,22 +99,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="@drawable/border_top">
+                    android:background="@drawable/border_top"
+                    android:paddingTop="15dp">
 
                 <ImageView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="9"
                         android:src="@drawable/ic_note_black_24dp"
-                        android:contentDescription="@string/image_memo"
-                        android:scaleType="center"/>
+                        android:contentDescription="@string/image_memo"/>
 
                 <EditText
                         android:id="@+id/edit_text_memo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:paddingTop="15dp"
                         android:paddingBottom="15dp"
                         android:paddingStart="5dp"
                         android:paddingEnd="15dp"

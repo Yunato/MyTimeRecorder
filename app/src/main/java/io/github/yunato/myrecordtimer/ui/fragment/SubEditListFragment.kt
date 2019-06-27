@@ -1,5 +1,6 @@
 package io.github.yunato.myrecordtimer.ui.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
@@ -12,6 +13,7 @@ import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.model.entity.Record
 import io.github.yunato.myrecordtimer.model.entity.SubEditState
 import io.github.yunato.myrecordtimer.ui.adapter.SubEditRecyclerViewAdapter
+import io.github.yunato.myrecordtimer.ui.other.DividerItemDecoration
 
 class SubEditListFragment : Fragment() {
 
@@ -46,6 +48,7 @@ class SubEditListFragment : Fragment() {
                 adapter = SubEditRecyclerViewAdapter(records, subEditStates)
             }
             view.isNestedScrollingEnabled = false
+            view.addItemDecoration(DividerItemDecoration(activity as Context))
         }
         return view
     }
