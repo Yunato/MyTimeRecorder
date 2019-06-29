@@ -55,7 +55,7 @@ abstract class ModeFragment : Fragment() {
         TimerIntentService.isContinue = false
         val endTime = Date().time
         val intent = Intent()
-        intent.putExtra(EditRecordActivity.EXTRA_RECORD, Record(null, startTime, endTime, null, null, -1))
+        intent.putExtra(EditRecordActivity.EXTRA_RECORD, Record(null, startTime, endTime, null, null, -1, 0))
         intent.putExtra(EditRecordActivity.EXTRA_SUB_RECORD, ArrayList(fragment.records))
         activity?.setResult(Activity.RESULT_OK, intent)
         activity?.finish()
@@ -87,11 +87,11 @@ abstract class ModeFragment : Fragment() {
     protected fun createLap(){
         if(fragment.records.size == 0){
             val now = Date().time
-            val record = Record(null, startTime, now, null, null, -1)
+            val record = Record(null, startTime, now, null, null, -1, 0)
             fragment.addRecord(record)
         }
         val now = Date().time
-        val record = Record(null, now, now, null, null, -1)
+        val record = Record(null, now, now, null, null, -1, 0)
         fragment.addRecord(record)
     }
 

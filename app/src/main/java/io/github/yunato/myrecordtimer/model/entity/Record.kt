@@ -8,13 +8,14 @@ data class Record(val id: String?,
                   val end: Long,
                   val title: String?,
                   val memo: String?,
-                  val eval: Int) : Parcelable {
+                  val eval: Int,
+                  var subs: Int) : Parcelable {
 
     companion object {
         @JvmField
         val CREATOR: Parcelable.Creator<Record> = object : Parcelable.Creator<Record> {
             override fun createFromParcel(source: Parcel): Record = source.run {
-                Record(readString(), readLong(), readLong(), readString(), readString(), readInt())
+                Record(readString(), readLong(), readLong(), readString(), readString(), readInt(), readInt())
             }
 
             override fun newArray(size: Int): Array<Record?> = arrayOfNulls(size)
@@ -31,6 +32,7 @@ data class Record(val id: String?,
             writeString(title)
             writeString(memo)
             writeInt(eval)
+            writeInt(subs)
         }
     }
 }

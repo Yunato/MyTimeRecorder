@@ -36,7 +36,7 @@ class LocalDao private constructor(val context: Context){
     fun getEventFromId(id: Long): Record{
         return if(calendarDao.checkExistCalendar()) return eventDao.getEventFromId(id)
         else Record("", 0, 0, context.resources.getString(R.string.edit_text_title_no),
-            context.resources.getString(R.string.edit_text_memo_no), -1)
+            context.resources.getString(R.string.edit_text_memo_no), -1, 0)
     }
 
     fun insertEventItems(eventItems: List<Record>): List<String>{

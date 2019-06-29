@@ -18,7 +18,7 @@ private const val ARG_RECORD = "io.github.yunato.myrecordtimer.ui.fragment.ARG_R
 private const val ARG_RECORDS = "io.github.yunato.myrecordtimer.ui.fragment.ARG_RECORDS"
 
 class EditRecordFragment : Fragment() {
-    private var record: Record = Record(null, 0, 0, null, null, -1)
+    private var record: Record = Record(null, 0, 0, null, null, -1, 0)
     private var records: ArrayList<Record> = arrayListOf()
     private lateinit var fragment: SubEditListFragment
 
@@ -56,12 +56,12 @@ class EditRecordFragment : Fragment() {
                         else edit_text_title.text.toString()
         val memo = if(edit_text_memo.text.isBlank()) activity?.getString(R.string.edit_text_memo_no)
                         else edit_text_memo.text.toString()
-        val addRecords: MutableList<Record> = mutableListOf(Record(record.id, record.start, record.end, title ?: "(タイトルなし)", memo ?: "", record.eval))
+        val addRecords: MutableList<Record> = mutableListOf(Record(record.id, record.start, record.end, title ?: "(タイトルなし)", memo ?: "", record.eval, record.subs))
 
         if(fragment.statuses.size != 0){
             for(i in 0 until fragment.statuses.size){
                 if(fragment.statuses[i].isChecked){
-                    addRecords.add(Record(records[i].id, records[i].start, records[i].end, fragment.statuses[i].title, "", -1))
+                    addRecords.add(Record(records[i].id, records[i].start, records[i].end, fragment.statuses[i].title, "", -1, 0))
                 }
             }
         }

@@ -52,7 +52,7 @@ class RemoteEventDao(context: Context, credential: GoogleAccountCredential) : Ev
                     val end = event.end.dateTime.value
                     Log.d(className + methodName, "$id $title $memo")
                     Log.d(className + methodName, "$start $end")
-                    eventItems.add(Record(id, start, end, title, memo, -1))
+                    eventItems.add(Record(id, start, end, title, memo, -1, 0))
                 }
                 pageToken = events.nextPageToken
             }

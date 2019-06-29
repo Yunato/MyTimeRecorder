@@ -47,7 +47,7 @@ class LocalEventDao(context: Context) : EventDao(context) {
             val end = cur.getLong(EVENTS_PROJECTION_IDX_DTEND)
             Log.d(className + methodName, "$id $calendar_id $title")
             Log.d(className + methodName, "$description $start $end")
-            eventItems += Record(id.toString(), start, end, title, description, -1)
+            eventItems += Record(id.toString(), start, end, title, description, -1, 0)
         }
         cur.close()
         return eventItems
@@ -77,7 +77,7 @@ class LocalEventDao(context: Context) : EventDao(context) {
             val end_time = cur.getLong(EVENTS_PROJECTION_IDX_DTEND)
             Log.d(className + methodName, "$id $calendar_id $title")
             Log.d(className + methodName, "$description $start_time $end_time")
-            eventItems += Record(id.toString(), start_time, end_time, title, description, -1)
+            eventItems += Record(id.toString(), start_time, end_time, title, description, -1, 0)
         }
         cur.close()
         return eventItems
@@ -99,10 +99,10 @@ class LocalEventDao(context: Context) : EventDao(context) {
             val end_time = cur.getLong(EVENTS_PROJECTION_IDX_DTEND)
             Log.d(className + methodName, "$event_id $calendar_id $title")
             Log.d(className + methodName, "$description $start_time $end_time")
-            Record(id.toString(), start_time, end_time, title, description, -1)
+            Record(id.toString(), start_time, end_time, title, description, -1, 0)
         }else{
             Record("", 0, 0, context.resources.getString(R.string.edit_text_title_no),
-                context.resources.getString(R.string.edit_text_memo_no), -1)
+                context.resources.getString(R.string.edit_text_memo_no), -1, 0)
         }
         cur.close()
         return record

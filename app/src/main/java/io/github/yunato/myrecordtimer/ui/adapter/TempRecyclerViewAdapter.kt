@@ -44,7 +44,7 @@ class TempRecyclerViewAdapter(private val mValues: MutableList<Record>,
         if(position == 0){
             runnable = Runnable {
                 val now = Date().time
-                mValues[mValues.size - 1] = Record(null, mValues[mValues.size - 1].start, now, null, null, -1)
+                mValues[mValues.size - 1] = Record(null, mValues[mValues.size - 1].start, now, null, null, -1, 0)
                 holder.mDiffText.text = getLenString(now - item.start)
                 handler.postDelayed(runnable, period)
             }
