@@ -1,102 +1,81 @@
 package io.github.yunato.myrecordtimer.ui.fragment
 
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import io.github.yunato.myrecordtimer.R
+import io.github.yunato.myrecordtimer.model.entity.Record
+import kotlinx.android.synthetic.main.fragment_sub_record_list.*
+import java.text.SimpleDateFormat
+import java.util.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val ARG_RECORD = "io.github.yunato.myrecordtimer.ui.fragment.ARG_RECORD"
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [SubRecordListFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [SubRecordListFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
 class SubRecordListFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    private var listener: OnFragmentInteractionListener? = null
+    private var record: Record = Record(null, 0, 0, null, null, -1, 0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            record = it.getParcelable(ARG_RECORD)
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    override fun onCreateView(inflater: LayoutInflater,
+                              container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_sub_record_list, container, false)
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+        text_view_title.text = record.title
+        text_view_date.text = String.format("%s/%s/%s", getDateParam(Calendar.YEAR), getDateParam(Calendar.MONDAY), getDateParam(Calendar.DAY_OF_MONTH))
+        text_view_length.text = getTimeStr((record.end - record.start) / 1000L)
+        text_view_start.text = String.format("%s", getTimeFromDate(Date().apply{
+            this.time = time
+        }))
+        if(record.memo.isNullOrBlank()) {
+            layout_memo.visibility = View.GONE
+        }else{
+            text_view_memo.text = record.memo
         }
+
+        val fragment = RecordListFragment.newInstance(record)
+        childFragmentManager.beginTransaction().replace(R.id.content, fragment).commit()
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
+    private fun getDateParam(field: Int): Int{
+        val c = Calendar.getInstance()
+        c.time = Date().also {
+            it.time = record.start
+        }
+        return c.get(field)
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+    private fun getTimeFromDate(date: Date): String = SimpleDateFormat("HH:mm:ss", Locale.JAPAN).format(date)
+
+    private fun getTimeStr(diffSec: Long): String{
+        val sec = diffSec % 60
+        val min = (diffSec / 60) % 60
+        val hr = diffSec / 60 / 60
+        return String.format("%02d:%02d:%02d", hr, min, sec)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        activity?.supportFragmentManager?.popBackStack(RecordListFragment.TRANSITION_ID, 0)
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SubRecordListFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(record: Record) =
             SubRecordListFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putParcelable(ARG_RECORD, record)
                 }
             }
     }
