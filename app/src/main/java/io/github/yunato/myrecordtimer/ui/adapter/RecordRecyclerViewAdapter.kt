@@ -12,15 +12,24 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class RecordRecyclerViewAdapter(private val mValues: List<Record>,
-                                private val mListener: OnClickItem?)
+                                private val mListener: OnClickItem?,
+                                private val mLongListener: OnLongClickItem?)
     : RecyclerView.Adapter<RecordRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
+    private val mOnLongClickListener: View.OnLongClickListener
 
     init {
         mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as Record
+            val pos = v.tag as Int
+            val item = mValues[pos]
             mListener?.onClickItem(item)
+        }
+        mOnLongClickListener = View.OnLongClickListener { v ->
+            val pos = v.tag as Int
+            val item = mValues[pos]
+            mLongListener?.onLongClickItem(item, pos)
+            true
         }
     }
 
@@ -38,8 +47,9 @@ class RecordRecyclerViewAdapter(private val mValues: List<Record>,
             holder.mTitleView.text = item.title
 
             with(holder.mView) {
-                tag = item
+                tag = position
                 setOnClickListener(mOnClickListener)
+                setOnLongClickListener(mOnLongClickListener)
             }
         }else{
             holder.mDateView.text = getDateString(item.start)
@@ -70,6 +80,10 @@ class RecordRecyclerViewAdapter(private val mValues: List<Record>,
 
     interface OnClickItem {
         fun onClickItem(item: Record)
+    }
+
+    interface OnLongClickItem {
+        fun onLongClickItem(item: Record, position: Int)
     }
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {

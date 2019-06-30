@@ -1,5 +1,7 @@
 package io.github.yunato.myrecordtimer.ui.fragment
 
+import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
@@ -10,6 +12,8 @@ import android.view.View
 import android.view.ViewGroup
 import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.model.dao.calendars.DaoFactory
+import io.github.yunato.myrecordtimer.model.dao.sqlite.DatabaseOpenHelper
+import io.github.yunato.myrecordtimer.model.dao.sqlite.RecordDBAdapter
 import io.github.yunato.myrecordtimer.model.entity.Record
 import io.github.yunato.myrecordtimer.ui.adapter.RecordRecyclerViewAdapter
 import kotlinx.android.synthetic.main.fragment_record_list.*
@@ -28,6 +32,7 @@ class RecordListFragment : Fragment() {
     private var dayOfMonth: Int = 0
     private val columnCount = 1
     private var listener: RecordRecyclerViewAdapter.OnClickItem? = null
+    private var longListener: RecordRecyclerViewAdapter.OnLongClickItem? = null
 
     init{
         listener = object : RecordRecyclerViewAdapter.OnClickItem{
@@ -35,6 +40,28 @@ class RecordListFragment : Fragment() {
                 if(item.id == null) return
                 activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.content, SubRecordListFragment.newInstance(item))
                     ?.addToBackStack(TRANSITION_ID)?.commit()
+            }
+        }
+        longListener = object : RecordRecyclerViewAdapter.OnLongClickItem{
+            override fun onLongClickItem(item: Record, position: Int) {
+                AlertDialog.Builder(activity)
+                    .setMessage(activity?.resources?.getString(R.string.click_delete_record_message))
+                    .setPositiveButton(activity?.resources?.getString(R.string.button_ok)){_, _ ->
+                        val year = getDateParam(item, Calendar.YEAR)
+                        val month = getDateParam(item, Calendar.MONTH)
+                        val dayOfMonth = getDateParam(item, Calendar.DAY_OF_MONTH)
+                        val records = extractSubRecord(item, DaoFactory.getLocalDao(activity).getEventItemsOnDay(year, month, dayOfMonth))
+                        records.add(0, item)
+                        val lnEventIds: MutableList<Long> = mutableListOf()
+                        for(record in records){
+                            DaoFactory.getLocalDao(activity).deleteEventItem((record.id ?: "-1").toLong())
+                            lnEventIds.add((record.id ?: "-1").toLong())
+                        }
+                        RecordDBAdapter(activity as Context).addOperations(DatabaseOpenHelper.OPE_DELETE, lnEventIds)
+                        list.adapter?.notifyItemRemoved(position)
+                    }
+                    .setNegativeButton(activity?.resources?.getString(R.string.button_cancel), null)
+                    .show()
             }
         }
     }
@@ -45,17 +72,17 @@ class RecordListFragment : Fragment() {
             mode = it.getInt(ARG_MODE)
             if(mode == MODE_SUB){
                 mRecord = it.getParcelable(ARG_RECORD)
-                year = getDateParam(Calendar.YEAR)
-                month = getDateParam(Calendar.MONDAY)
-                dayOfMonth = getDateParam(Calendar.DAY_OF_MONTH)
+                year = getDateParam(mRecord, Calendar.YEAR)
+                month = getDateParam(mRecord, Calendar.MONTH)
+                dayOfMonth = getDateParam(mRecord, Calendar.DAY_OF_MONTH)
             }
         }
     }
 
-    private fun getDateParam(field: Int): Int{
+    private fun getDateParam(record: Record, field: Int): Int{
         val c = Calendar.getInstance()
         c.time = Date().also {
-            it.time = mRecord.start
+            it.time = record.start
         }
         return c.get(field)
     }
@@ -75,12 +102,11 @@ class RecordListFragment : Fragment() {
                     MODE_MAIN ->
                         adapter = RecordRecyclerViewAdapter(
                             doPreProcessForListItems(DaoFactory.getLocalDao(activity).getAllEventItems()),
-                            listener)
+                            listener, longListener)
                     MODE_SUB ->
                         adapter = RecordRecyclerViewAdapter(
-                            extractSubRecord(DaoFactory.getLocalDao(activity).getEventItemsOnDay(year, month, dayOfMonth)),
-                            listener
-                        )
+                            extractSubRecord(mRecord, DaoFactory.getLocalDao(activity).getEventItemsOnDay(year, month, dayOfMonth)),
+                            listener, null)
                 }
             }
         }
@@ -88,10 +114,11 @@ class RecordListFragment : Fragment() {
     }
 
     fun setList(year: Int, month: Int, dayOfMonth: Int){
-        list.adapter = RecordRecyclerViewAdapter(
-            doPreProcessForListItems(DaoFactory.getLocalDao(activity).getEventItemsOnDay(year, month, dayOfMonth)),
-            listener
-        )
+        if(mode == MODE_MAIN){
+            list.adapter = RecordRecyclerViewAdapter(
+                doPreProcessForListItems(DaoFactory.getLocalDao(activity).getEventItemsOnDay(year, month, dayOfMonth)),
+                listener, longListener)
+        }
     }
 
     private fun doPreProcessForListItems(records: List<Record>): List<Record> = addCategories(excludeSubRecord(records))
@@ -131,14 +158,13 @@ class RecordListFragment : Fragment() {
         return rtnList
     }
 
-    private fun extractSubRecord(records: List<Record>): List<Record>{
+    private fun extractSubRecord(record: Record, records: List<Record>): MutableList<Record>{
         val rtnList = mutableListOf<Record>()
-        if(mode == MODE_MAIN) return rtnList
-        val rId: Long = mRecord.id?.toLong() ?: -1
+        val rId: Long = record.id?.toLong() ?: -1
         for(i in 0 until records.size){
             val id: Long = records[i].id?.toLong() ?: -1
             if(rId < 0 || id < 0 || rId >= id) continue
-            if(mRecord.start <= records[i].start && mRecord.end >= records[i].end){
+            if(record.start <= records[i].start && record.end >= records[i].end){
                 rtnList.add(records[i])
             }else{
                 break

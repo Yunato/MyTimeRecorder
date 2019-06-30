@@ -33,7 +33,7 @@ class SubRecordListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         text_view_title.text = record.title
-        text_view_date.text = String.format("%s/%s/%s", getDateParam(Calendar.YEAR), getDateParam(Calendar.MONDAY), getDateParam(Calendar.DAY_OF_MONTH))
+        text_view_date.text = String.format("%s/%s/%s", getDateParam(Calendar.YEAR), getDateParam(Calendar.MONTH) + 1, getDateParam(Calendar.DAY_OF_MONTH))
         text_view_length.text = getTimeStr((record.end - record.start) / 1000L)
         text_view_start.text = String.format("%s", getTimeFromDate(Date().apply{
             this.time = time
