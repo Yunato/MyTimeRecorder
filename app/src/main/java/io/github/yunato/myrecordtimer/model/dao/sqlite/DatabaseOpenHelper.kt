@@ -13,7 +13,7 @@ class DatabaseOpenHelper(mContext: Context) :
                     "( $FIELD_ID INTEGER PRIMARY KEY AUTOINCREMENT, $FIELD_OP INTEGER, $FIELD_LID INTEGER );")
         db?.execSQL(
             "CREATE TABLE $DB_REL_TABLE_NAME " +
-                    "( $FIELD_ID INTEGER PRIMARY KEY AUTOINCREMENT, $FIELD_LID INTEGER, $FIELD_RID INTEGER );")
+                    "( $FIELD_ID INTEGER PRIMARY KEY AUTOINCREMENT, $FIELD_LID INTEGER, $FIELD_RID TEXT );")
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {

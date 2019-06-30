@@ -66,12 +66,12 @@ class EditRecordFragment : Fragment() {
             }
         }
 
-        val strCalendarIds = DaoFactory.getLocalDao(activity).insertEventItems(addRecords)
-        val lnCalendarIds: MutableList<Long> = mutableListOf()
-        for(str in strCalendarIds){
-            lnCalendarIds.add(str.toLong())
+        val strEventIds = DaoFactory.getLocalDao(activity).insertEventItems(addRecords)
+        val lnEventIds: MutableList<Long> = mutableListOf()
+        for(str in strEventIds){
+            lnEventIds.add(str.toLong())
         }
-        RecordDBAdapter(activity as Context).addOperations(DatabaseOpenHelper.OPE_ADD, lnCalendarIds)
+        RecordDBAdapter(activity as Context).addOperations(DatabaseOpenHelper.OPE_ADD, lnEventIds)
         activity?.setResult(Activity.RESULT_OK)
         activity?.finish()
     }

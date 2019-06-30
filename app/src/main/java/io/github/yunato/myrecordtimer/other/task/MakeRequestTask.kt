@@ -2,7 +2,6 @@ package io.github.yunato.myrecordtimer.other.task
 
 import android.content.Intent
 import android.os.AsyncTask
-import android.util.Log
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException
 import io.github.yunato.myrecordtimer.model.dao.calendars.LocalDao
@@ -27,17 +26,24 @@ class MakeRequestTask(private val localDao: LocalDao,
                 mLastError = e
                 cancel(true)
             }
-            Log.d("TEST", "OK")
+            remoteDao.getAllEventItems()
             dbAdapter.getOperations().apply {
                 for(operationRecord: OperationRecord in this){
                     when(operationRecord.operation){
                         DatabaseOpenHelper.OPE_ADD -> {
-                            val record = localDao.getEventFromId(operationRecord.calendarId)
+                            val record = localDao.getEventFromId(operationRecord.localEventId)
                             val result = remoteDao.insertEventItem(record)
-                            if(result != "-1") dbAdapter.deleteOperationRecord(operationRecord.id)
+                            if(result != "-1"){
+                                dbAdapter.deleteOperationRecord(operationRecord.id)
+                                dbAdapter.addRelation(operationRecord.localEventId, result)
+                            }
                         }
                         DatabaseOpenHelper.OPE_DELETE -> {
-
+                            val remoteId = dbAdapter.getRelation(operationRecord.localEventId)
+                            if(remoteId != "-1"){
+                                remoteDao.deleteEventItem(remoteId)
+                                dbAdapter.deleteOperationRecord(operationRecord.id)
+                            }
                         }
                     }
                 }

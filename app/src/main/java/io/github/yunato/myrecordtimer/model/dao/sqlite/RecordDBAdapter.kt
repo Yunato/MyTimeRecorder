@@ -48,7 +48,7 @@ class RecordDBAdapter(mContext: Context) {
         db.delete(DatabaseOpenHelper.DB_OPE_TABLE_NAME, "${DatabaseOpenHelper.FIELD_ID}=?", arrayOf(id.toString()))
     }
 
-    fun addRelation(localCalendarId: Long, remoteCalendarId: Long): Long {
+    fun addRelation(localCalendarId: Long, remoteCalendarId: String): Long {
         val values = ContentValues()
         values.put(DatabaseOpenHelper.FIELD_LID, localCalendarId)
         values.put(DatabaseOpenHelper.FIELD_RID, remoteCalendarId)
@@ -63,10 +63,20 @@ class RecordDBAdapter(mContext: Context) {
                 result.add(RelationRecord(
                     it.getLong(it.getColumnIndex(DatabaseOpenHelper.FIELD_ID)),
                     it.getLong(it.getColumnIndex(DatabaseOpenHelper.FIELD_LID)),
-                    it.getLong(it.getColumnIndex(DatabaseOpenHelper.FIELD_RID))))
+                    it.getString(it.getColumnIndex(DatabaseOpenHelper.FIELD_RID))))
             }
         }
         return result
+    }
+
+    fun getRelation(localId: Long): String{
+        val sql = "SELECT ${DatabaseOpenHelper.FIELD_RID} FROM ${DatabaseOpenHelper.DB_REL_TABLE_NAME} WHERE ${DatabaseOpenHelper.FIELD_LID} = $localId"
+        db.rawQuery(sql, null).use{
+            if (it.moveToNext()) {
+                return it.getString(it.getColumnIndex(DatabaseOpenHelper.FIELD_RID))
+            }
+        }
+        return "-1"
     }
 
     fun deleteRelationRecord(id: Long) {

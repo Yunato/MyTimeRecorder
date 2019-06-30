@@ -70,7 +70,7 @@ class RemoteDao private constructor(val context: Context) {
         else listOf()
     }
 
-    fun deleteEventItem(eventId: Long){
+    fun deleteEventItem(eventId: String){
         if(calendarDao.checkExistCalendar()) eventDao.deleteEventItem(eventId)
     }
 

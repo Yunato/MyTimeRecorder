@@ -93,9 +93,9 @@ class RemoteEventDao(context: Context, credential: GoogleAccountCredential) : Ev
         return eventIds
     }
 
-    fun deleteEventItem(eventId: Long) {
+    fun deleteEventItem(eventId: String) {
         val calendarId = myPreferences.getValue(IDENTIFIER_REMOTE_ID)
-        mService?.events()?.delete(calendarId, eventId.toString())?.execute()
+        mService?.events()?.delete(calendarId, eventId)?.execute()
     }
 
     companion object {
