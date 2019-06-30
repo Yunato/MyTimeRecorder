@@ -95,12 +95,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 mIndex = 0
             }
             R.id.nav_view_record -> {
-                if(getPermissionsStatus().isEmpty()){
-                    supportFragmentManager.beginTransaction().replace(R.id.content, HistoryFragment.newInstance()).commit()
-                    mIndex = 1
+                mIndex = if(getPermissionsStatus().isEmpty()){
+                    supportFragmentManager.beginTransaction().replace(R.id.content, HistoryFragment.newInstance())
+                        .addToBackStack(TRANSITION_ID).commit()
+                    1
                 } else{
                     Toast.makeText(this, resources.getString(R.string.toast_message_permission), Toast.LENGTH_LONG).show()
-                    mIndex = 0
+                    0
                 }
             }
             R.id.nav_setting -> {
@@ -226,4 +227,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>?) {}
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>?) {}
+
+    companion object {
+        @JvmStatic
+        val TRANSITION_ID: String = "io.github.yunato.myrecordtimer.ui.activity.TRANSITION_ID"
+    }
 }

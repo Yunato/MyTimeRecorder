@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import io.github.yunato.myrecordtimer.model.dao.calendars.DaoFactory
 import io.github.yunato.myrecordtimer.model.dao.sqlite.DatabaseOpenHelper
 import io.github.yunato.myrecordtimer.model.dao.sqlite.RecordDBAdapter
 import io.github.yunato.myrecordtimer.model.entity.Record
+import io.github.yunato.myrecordtimer.ui.activity.MainActivity
 import io.github.yunato.myrecordtimer.ui.adapter.RecordRecyclerViewAdapter
 import kotlinx.android.synthetic.main.fragment_record_list.*
 import java.text.SimpleDateFormat
@@ -156,6 +158,14 @@ class RecordListFragment : Fragment() {
                             listener, longListener)
                 }
             }
+        }
+        view.isFocusableInTouchMode = true
+        view.setOnKeyListener{_, keyCode, event->
+            if(keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_DOWN){
+                activity?.supportFragmentManager?.popBackStack(MainActivity.TRANSITION_ID, 0)
+                true
+            }else
+                false
         }
         return view
     }

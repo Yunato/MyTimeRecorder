@@ -2,6 +2,7 @@ package io.github.yunato.myrecordtimer.ui.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +27,16 @@ class SubRecordListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_sub_record_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_sub_record_list, container, false)
+        view.isFocusableInTouchMode = true
+        view.setOnKeyListener{_, keyCode, event->
+            if(keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_DOWN){
+                activity?.supportFragmentManager?.popBackStack(RecordListFragment.TRANSITION_ID, 0)
+                true
+            }else
+                false
+        }
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,11 +73,6 @@ class SubRecordListFragment : Fragment() {
         val min = (diffSec / 60) % 60
         val hr = diffSec / 60 / 60
         return String.format("%02d:%02d:%02d", hr, min, sec)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        activity?.supportFragmentManager?.popBackStack(RecordListFragment.TRANSITION_ID, 0)
     }
 
     companion object {

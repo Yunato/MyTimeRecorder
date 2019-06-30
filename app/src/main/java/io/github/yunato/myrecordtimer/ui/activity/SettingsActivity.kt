@@ -112,10 +112,10 @@ class SettingsActivity : AppCompatPreferenceActivity() {
         }
 
         private fun setSummary(myPref: Preference){
-            myPref.setSummary(String.format("%02d:%02d:%02d",
+            myPref.summary = String.format("%02d:%02d:%02d",
                 sp.getInt(TimePickerFragment.KEY_HOUR, 0),
                 sp.getInt(TimePickerFragment.KEY_MINUTE, 25),
-                sp.getInt(TimePickerFragment.KEY_SECOND, 0)))
+                sp.getInt(TimePickerFragment.KEY_SECOND, 0))
         }
 
         private fun createPickerView(): View {

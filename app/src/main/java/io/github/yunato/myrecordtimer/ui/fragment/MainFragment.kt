@@ -15,7 +15,9 @@ import android.widget.Toast
 import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.databinding.FragmentMainBinding
 import io.github.yunato.myrecordtimer.ui.activity.EditRecordActivity
+import io.github.yunato.myrecordtimer.ui.activity.MainActivity
 import io.github.yunato.myrecordtimer.ui.activity.TimerActivity
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : Fragment() {
@@ -25,6 +27,11 @@ class MainFragment : Fragment() {
                                savedInstanceState: Bundle?): View? {
         val binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        (activity as MainActivity).nav_view.menu.getItem(0).isChecked = true
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
