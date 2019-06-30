@@ -1,25 +1,27 @@
 package io.github.yunato.myrecordtimer.ui.activity
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.other.service.TimerIntentService
 import io.github.yunato.myrecordtimer.ui.fragment.EasyModeFragment
 import io.github.yunato.myrecordtimer.ui.fragment.HardModeFragment
+import io.github.yunato.myrecordtimer.ui.fragment.ModeFragment
 import io.github.yunato.myrecordtimer.ui.fragment.NormalModeFragment
 
 class TimerActivity : AppCompatActivity() {
+    private lateinit var fragment: ModeFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timer)
         val mode = intent.getIntExtra(EXTRA_MODE, 0)
         if(mode == 0) finish()
-        val fragment: Fragment = when(mode){
+        fragment = when(mode){
             EXTRA_MODE_EASY_FIXED -> EasyModeFragment.newInstance(EasyModeFragment.MODE_FIXED)
             EXTRA_MODE_EASY_FLOATED -> EasyModeFragment.newInstance(EasyModeFragment.MODE_FLOATED)
             EXTRA_MODE_NORMAL -> NormalModeFragment.newInstance()
@@ -44,10 +46,22 @@ class TimerActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        TimerIntentService.isContinue = false
-        setResult(Activity.RESULT_CANCELED)
-        finish()
+        if(fragment.isMeasuring){
+            AlertDialog.Builder(this)
+                .setTitle(resources.getString(R.string.dialog_title_warning))
+                .setMessage(resources.getString(R.string.dialog_message_warning))
+                .setPositiveButton(resources.getString(R.string.button_ok)){_,_->
+                    TimerIntentService.isContinue = false
+                    setResult(Activity.RESULT_CANCELED)
+                    finish()
+                }
+                .setNegativeButton(resources.getString(R.string.button_cancel), null)
+                .show()
+        }else{
+            TimerIntentService.isContinue = false
+            setResult(Activity.RESULT_CANCELED)
+            finish()
+        }
     }
 
     companion object {

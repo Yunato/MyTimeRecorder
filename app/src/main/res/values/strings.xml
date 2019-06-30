@@ -25,6 +25,8 @@
     <string name="time_picker_separator">:</string>
     <string name='text_view_hard_mode'>画面を下にして\n端末を寝かせてください</string>
     <string name='text_view_hard_mode_stop'>秒以内に画面を下にして\n端末を寝かせてください</string>
+    <string name="dialog_title_warning">Warning</string>
+    <string name="dialog_message_warning">The timer is running. Are you sure you want to exit?</string>
 
     <string name='edit_text_title'>Input the title</string>
     <string name='edit_text_len'>Length</string>

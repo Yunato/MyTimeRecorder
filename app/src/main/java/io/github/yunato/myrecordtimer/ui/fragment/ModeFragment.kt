@@ -25,6 +25,7 @@ abstract class ModeFragment : Fragment() {
     private var startTime: Long = 0L
     protected var startSec: Long = 0L
     protected lateinit var fragment: TempListFragment
+    var isMeasuring: Boolean = false
 
 
     override fun onCreateView( inflater: LayoutInflater,
@@ -49,10 +50,12 @@ abstract class ModeFragment : Fragment() {
     protected fun startService(intent: Intent){
         activity?.startService(intent)
         startTime = Date().time
+        isMeasuring = true
     }
 
     protected fun stopService(){
         TimerIntentService.isContinue = false
+        isMeasuring = false
         val endTime = Date().time
         val intent = Intent()
         intent.putExtra(EditRecordActivity.EXTRA_RECORD, Record(null, startTime, endTime, null, null, -1, 0))
