@@ -108,7 +108,6 @@ class LocalCalendarDao(context: Context) : CalendarDao(context) {
             Log.d(className + methodName, "$id $name $accountName")
             Log.d(className + methodName, "$accountType $calendarDisplayName $calendarAccessLevel")
             Log.d(className + methodName, "$calendarTimeZone $visible $syncEvents")
-            // TODO: Delete
         }
         cur.close()
     }
