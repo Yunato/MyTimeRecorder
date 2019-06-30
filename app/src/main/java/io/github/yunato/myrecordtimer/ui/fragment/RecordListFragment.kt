@@ -1,9 +1,12 @@
 package io.github.yunato.myrecordtimer.ui.fragment
 
+import android.Manifest
 import android.app.AlertDialog
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -80,6 +83,30 @@ class RecordListFragment : Fragment() {
         }
     }
 
+    private fun getPermissionsStatus(): ArrayList<String>{
+        val permissionExtStorage = ContextCompat.checkSelfPermission(
+            activity ?: throw IllegalStateException("Activity is Null"), Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+        val permissionReadCalendar = ContextCompat.checkSelfPermission(
+            activity ?: throw IllegalStateException("Activity is Null"), Manifest.permission.READ_CALENDAR
+        )
+        val permissionWriteCalendar = ContextCompat.checkSelfPermission(
+            activity ?: throw IllegalStateException("Activity is Null"), Manifest.permission.WRITE_CALENDAR
+        )
+
+        val reqPermissions = ArrayList<String>()
+        if (PackageManager.PERMISSION_GRANTED != permissionExtStorage) {
+            reqPermissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+        if (PackageManager.PERMISSION_GRANTED != permissionReadCalendar) {
+            reqPermissions.add(Manifest.permission.READ_CALENDAR)
+        }
+        if (PackageManager.PERMISSION_GRANTED != permissionWriteCalendar) {
+            reqPermissions.add(Manifest.permission.WRITE_CALENDAR)
+        }
+        return reqPermissions
+    }
+
     private fun reloadList(position: Int){
         (list.adapter as RecordRecyclerViewAdapter).mValues.removeAt(position)
         list.adapter?.notifyItemRemoved(position)
@@ -112,7 +139,7 @@ class RecordListFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_record_list, container, false)
 
-        if (view is RecyclerView) {
+        if (view is RecyclerView && getPermissionsStatus().isEmpty()) {
             with(view) {
                   layoutManager = when {
                     columnCount <= 1 -> LinearLayoutManager(context)

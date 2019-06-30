@@ -1,13 +1,18 @@
 package io.github.yunato.myrecordtimer.ui.fragment
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.databinding.FragmentMainBinding
 import io.github.yunato.myrecordtimer.ui.activity.EditRecordActivity
 import io.github.yunato.myrecordtimer.ui.activity.TimerActivity
@@ -42,15 +47,44 @@ class MainFragment : Fragment() {
         when(requestCode){
             REQUEST_TIMER -> {
                 if(resultCode == Activity.RESULT_OK){
-                    data?.let{
-                        startActivity(EditRecordActivity.intent(
-                            activity as Context,
-                            it.getParcelableExtra(EditRecordActivity.EXTRA_RECORD),
-                            it.getParcelableArrayListExtra(EditRecordActivity.EXTRA_SUB_RECORD)))
+                    if(getPermissionsStatus().isEmpty()){
+                        data?.let{
+                            startActivity(
+                                EditRecordActivity.intent(
+                                    activity as Context,
+                                    it.getParcelableExtra(EditRecordActivity.EXTRA_RECORD),
+                                    it.getParcelableArrayListExtra(EditRecordActivity.EXTRA_SUB_RECORD)))
+                        }
+                    }else{
+                        Toast.makeText(activity, activity?.resources?.getString(R.string.toast_message_permission), Toast.LENGTH_LONG).show()
                     }
                 }
             }
         }
+    }
+
+    private fun getPermissionsStatus(): ArrayList<String>{
+        val permissionExtStorage = ContextCompat.checkSelfPermission(
+            activity ?: throw IllegalStateException("Activity is Null"), Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+        val permissionReadCalendar = ContextCompat.checkSelfPermission(
+            activity ?: throw IllegalStateException("Activity is Null"), Manifest.permission.READ_CALENDAR
+        )
+        val permissionWriteCalendar = ContextCompat.checkSelfPermission(
+            activity ?: throw IllegalStateException("Activity is Null"), Manifest.permission.WRITE_CALENDAR
+        )
+
+        val reqPermissions = ArrayList<String>()
+        if (PackageManager.PERMISSION_GRANTED != permissionExtStorage) {
+            reqPermissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+        if (PackageManager.PERMISSION_GRANTED != permissionReadCalendar) {
+            reqPermissions.add(Manifest.permission.READ_CALENDAR)
+        }
+        if (PackageManager.PERMISSION_GRANTED != permissionWriteCalendar) {
+            reqPermissions.add(Manifest.permission.WRITE_CALENDAR)
+        }
+        return reqPermissions
     }
 
     companion object {
