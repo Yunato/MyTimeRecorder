@@ -79,7 +79,7 @@ class RecordDBAdapter(mContext: Context) {
         return "-1"
     }
 
-    fun deleteRelationRecord(id: Long) {
-        db.delete(DatabaseOpenHelper.DB_REL_TABLE_NAME, "${DatabaseOpenHelper.FIELD_ID}=?", arrayOf(id.toString()))
+    fun deleteRelationRecord(localId: Long) {
+        db.delete(DatabaseOpenHelper.DB_REL_TABLE_NAME, "${DatabaseOpenHelper.FIELD_LID}=?", arrayOf(localId.toString()))
     }
 }

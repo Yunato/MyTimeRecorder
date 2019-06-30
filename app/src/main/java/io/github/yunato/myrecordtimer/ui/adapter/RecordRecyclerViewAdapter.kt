@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.fragment_record.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class RecordRecyclerViewAdapter(private val mValues: List<Record>,
+class RecordRecyclerViewAdapter(val mValues: MutableList<Record>,
                                 private val mListener: OnClickItem?,
                                 private val mLongListener: OnLongClickItem?)
     : RecyclerView.Adapter<RecordRecyclerViewAdapter.ViewHolder>() {

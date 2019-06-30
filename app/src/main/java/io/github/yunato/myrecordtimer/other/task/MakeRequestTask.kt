@@ -43,6 +43,7 @@ class MakeRequestTask(private val localDao: LocalDao,
                             if(remoteId != "-1"){
                                 remoteDao.deleteEventItem(remoteId)
                                 dbAdapter.deleteOperationRecord(operationRecord.id)
+                                dbAdapter.deleteRelationRecord(operationRecord.localEventId)
                             }
                         }
                     }

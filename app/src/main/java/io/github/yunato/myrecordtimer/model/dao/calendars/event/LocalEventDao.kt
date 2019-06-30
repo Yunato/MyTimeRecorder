@@ -89,7 +89,7 @@ class LocalEventDao(context: Context) : EventDao(context) {
 
         val cur: Cursor = getEventCursor(selection, selectionArgs, null)
         Log.d(className + methodName, "Events List of Local Calendar")
-        val record: Record = if(cur.columnCount != 0){
+        val record: Record = if(cur.count != 0){
             cur.moveToNext()
             val event_id = cur.getLong(EVENTS_PROJECTION_IDX_ID)
             val calendar_id = cur.getString(EVENTS_PROJECTION_IDX_CALENDAR_ID)

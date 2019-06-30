@@ -44,6 +44,7 @@ class RecordListFragment : Fragment() {
         }
         longListener = object : RecordRecyclerViewAdapter.OnLongClickItem{
             override fun onLongClickItem(item: Record, position: Int) {
+                if(item.id == null) return
                 AlertDialog.Builder(activity)
                     .setMessage(activity?.resources?.getString(R.string.click_delete_record_message))
                     .setPositiveButton(activity?.resources?.getString(R.string.button_ok)){_, _ ->
@@ -58,12 +59,31 @@ class RecordListFragment : Fragment() {
                             lnEventIds.add((record.id ?: "-1").toLong())
                         }
                         RecordDBAdapter(activity as Context).addOperations(DatabaseOpenHelper.OPE_DELETE, lnEventIds)
-                        list.adapter?.notifyItemRemoved(position)
+                        val mAdapter = list.adapter as RecordRecyclerViewAdapter
+                        reloadList(position)
+                        var existFormer = true
+                        var existLatter = true
+                        if(position < mAdapter.mValues.size){
+                            if(mAdapter.mValues[position].id == null)
+                                existLatter = false
+                        }else{
+                            existLatter = false
+                        }
+                        if(mAdapter.mValues[position - 1].id == null){
+                            existFormer = false
+                        }
+                        if(!existFormer && !existLatter) reloadList(position - 1)
                     }
                     .setNegativeButton(activity?.resources?.getString(R.string.button_cancel), null)
                     .show()
             }
         }
+    }
+
+    private fun reloadList(position: Int){
+        (list.adapter as RecordRecyclerViewAdapter).mValues.removeAt(position)
+        list.adapter?.notifyItemRemoved(position)
+        list.adapter?.notifyItemRangeRemoved(position, (list.adapter as RecordRecyclerViewAdapter).mValues.size)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,12 +121,12 @@ class RecordListFragment : Fragment() {
                 when(mode){
                     MODE_MAIN ->
                         adapter = RecordRecyclerViewAdapter(
-                            doPreProcessForListItems(DaoFactory.getLocalDao(activity).getAllEventItems()),
+                            doPreProcessForListItems(DaoFactory.getLocalDao(activity).getAllEventItems()).toMutableList(),
                             listener, longListener)
                     MODE_SUB ->
                         adapter = RecordRecyclerViewAdapter(
-                            extractSubRecord(mRecord, DaoFactory.getLocalDao(activity).getEventItemsOnDay(year, month, dayOfMonth)),
-                            listener, null)
+                            extractSubRecord(mRecord, DaoFactory.getLocalDao(activity).getEventItemsOnDay(year, month, dayOfMonth)).toMutableList(),
+                            listener, longListener)
                 }
             }
         }
@@ -116,7 +136,7 @@ class RecordListFragment : Fragment() {
     fun setList(year: Int, month: Int, dayOfMonth: Int){
         if(mode == MODE_MAIN){
             list.adapter = RecordRecyclerViewAdapter(
-                doPreProcessForListItems(DaoFactory.getLocalDao(activity).getEventItemsOnDay(year, month, dayOfMonth)),
+                doPreProcessForListItems(DaoFactory.getLocalDao(activity).getEventItemsOnDay(year, month, dayOfMonth)).toMutableList(),
                 listener, longListener)
         }
     }
@@ -136,7 +156,7 @@ class RecordListFragment : Fragment() {
                 tmp = null
             }
         }
-        if(tmp == null) rtnList.add(records[records.size - 1])
+        if(tmp == null && records.isNotEmpty()) rtnList.add(records[records.size - 1])
         return rtnList
     }
 
