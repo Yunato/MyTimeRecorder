@@ -5,4 +5,9 @@
             android:title="@string/pref_header_ui"
             android:icon="@drawable/ic_phone_android_black_24dp"/>
 
+    <header
+            android:fragment="io.github.yunato.myrecordtimer.ui.activity.SettingsActivity$TimerPreferenceFragment"
+            android:title="@string/pref_header_time"
+            android:icon="@drawable/ic_timer_black_24dp"/>
+
 </preference-headers>

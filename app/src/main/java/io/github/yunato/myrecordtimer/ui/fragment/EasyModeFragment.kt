@@ -2,6 +2,7 @@ package io.github.yunato.myrecordtimer.ui.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v4.app.DialogFragment
 import android.view.View
 import io.github.yunato.myrecordtimer.R
@@ -47,10 +48,10 @@ class EasyModeFragment : ModeFragment(), TimePickerFragment.OnSetTimeListener {
             picker.setStyle(DialogFragment.STYLE_NO_TITLE, 0)
             picker.show(fragmentManager, "time_picker")
         }else{
-            // TODO: get param from preference
-            val hr = 0
-            val min = 0
-            val sec = 5
+            val sp = PreferenceManager.getDefaultSharedPreferences(activity)
+            val hr = sp.getInt(TimePickerFragment.KEY_HOUR, 0)
+            val min = sp.getInt(TimePickerFragment.KEY_MINUTE, 25)
+            val sec = sp.getInt(TimePickerFragment.KEY_SECOND, 0)
             setCountText(hr, min, sec)
             startSec = hr * 60L * 60L + min * 60L + sec
         }
