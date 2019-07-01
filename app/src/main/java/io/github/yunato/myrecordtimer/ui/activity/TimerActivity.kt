@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.WindowManager
 import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.other.service.TimerIntentService
 import io.github.yunato.myrecordtimer.ui.fragment.EasyModeFragment
@@ -30,6 +31,7 @@ class TimerActivity : AppCompatActivity() {
             else -> throw IllegalStateException("Mode is not correct")
         }
         supportFragmentManager.beginTransaction().replace(R.id.content, fragment).commit()
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     override fun onResume() {

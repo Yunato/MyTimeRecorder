@@ -8,11 +8,14 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.support.v4.app.Fragment
+import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.model.entity.Record
+import io.github.yunato.myrecordtimer.other.broadcastreceiver.PowerBroadCastReceiver
 import io.github.yunato.myrecordtimer.other.broadcastreceiver.TimerReceiver
 import io.github.yunato.myrecordtimer.other.service.TimerIntentService
 import io.github.yunato.myrecordtimer.ui.activity.EditRecordActivity
@@ -32,19 +35,27 @@ abstract class ModeFragment : Fragment() {
                                container: ViewGroup?,
                                savedInstanceState: Bundle?): View? {
         setReceiver()
-        return inflater.inflate(resource, container, false)
-
+        val view = inflater.inflate(resource, container, false)
+        view.setOnKeyListener{view, keyCode, event->
+            if(keyCode == KeyEvent.KEYCODE_POWER && event.action == KeyEvent.ACTION_DOWN){
+                Log.d("TEST", "POWER")
+            }
+            true
+        }
+        return view
     }
 
     fun onRestart(){
-        if(isMeasuring){
+        if(isMeasuring && !powerReceiver.isReceived){
             stopService()
         }
+        powerReceiver.isReceived = false
     }
 
     override fun onDestroy() {
         super.onDestroy()
         activity?.unregisterReceiver(timerReceiver)
+        activity?.unregisterReceiver(powerReceiver)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -77,6 +88,10 @@ abstract class ModeFragment : Fragment() {
         intentFilter.addAction(TimerReceiver.ACTION_UPDATE)
         activity?.registerReceiver(timerReceiver, intentFilter)
         timerReceiver.registerHandler(updateHandler)
+
+        powerReceiver = PowerBroadCastReceiver()
+        activity?.registerReceiver(powerReceiver, IntentFilter(Intent.ACTION_SCREEN_OFF))
+        activity?.registerReceiver(powerReceiver, IntentFilter(Intent.ACTION_SCREEN_ON))
     }
 
     private val updateHandler = @SuppressLint("HandlerLeak")
@@ -107,5 +122,6 @@ abstract class ModeFragment : Fragment() {
 
     companion object {
         @JvmStatic private var timerReceiver: TimerReceiver = TimerReceiver()
+        @JvmStatic private var powerReceiver: PowerBroadCastReceiver = PowerBroadCastReceiver()
     }
 }

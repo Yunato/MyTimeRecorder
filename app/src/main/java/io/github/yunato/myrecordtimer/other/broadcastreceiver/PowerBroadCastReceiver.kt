@@ -5,9 +5,13 @@ import android.content.Context
 import android.content.Intent
 
 class PowerBroadCastReceiver : BroadcastReceiver() {
+    var isReceived: Boolean = false
 
     override fun onReceive(context: Context, intent: Intent) {
-        // This method is called when the BroadcastReceiver is receiving an Intent broadcast.
-        TODO("PowerBroadCastReciever.onReceive() is not implemented")
+        if(intent.action == Intent.ACTION_SCREEN_OFF){
+            isReceived = true
+        }else if(intent.action == Intent.ACTION_SCREEN_ON){
+            isReceived = true
+        }
     }
 }
