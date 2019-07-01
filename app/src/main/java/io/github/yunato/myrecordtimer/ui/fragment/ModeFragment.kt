@@ -33,6 +33,13 @@ abstract class ModeFragment : Fragment() {
                                savedInstanceState: Bundle?): View? {
         setReceiver()
         return inflater.inflate(resource, container, false)
+
+    }
+
+    fun onRestart(){
+        if(isMeasuring){
+            stopService()
+        }
     }
 
     override fun onDestroy() {

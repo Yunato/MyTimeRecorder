@@ -48,6 +48,17 @@ class EditRecordActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onBackPressed() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.dialog_title_warning)
+            .setMessage(R.string.dialog_message_no_save)
+            .setPositiveButton(R.string.button_ok){_,_->
+                finish()
+            }
+            .setNegativeButton(R.string.button_cancel, null)
+            .show()
+    }
+
     override fun attachBaseContext(newBase: Context?) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase))
     }
