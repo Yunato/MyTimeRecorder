@@ -2,6 +2,7 @@ package io.github.yunato.myrecordtimer.ui.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Vibrator
 import android.preference.PreferenceManager
 import android.support.v4.app.DialogFragment
 import android.support.v4.content.ContextCompat
@@ -68,7 +69,11 @@ class EasyModeFragment : ModeFragment(), TimePickerFragment.OnSetTimeListener {
         val hr = timeSec / 60 / 60
         setCountText(hr.toInt(), min.toInt(), sec.toInt())
         textView_time.updateNowTime(time)
-        if(timeSec == 0L) stopService()
+        if(timeSec == 0L) {
+            stopService()
+            val vibrator = activity?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            vibrator.vibrate(longArrayOf(0, 500, 250, 500), -1)
+        }
     }
 
     override fun onSetTime(hr: Int, min: Int, sec: Int) {
