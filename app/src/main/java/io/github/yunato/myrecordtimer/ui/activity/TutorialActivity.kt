@@ -1,12 +1,14 @@
 package io.github.yunato.myrecordtimer.ui.activity
 
 import android.app.Activity
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import com.stephentuso.welcome.*
 import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.ui.fragment.TutorialFragment
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 class TutorialActivity : WelcomeActivity() {
 
@@ -22,6 +24,10 @@ class TutorialActivity : WelcomeActivity() {
             .canSkip(false)
             .useCustomDoneButton(true)
             .build()
+    }
+
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase))
     }
 
     companion object {

@@ -11,6 +11,7 @@ import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.model.entity.Record
 import io.github.yunato.myrecordtimer.ui.fragment.EditRecordFragment
 import kotlinx.android.synthetic.main.activity_edit_record.*
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 class EditRecordActivity : AppCompatActivity() {
 
@@ -45,6 +46,10 @@ class EditRecordActivity : AppCompatActivity() {
                 .show()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase))
     }
 
     companion object {

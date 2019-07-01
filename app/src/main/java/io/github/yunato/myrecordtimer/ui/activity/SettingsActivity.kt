@@ -19,6 +19,7 @@ import android.widget.NumberPicker
 import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.ui.dialog.TimePickerFragment
 import kotlinx.android.synthetic.main.dialog_time_picker.view.*
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 class SettingsActivity : AppCompatPreferenceActivity() {
 
@@ -140,6 +141,10 @@ class SettingsActivity : AppCompatPreferenceActivity() {
             }
             return super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase))
     }
 
     companion object {

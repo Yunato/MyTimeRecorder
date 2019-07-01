@@ -12,6 +12,7 @@ import io.github.yunato.myrecordtimer.ui.fragment.EasyModeFragment
 import io.github.yunato.myrecordtimer.ui.fragment.HardModeFragment
 import io.github.yunato.myrecordtimer.ui.fragment.ModeFragment
 import io.github.yunato.myrecordtimer.ui.fragment.NormalModeFragment
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 class TimerActivity : AppCompatActivity() {
     private lateinit var fragment: ModeFragment
@@ -62,6 +63,10 @@ class TimerActivity : AppCompatActivity() {
             setResult(Activity.RESULT_CANCELED)
             finish()
         }
+    }
+
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase))
     }
 
     companion object {
