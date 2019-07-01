@@ -9,29 +9,33 @@
 
     <string name="button_ok">OK</string>
     <string name="button_cancel">Cancel</string>
-    <string name="permission_get_account">This app needs to access your Google account (via Contacts).</string>
+    <string name="permission_get_account">このアプリケーションは，あなたの Google Acountにアクセスする必要があります．</string>
 
-    <string name="card_main_easy_fixed">EasyMode (Fixed)</string>
-    <string name="card_main_easy_floated">EasyMode (Floated)</string>
-    <string name="card_main_normal">NormalMode</string>
-    <string name="card_main_hard">HardMode</string>
+    <string name="card_main_easy_fixed">Easyモード</string>
+    <string name="card_main_easy_floated">Easyモード</string>
+    <string name="card_main_normal">Normalモード</string>
+    <string name="card_main_hard">Hardモード</string>
+    <string name="card_main_easy_fixed_description">「設定」で指定した時間で計測します．</string>
+    <string name="card_main_easy_floated_description">計測前に任意に時間を指定できます．</string>
+    <string name="card_main_normal_description">ひたすらカウントアップで計測します．</string>
+    <string name="card_main_hard_description">ひたすらカウントアップで計測しますが，\n計測中は端末を寝かせなければなりません．</string>
 
     <string name="notification_title">Timer</string>
     <string name="textview_time">00:00:00</string>
-    <string name="button_start">Start</string>
-    <string name="button_finish">Finish</string>
-    <string name="button_lap">Lap</string>
-    <string name="time_picekr_title">Setup start time</string>
+    <string name="button_start">開始</string>
+    <string name="button_finish">終了</string>
+    <string name="button_lap">ラップ</string>
+    <string name="time_picekr_title">時間の設定</string>
     <string name="time_picker_separator">:</string>
     <string name='text_view_hard_mode'>画面を下にして\n端末を寝かせてください</string>
     <string name='text_view_hard_mode_stop'>秒以内に画面を下にして\n端末を寝かせてください</string>
-    <string name="dialog_title_warning">Warning</string>
-    <string name="dialog_message_warning">The timer is running. Are you sure you want to exit?</string>
-    <string name="toast_message_permission">Permission is not granted.</string>
+    <string name="dialog_title_warning">警告</string>
+    <string name="dialog_message_warning">計測中です．終了してよろしいですか？</string>
+    <string name="toast_message_permission">パーミッションが許可されていません．</string>
 
-    <string name='edit_text_title'>Input the title</string>
-    <string name='edit_text_len'>Length</string>
-    <string name='edit_text_memo'>Input the memo</string>
+    <string name='edit_text_title'>タイトルを入力</string>
+    <string name='edit_text_len'>期間</string>
+    <string name='edit_text_memo'>メモを入力</string>
     <string name='image_time'>Time</string>
     <string name='image_memo'>Memo</string>
     <string name='edit_text_title_no'>(タイトルなし)</string>
@@ -42,9 +46,9 @@
 
     <string name='edit_text_date'>Date</string>
     <string name='edit_text_start'>Start</string>
-    <string name="click_delete_record_message">May you delete this record?</string>
+    <string name="click_delete_record_message">この記録を削除しますか？</string>
 
-    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_settings">設定</string>
 
     <string name="pref_header_ui">UI</string>
     <string name="pref_title_theme">Theme</string>
