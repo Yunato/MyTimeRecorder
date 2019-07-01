@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.other.service.TimerIntentService
 import io.github.yunato.myrecordtimer.other.timer.MyCountDownTimer
+import io.github.yunato.myrecordtimer.ui.view.TimerTextView
 import kotlinx.android.synthetic.main.fragment_hard_mode.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -49,6 +50,11 @@ class HardModeFragment : ModeFragment(), SensorEventListener {
         }
         view?.isFocusableInTouchMode = true
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        textView_time.setParam(TimerTextView.MODE_UP)
     }
 
     override fun onResume() {
@@ -125,6 +131,7 @@ class HardModeFragment : ModeFragment(), SensorEventListener {
         val min = (timeSec / 60) % 60
         val hr = timeSec / 60 / 60
         setCountText(hr.toInt(), min.toInt(), sec.toInt())
+        textView_time.updateNowTime(time)
     }
 
     companion object {

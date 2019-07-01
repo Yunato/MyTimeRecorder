@@ -5,7 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import com.stephentuso.welcome.*
-import io.github.yunato.myrecordtimer.R.drawable.ic_close_black_24dp
+import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.ui.fragment.TutorialFragment
 
 class TutorialActivity : WelcomeActivity() {
@@ -13,10 +13,9 @@ class TutorialActivity : WelcomeActivity() {
     override fun configuration(): WelcomeConfiguration {
         return WelcomeConfiguration.Builder(this)
             .defaultBackgroundColor(BackgroundColor(Color.WHITE))
-            .page(TitlePage(ic_close_black_24dp, "Test"))
             .page(object : FragmentWelcomePage(){
                 override fun fragment(): Fragment {
-                    return TutorialFragment.newInstance()
+                    return TutorialFragment.newInstance(R.layout.fragment_tutorial_permission)
                 }
             })
             .swipeToDismiss(false)

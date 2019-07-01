@@ -15,25 +15,30 @@ import com.stephentuso.welcome.WelcomeFinisher
 import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.model.dao.calendars.DaoFactory
 import io.github.yunato.myrecordtimer.model.usecase.AccessRemoteUseCase
-import kotlinx.android.synthetic.main.fragment_tutorial.*
+import kotlinx.android.synthetic.main.fragment_tutorial_permission.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 
 class TutorialFragment : Fragment(), EasyPermissions.PermissionCallbacks {
+    private var resource: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        arguments?.let{
+            resource = it.getInt(ARG_RESOURCE)
+        }
     }
 
     override fun onCreateView( inflater: LayoutInflater,
                                container: ViewGroup?,
                                savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_tutorial, container, false)
+        return inflater.inflate(resource, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if(resource == R.layout.fragment_tutorial_permission)
         button_done.setOnClickListener{
             val reqPermissions = getPermissionsStatus()
             if(reqPermissions.isNotEmpty()){
@@ -108,9 +113,16 @@ class TutorialFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>?) {}
 
     companion object {
+        @JvmStatic private val ARG_RESOURCE = "io.github.yunato.myrecordtimer.ui.fragment.ARG_RESOURCE"
         private const val REQUEST_MULTI_PERMISSIONS: Int = 1
 
         @JvmStatic
-        fun newInstance() = TutorialFragment()
+        fun newInstance(resource: Int): TutorialFragment{
+            return TutorialFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(ARG_RESOURCE, resource)
+                }
+            }
+        }
     }
 }

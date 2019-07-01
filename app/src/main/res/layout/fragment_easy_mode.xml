@@ -8,9 +8,9 @@
         android:orientation="vertical"
         tools:context=".ui.fragment.EasyModeFragment">
 
-    <TextView
+    <io.github.yunato.myrecordtimer.ui.view.TimerTextView
             android:id="@+id/textView_time"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center"
             android:gravity="center"
@@ -29,6 +29,8 @@
                 android:id="@+id/layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
                 android:orientation="horizontal">
 
             <Button
@@ -37,9 +39,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/button_start"
                     android:textSize="@dimen/fragment_button_text_size"
+                    android:textColor="@color/colorAccent"
                     app:layout_constraintStart_toStartOf="@id/layout"
                     app:layout_constraintTop_toTopOf="@id/layout"
-                    app:layout_constraintBottom_toBottomOf="@id/layout"/>
+                    app:layout_constraintBottom_toBottomOf="@id/layout"
+                    android:background="@drawable/clear_button_bg"/>
 
             <Button
                     android:id="@+id/button_lap"
@@ -48,9 +52,11 @@
                     android:text="@string/button_lap"
                     android:enabled="false"
                     android:textSize="@dimen/fragment_button_text_size"
+                    android:textColor="@color/colorDeepAccent"
                     app:layout_constraintTop_toTopOf="@id/layout"
                     app:layout_constraintEnd_toEndOf="@id/layout"
-                    app:layout_constraintBottom_toBottomOf="@id/layout"/>
+                    app:layout_constraintBottom_toBottomOf="@id/layout"
+                    android:background="@drawable/clear_button_bg"/>
 
         </android.support.constraint.ConstraintLayout>
 

@@ -2,9 +2,11 @@ package io.github.yunato.myrecordtimer.ui.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.view.View
 import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.other.service.TimerIntentService
+import io.github.yunato.myrecordtimer.ui.view.TimerTextView
 import kotlinx.android.synthetic.main.fragment_easy_mode.*
 
 class NormalModeFragment : ModeFragment() {
@@ -20,6 +22,7 @@ class NormalModeFragment : ModeFragment() {
                 startService(TimerIntentService.startActionCountUp(activity as Context, startSec))
                 isFirstTime = false
                 button_lap.isEnabled = true
+                button_lap.setTextColor(ContextCompat.getColor(activity as Context, R.color.colorAccent))
                 button_start_end.setText(R.string.button_finish)
             }else{
                 stopService()
@@ -28,6 +31,7 @@ class NormalModeFragment : ModeFragment() {
         button_lap.setOnClickListener{
             this.createLap()
         }
+        textView_time.setParam(TimerTextView.MODE_UP)
     }
 
     override fun handleTimeParams(time: Long) {
@@ -36,6 +40,7 @@ class NormalModeFragment : ModeFragment() {
         val min = (timeSec / 60) % 60
         val hr = timeSec / 60 / 60
         setCountText(hr.toInt(), min.toInt(), sec.toInt())
+        textView_time.updateNowTime(time)
     }
 
     companion object {

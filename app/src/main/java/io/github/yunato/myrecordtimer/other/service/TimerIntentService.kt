@@ -41,7 +41,7 @@ class TimerIntentService : IntentService("TimerIntentService") {
             val diffSec = (Date().time - start)
             createNotification(convertTimeFormat(diffSec / 1000L))
             sendBroadCast(diffSec)
-            Thread.sleep(250)
+            Thread.sleep(50)
             if(!isContinue){
                 stopSelf()
                 return
@@ -54,10 +54,10 @@ class TimerIntentService : IntentService("TimerIntentService") {
         val now = Date().time
         val goal = now + timeMilli
         while((goal - Date().time) / 1000L > 0){
-            val diffSec = (goal - Date().time) / 1000L
-            createNotification(convertTimeFormat(diffSec))
+            val diffSec = goal - Date().time
+            createNotification(convertTimeFormat(diffSec / 1000L))
             sendBroadCast(diffSec)
-            Thread.sleep(250)
+            Thread.sleep(50)
             if(!isContinue){
                 stopSelf()
                 return

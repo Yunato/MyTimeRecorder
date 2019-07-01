@@ -2,8 +2,10 @@
 <resources>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#29b6f6</color>
+    <color name="colorDeepAccent">#01579b</color>
     <color name="colorWhite">#fafafa</color>
     <color name="colorLightGray">#dbdbdb</color>
-    <color name="colorGray">#4b4b4b</color>
+    <color name="colorGray">#6b6b6b</color>
+    <color name="clearButtonPressed">#33000000</color>
 </resources>

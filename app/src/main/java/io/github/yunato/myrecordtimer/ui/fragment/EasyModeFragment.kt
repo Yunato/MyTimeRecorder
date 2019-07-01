@@ -4,10 +4,12 @@ import android.content.Context
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v4.app.DialogFragment
+import android.support.v4.content.ContextCompat
 import android.view.View
 import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.other.service.TimerIntentService
 import io.github.yunato.myrecordtimer.ui.dialog.TimePickerFragment
+import io.github.yunato.myrecordtimer.ui.view.TimerTextView
 import kotlinx.android.synthetic.main.fragment_easy_mode.*
 
 class EasyModeFragment : ModeFragment(), TimePickerFragment.OnSetTimeListener {
@@ -31,6 +33,7 @@ class EasyModeFragment : ModeFragment(), TimePickerFragment.OnSetTimeListener {
                 startService(TimerIntentService.startActionCountDown(activity as Context, startSec))
                 isFirstTime = false
                 button_lap.isEnabled = true
+                button_lap.setTextColor(ContextCompat.getColor(activity as Context, R.color.colorAccent))
                 button_start_end.setText(R.string.button_finish)
             }else{
                 stopService()
@@ -54,20 +57,24 @@ class EasyModeFragment : ModeFragment(), TimePickerFragment.OnSetTimeListener {
             val sec = sp.getInt(TimePickerFragment.KEY_SECOND, 0)
             setCountText(hr, min, sec)
             startSec = hr * 60L * 60L + min * 60L + sec
+            textView_time.setParam(TimerTextView.MODE_DOWN, startSec * 1000L)
         }
     }
 
     override fun handleTimeParams(time: Long) {
-        val sec = time % 60
-        val min = (time / 60) % 60
-        val hr = time / 60 / 60
+        val timeSec = time / 1000L
+        val sec = timeSec % 60
+        val min = (timeSec / 60) % 60
+        val hr = timeSec / 60 / 60
         setCountText(hr.toInt(), min.toInt(), sec.toInt())
-        if(time == 0L) stopService()
+        textView_time.updateNowTime(time)
+        if(timeSec == 0L) stopService()
     }
 
     override fun onSetTime(hr: Int, min: Int, sec: Int) {
         setCountText(hr, min, sec)
         startSec = hr * 60L * 60L + min * 60L + sec
+        textView_time.setParam(TimerTextView.MODE_DOWN, startSec * 1000L)
     }
 
     companion object {
