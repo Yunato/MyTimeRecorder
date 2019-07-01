@@ -17,6 +17,16 @@ class TutorialActivity : WelcomeActivity() {
             .defaultBackgroundColor(BackgroundColor(Color.WHITE))
             .page(object : FragmentWelcomePage(){
                 override fun fragment(): Fragment {
+                    return TutorialFragment.newInstance(R.layout.fragment_tutorial_abstract)
+                }
+            })
+            .page(object : FragmentWelcomePage(){
+                override fun fragment(): Fragment {
+                    return TutorialFragment.newInstance(R.layout.fragment_tutorial_method)
+                }
+            })
+            .page(object : FragmentWelcomePage(){
+                override fun fragment(): Fragment {
                     return TutorialFragment.newInstance(R.layout.fragment_tutorial_permission)
                 }
             })

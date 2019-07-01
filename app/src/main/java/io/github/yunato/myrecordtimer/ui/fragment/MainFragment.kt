@@ -18,6 +18,7 @@ import io.github.yunato.myrecordtimer.ui.activity.EditRecordActivity
 import io.github.yunato.myrecordtimer.ui.activity.MainActivity
 import io.github.yunato.myrecordtimer.ui.activity.TimerActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.card_main.view.*
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : Fragment() {
@@ -37,10 +38,10 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         card_easy_mode_fixed.setOnClickListener{
-            startActivityForResult(TimerActivity.intent(activity as Context, TimerActivity.EXTRA_MODE_EASY_FIXED), REQUEST_TIMER)
+            startActivityForResult(TimerActivity.intent(activity as Context, TimerActivity.EXTRA_MODE_EASY_FLOATED), REQUEST_TIMER)
         }
         card_easy_mode_floated.setOnClickListener{
-            startActivityForResult(TimerActivity.intent(activity as Context, TimerActivity.EXTRA_MODE_EASY_FLOATED), REQUEST_TIMER)
+            startActivityForResult(TimerActivity.intent(activity as Context, TimerActivity.EXTRA_MODE_EASY_FIXED), REQUEST_TIMER)
         }
         card_normal_mode.setOnClickListener{
             startActivityForResult(TimerActivity.intent(activity as Context, TimerActivity.EXTRA_MODE_NORMAL), REQUEST_TIMER)
@@ -48,6 +49,10 @@ class MainFragment : Fragment() {
         card_hard_mode.setOnClickListener{
             startActivityForResult(TimerActivity.intent(activity as Context, TimerActivity.EXTRA_MODE_HARD), REQUEST_TIMER)
         }
+        card_easy_mode_fixed.image_view.setImageResource(R.drawable.easy_fixed)
+        card_easy_mode_floated.image_view.setImageResource(R.drawable.easy_floated)
+        card_normal_mode.image_view.setImageResource(R.drawable.normal)
+        card_hard_mode.image_view.setImageResource(R.drawable.hard)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

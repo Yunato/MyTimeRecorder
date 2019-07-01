@@ -46,4 +46,5 @@ dependencies {
         exclude group: 'org.apache.httpcomponents'
     }
     implementation 'com.stephentuso:welcome:1.4.1'
+    implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
 }

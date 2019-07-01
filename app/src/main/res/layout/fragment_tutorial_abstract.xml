@@ -6,27 +6,10 @@
               android:orientation="vertical"
               tools:context=".ui.fragment.TutorialFragment">
 
-    <TextView
-            android:id="@+id/text_view_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:text="シンプル計測を利用して\n簡単で早く集中時間を測定！"
-            android:textSize="24sp"
-            android:gravity="center"/>
-
     <ImageView
             android:id="@+id/image_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-    <TextView
-            android:id="@+id/text_view_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:text="ホーム画面の右側の下に”シンプル測定”アイコンを\nタップすると別途の目標を作らなくても早く測定\nできます！測定完了した後に目標を作るとか\n統計に登録できます．"
-            android:textSize="14sp"
-            android:gravity="center"/>
+            android:layout_height="match_parent"
+            android:src="@drawable/tutorial_abstract"/>
 
 </LinearLayout>

@@ -1,11 +1,29 @@
 <resources>
-    <string name="app_name">MyRecordTimer</string>
+    <string name="app_name">MyTimeRecorder</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+
+    <string name="tutorial_abstract_title">シンプルな計測により\n様々な時間を簡単に測定</string>
+    <string name="tutorial_abstract_description">
+        このアプリケーションは時間の管理を支援をします！\nこまめに時間を計測して\n無駄な時間を減らしましょう！\n集中力を鍛えることができるかも？？
+    </string>
+    <string name="tutorial_method_title">４つの計測方法</string>
+    <string name="tutorial_method_easy_fixed_description">事前に時間を決定しておき，時間計測を行います．\nこの計測方法はポモドーロテクニックの実践を支援できるでしょう．
+    </string>
+    <string name="tutorial_method_easy_floated_description">直前に目標時間を設定してから時間計測を行います．\n目標達成を目指すための計測方法です．</string>
+    <string name="tutorial_method_normal_description">ゴールを決めずに時間計測を行います．\n自分の限界を知ることができるでしょう．</string>
+    <string name="tutorial_method_hard_description">スマホは誘惑物の一つ．\nそんなスマホを伏せることで時間計測を行います．</string>
+    <string name="tutorial_permission_title">アプリケーション使用前の注意</string>
+    <string name="tutorial_permission_description">画面下部の「OK」ボタンをタップすると\nパーミッションの許可を求めます．</string>
+    <string name="tutorial_permission_storage_description">ローカルカレンダーとリモートカレンダーのつじつまを合わせるために必要です．\n許可されないと時間計測ができません．
+    </string>
+    <string name="tutorial_permission_calendar_description">ローカルカレンダーに計測結果を保存するために必要です．\n許可されないと時間計測ができません．</string>
+    <string name="tutorial_permission_account_description">リモートカレンダーに計測結果を保存するために必要です．\n許可されないとリモートカレンダーに保存できません．
+    </string>
 
     <string name="button_ok">OK</string>
     <string name="button_cancel">Cancel</string>
@@ -52,18 +70,18 @@
     <string name="title_activity_settings">設定</string>
 
     <string name="pref_header_ui">UI</string>
-    <string name="pref_title_theme">Theme</string>
+    <string name="pref_title_theme">テーマ</string>
     <string-array name="pref_list_themes">
-        <item>Light</item>
-        <item>Dark</item>
+        <item>ライト</item>
+        <item>ダーク</item>
     </string-array>
     <string-array name="pref_list_values">
         <item>1</item>
         <item>0</item>
     </string-array>
 
-    <string name="pref_header_time">Time</string>
-    <string name="pref_title_time">Time for EasyMode(Fixed)</string>
+    <string name="pref_header_time">時間設定</string>
+    <string name="pref_title_time">Easyモードの固定時間</string>
 
     <string name="calendar_name">io.github.yunato.myrecordtimer</string>
 </resources>
