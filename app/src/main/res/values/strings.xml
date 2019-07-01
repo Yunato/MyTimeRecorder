@@ -40,6 +40,7 @@
     <string name='image_memo'>Memo</string>
     <string name='edit_text_title_no'>(タイトルなし)</string>
     <string name='edit_text_memo_no'></string>
+    <string name="dialog_message_no_save">計測結果を保存していません．破棄してもよろしいですか？</string>
 
     <string name='account_name_local'>local_calendar</string>
     <string name='time_zone'>Asia/Tokyo</string>

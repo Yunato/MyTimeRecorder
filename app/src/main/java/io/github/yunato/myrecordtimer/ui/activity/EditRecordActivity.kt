@@ -3,6 +3,7 @@ package io.github.yunato.myrecordtimer.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
@@ -33,7 +34,16 @@ class EditRecordActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         val id = item?.itemId
-        if(id == android.R.id.home) finish()
+        if(id == android.R.id.home) {
+            AlertDialog.Builder(this)
+                .setTitle(R.string.dialog_title_warning)
+                .setMessage(R.string.dialog_message_no_save)
+                .setPositiveButton(R.string.button_ok){_,_->
+                    finish()
+                }
+                .setNegativeButton(R.string.button_cancel, null)
+                .show()
+        }
         return super.onOptionsItemSelected(item)
     }
 
