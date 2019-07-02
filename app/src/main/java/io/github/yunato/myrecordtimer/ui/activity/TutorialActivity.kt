@@ -40,6 +40,9 @@ class TutorialActivity : WelcomeActivity() {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase))
     }
 
+    override fun onBackPressed() {
+    }
+
     companion object {
         fun showIfNeeded(activity: Activity, savedInstanceState: Bundle?) {
             WelcomeHelper(activity, TutorialActivity::class.java).show(savedInstanceState)

@@ -60,7 +60,7 @@ class LocalCalendarDao(context: Context) : CalendarDao(context) {
         values.put(Calendars.CALENDAR_ACCESS_LEVEL, Calendars.CAL_ACCESS_OWNER)
         values.put(Calendars.OWNER_ACCOUNT, true)
         values.put(Calendars.CALENDAR_TIME_ZONE, context.resources.getString(time_zone))
-        values.put(Calendars.VISIBLE, 0)
+        values.put(Calendars.VISIBLE, 1)
         values.put(Calendars.SYNC_EVENTS, 1)
         values.put(Calendars.CALENDAR_DISPLAY_NAME, context.resources.getString(app_name))
 

@@ -1,4 +1,4 @@
-package io.github.yunato.myrecordtimer.other
+package io.github.yunato.myrecordtimer.other.application
 
 import android.app.Application
 import io.github.yunato.myrecordtimer.R

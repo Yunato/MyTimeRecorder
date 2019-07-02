@@ -26,7 +26,6 @@ class MakeRequestTask(private val localDao: LocalDao,
                 mLastError = e
                 cancel(true)
             }
-            remoteDao.getAllEventItems()
             dbAdapter.getOperations().apply {
                 for(operationRecord: OperationRecord in this){
                     when(operationRecord.operation){
