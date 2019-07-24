@@ -2,9 +2,11 @@ package io.github.yunato.myrecordtimer.other.service
 
 import android.app.IntentService
 import android.app.Notification
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.support.v4.app.NotificationCompat
 import io.github.yunato.myrecordtimer.R
 import io.github.yunato.myrecordtimer.other.broadcastreceiver.TimerReceiver
@@ -67,16 +69,40 @@ class TimerIntentService : IntentService("TimerIntentService") {
     }
 
     private fun createNotification(text: String){
-        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle(resources.getText(R.string.notification_title))
-            .setContentText(text)
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .build()
-        notification.flags = Notification.FLAG_ONGOING_EVENT
+        if(Build.VERSION.SDK_INT <= 25){
+            val notification = NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle(resources.getText(R.string.notification_title))
+                .setContentText(text)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .build()
+            notification.flags = Notification.FLAG_ONGOING_EVENT
 
-        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        manager.notify(NOTIFICATION_ID, notification)
-        startForeground(NOTIFICATION_ID, notification)
+            val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            manager.notify(NOTIFICATION_ID, notification)
+            startForeground(NOTIFICATION_ID, notification)
+        }else{
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val name = "Remaining time Notification"
+            val id = "io.github.yunato.myrecordtimer.notification"
+            val notifyDescription = "Show notification bar for remaining time of Count Up/Down timer"
+
+            if(notificationManager.getNotificationChannel(id) == null){
+                val mChannel = NotificationChannel(id, name, NotificationManager.IMPORTANCE_HIGH)
+                mChannel.apply{
+                    description = notifyDescription
+                }
+                notificationManager.createNotificationChannel(mChannel)
+            }
+
+            val notification = NotificationCompat
+                .Builder(this, id)
+                .apply{
+                    setSmallIcon(R.mipmap.ic_launcher)
+                    setContentTitle(resources.getText(R.string.notification_title))
+                    setContentText(text)
+                }.build()
+            notificationManager.notify(1, notification)
+        }
     }
 
     private fun convertTimeFormat(timeSec: Long): String {
